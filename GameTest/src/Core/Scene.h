@@ -1,5 +1,8 @@
 ﻿#pragma once
 #include "Camera.h"
+#include "../Systems/SPhysics.h"
+#include "../Systems/SPlayer.h"
+#include "../Systems/SRender.h"
 
 class Scene
 {
@@ -28,6 +31,11 @@ public:
     Camera GetCamera();
 private:
     std::vector<Entity> m_entities;
+    
+    SPlayer m_systemPlayer;
+    SRender m_systemRender;
+    SPhysics m_systemPhysics;
+    
     Camera m_camera;
     //create 2d array that holds component array
 };

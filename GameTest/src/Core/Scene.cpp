@@ -9,6 +9,8 @@ Scene::Scene()
 
 void Scene::Init()
 {
+    m_camera = Camera();
+    Entity player = CreateEntity();
 }
 
 void Scene::Update(float dt)

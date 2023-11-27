@@ -19,5 +19,6 @@
 #include <assert.h>
 #include <random>
 #include <array>
+#include <minwindef.h>
 
 using Entity = std::uint32_t;
