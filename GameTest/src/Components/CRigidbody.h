@@ -6,5 +6,6 @@ struct CRigidbody
     vec2 acceleration;
     float friction;
     vec2 normal;
-    
+
+    CRigidbody();
 };

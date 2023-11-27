@@ -7,5 +7,4 @@ struct CTransform
 
     CTransform();
     CTransform(vec2 position);
-    
 };

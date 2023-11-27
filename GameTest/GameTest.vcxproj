@@ -369,7 +369,6 @@
   <ItemGroup>
     <ClInclude Include="src\Components\CBoxCollider.h" />
     <Content Include="src\Graphics\NewFile1.txt" />
-    <Content Include="src\Systems\NewFile1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
