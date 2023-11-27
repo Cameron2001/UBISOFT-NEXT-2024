@@ -1,5 +1,7 @@
 ﻿#pragma once
-struct CCircleCollider
+
+class SPlayer
 {
+public:
     
 };
