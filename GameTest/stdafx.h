@@ -13,3 +13,11 @@
 
 
 // TODO: reference additional headers your program requires here
+#include <string>
+#include <vector>
+#include <math.h>
+#include <assert.h>
+#include <random>
+#include <array>
+
+using Entity = std::uint32_t;

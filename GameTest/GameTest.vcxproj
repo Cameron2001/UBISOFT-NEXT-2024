@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -182,6 +182,15 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\Components\CCircleCollider.h" />
+    <ClInclude Include="src\Components\CPlayer.h" />
+    <ClInclude Include="src\Components\CRigidbody.h" />
+    <ClInclude Include="src\Components\CSprite.h" />
+    <ClInclude Include="src\Components\CTransform.h" />
+    <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\Util\Utils.h" />
+    <ClInclude Include="src\Util\Vectors.h" />
     <ClInclude Include="stb_image\stb_image.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -193,6 +202,10 @@
     <ClCompile Include="App\SimpleSound.cpp" />
     <ClCompile Include="App\SimpleSprite.cpp" />
     <ClCompile Include="GameTest.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\Util\Utils.cpp" />
+    <ClCompile Include="src\Util\Vectors.cpp" />
     <ClCompile Include="stb_image\stb_image.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -200,6 +213,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Components\CBoxCollider.h" />
+    <Content Include="src\Components\NewFile1.txt" />
+    <Content Include="src\Systems\NewFile1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
