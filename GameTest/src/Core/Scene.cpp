@@ -9,7 +9,6 @@ Scene::Scene()
 
 void Scene::Init()
 {
-    m_camera = Camera();
     Entity player = CreateEntity();
 }
 
@@ -27,6 +26,7 @@ void Scene::Shutdown()
 
 Entity Scene::CreateEntity()
 {
+    return 1;
 }
 
 void Scene::DeleteEntity(Entity entityID)

@@ -182,12 +182,14 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
+    <ClInclude Include="src\Components\CCapsuleCollider.h" />
     <ClInclude Include="src\Components\CCircleCollider.h" />
     <ClInclude Include="src\Components\CPlayer.h" />
     <ClInclude Include="src\Components\CRigidbody.h" />
     <ClInclude Include="src\Components\CSprite.h" />
     <ClInclude Include="src\Components\CTransform.h" />
     <ClInclude Include="src\Core\Camera.h" />
+    <ClInclude Include="src\Core\ComponentArray.h" />
     <ClInclude Include="src\Core\Scene.h" />
     <ClInclude Include="src\Systems\SPhysics.h" />
     <ClInclude Include="src\Systems\SPlayer.h" />
@@ -279,6 +281,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="src\Core\ComponentArray.cpp" />
     <ClCompile Include="src\Core\Scene.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>

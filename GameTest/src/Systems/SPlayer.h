@@ -3,5 +3,6 @@
 class SPlayer
 {
 public:
+    void HandleInput();
     
 };

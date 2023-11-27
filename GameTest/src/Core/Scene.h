@@ -37,5 +37,7 @@ private:
     SPhysics m_systemPhysics;
     
     Camera m_camera;
+
+    void UpdateSystems();
     //create 2d array that holds component array
 };

@@ -3,5 +3,6 @@
 class SRender
 {
 public:
+    void Update();
     
 };

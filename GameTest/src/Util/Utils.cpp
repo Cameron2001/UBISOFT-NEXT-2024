@@ -184,9 +184,7 @@ float Utils::SignedAngle(vec2 from, vec2 to)
 }
 
 Utils::Utils()
-{
-}
+= default;
 
 Utils::~Utils()
-{
-}
+= default;
