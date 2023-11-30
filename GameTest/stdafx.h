@@ -22,3 +22,5 @@
 #include <Windows.h>
 
 using Entity = std::uint32_t;
+//max components 32
+//max entites
