@@ -14,14 +14,21 @@ void Scene::Init()
 
 void Scene::Update(float dt)
 {
+    m_systemPlayer.HandleInput();
+    m_systemPhysics.UpdateCollision();
+    m_systemPhysics.CollisionResponse();
+    m_systemPhysics.ResolveCollision();
+    m_systemPhysics.UpdatePosition();
 }
 
 void Scene::Render()
 {
+    m_systemRender.Update();
 }
 
 void Scene::Shutdown()
 {
+    
 }
 
 Entity Scene::CreateEntity()
@@ -57,3 +64,4 @@ Camera Scene::GetCamera()
 {
     return m_camera;
 }
+

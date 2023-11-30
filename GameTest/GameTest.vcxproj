@@ -182,8 +182,11 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
+    <ClInclude Include="src\Components\CButton.h" />
     <ClInclude Include="src\Components\CCapsuleCollider.h" />
     <ClInclude Include="src\Components\CCircleCollider.h" />
+    <ClInclude Include="src\Components\CColor.h" />
+    <ClInclude Include="src\Components\CLabel.h" />
     <ClInclude Include="src\Components\CPlayer.h" />
     <ClInclude Include="src\Components\CRigidbody.h" />
     <ClInclude Include="src\Components\CSprite.h" />
@@ -371,6 +374,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\CBoxCollider.h" />
+    <ClInclude Include="src\Components\CAudio.h" />
     <Content Include="src\Graphics\NewFile1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
