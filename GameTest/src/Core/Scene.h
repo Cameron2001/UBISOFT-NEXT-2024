@@ -1,8 +1,6 @@
 ﻿#pragma once
 #include "Camera.h"
-#include "ComponentArray.h"
-#include "EntityArray.h"
-#include "../Components/CTransform.h"
+#include "ComponentMap.h"
 #include "../Systems/SPhysics.h"
 #include "../Systems/SPlayer.h"
 #include "../Systems/SRender.h"
@@ -36,12 +34,9 @@ private:
     std::vector<Entity> m_entityArray; //just a vector of uint32_t. Hold all entity ids 
     //maybe create some type of storage to contain all systems in
     //maybe vector isnt correct storage. If an entity is removed the index and entityID will no longer be alligned
-    ComponentArray<CTransform> m_transformArray;
     SPlayer m_systemPlayer;
     SRender m_systemRender;
     SPhysics m_systemPhysics;
-    
-    
     Camera m_camera;
 
     

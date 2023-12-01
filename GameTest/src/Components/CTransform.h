@@ -5,6 +5,5 @@ struct CTransform
     vec2 position;
     float rotation;
 
-    CTransform();
-    CTransform(vec2 position);
+    
 };

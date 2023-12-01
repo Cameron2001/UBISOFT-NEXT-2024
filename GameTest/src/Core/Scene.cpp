@@ -1,15 +1,19 @@
 ﻿#include "stdafx.h"
 #include "Scene.h"
+#include "ComponentArray.h"
+#include "../Components/CTransform.h"
 
 Scene::Scene()
 {
     //create Component arrays
-    
 }
 
 void Scene::Init()
 {
     Entity player = CreateEntity();
+    auto transformArray = ComponentArray<CTransform>(32,32);
+    transformArray.AddComponent(player, CTransform());
+    
 }
 
 void Scene::Update(float dt)
@@ -43,11 +47,13 @@ void Scene::DeleteEntity(Entity entityID)
 template <typename T>
 bool Scene::HasComponent(Entity entityID)
 {
+    return true;
 }
 
 template <typename T>
 T Scene::GetComponent(Entity entityID)
 {
+    return 0;
 }
 
 template <typename T>
