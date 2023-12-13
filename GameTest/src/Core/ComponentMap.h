@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <unordered_map>
 
-template <typename T>
+template <class T>
 class ComponentMap
 {
 public:

@@ -12,7 +12,8 @@ void Scene::Init()
 {
     Entity player = CreateEntity();
     auto transformArray = ComponentArray<CTransform>(32,32);
-    transformArray.AddComponent(player, CTransform());
+    transformArray.AddComponent(player, CTransform(vec2(5,5),90));
+    
     
 }
 

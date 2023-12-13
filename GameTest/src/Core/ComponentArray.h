@@ -1,7 +1,7 @@
 ﻿#pragma once
 //template stuff
 //this is a sparseSet
-template <typename T>
+template <class T>
 class ComponentArray
 {
 public:
@@ -11,14 +11,14 @@ public:
         maxVal = 32;
         sparse = new uint32_t[maxVal+1];
         dense = new uint32_t[capacity];
-        componentList = std::vector<T>(capacity);
+        componentList = new T[capacity];
         n=0;
     }
     ComponentArray(uint32_t max, uint32_t cap)
     {
         sparse = new uint32_t[max+1];
         dense = new uint32_t[cap];
-        componentList = std::vector<T>(cap);
+        componentList = new T[cap];
         capacity = cap;
         maxVal = max;
         n=0;
@@ -42,7 +42,7 @@ private:
     uint32_t n;
     uint32_t *sparse; //indices
     uint32_t *dense; //list 
-    std::vector<T> componentList;
+    T *componentList;
     //dense is index of componemts in spare array. Index of components is also the entityID of the owning entity of said component
     //meaning that the dense array is a list of entityID's that contain said component
 };
