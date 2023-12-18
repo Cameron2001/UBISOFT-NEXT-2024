@@ -1,7 +1,16 @@
 ﻿#pragma once
 #include "Camera.h"
+#include "ComponentArray.h"
+#include "../Systems/ISystem.h"
 
-
+enum Components
+{
+    
+};
+enum Systems
+{
+    
+};
 class Scene
 {
 public:
@@ -27,15 +36,26 @@ public:
     void DeleteComponent(Entity entityID, T component);
 
     template<typename T>
-    void GetComponentArray();
+    void CreateComponentArray();
+    
+    template<typename T>
+    T GetComponentArray();
 
-    void SetCamera(Camera cam);
-    Camera GetCamera();
+    template<typename T>
+    void CreateSystem();
+    
+    template<typename T>
+    T GetSystem();
+    
+    Camera m_camera;
+    Entity m_player;
 private:
-    std::vector<Entity> m_entityArray; //just a vector of uint32_t. Hold all entity ids 
+    std::vector<Entity> m_entityArray; //just a vector of uint32_t. Hold all entity ids
+    std::vector<IComponentArray*> m_componentArrays;
+    std::vector<ISystem*> m_sysyemArray;
     //maybe create some type of storage to contain all systems in
     //maybe vector isnt correct storage. If an entity is removed the index and entityID will no longer be alligned
-    Camera m_camera;
+    
     
 
     

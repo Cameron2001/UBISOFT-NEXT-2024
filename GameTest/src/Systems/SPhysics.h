@@ -1,8 +1,9 @@
 ﻿#pragma once
+#include "ISystem.h"
 #include "../Components/CRigidbody.h"
 #include "../Util/Vectors.h"
 
-class SPhysics
+class SPhysics : ISystem
 {
 public:
     void UpdateCollision();

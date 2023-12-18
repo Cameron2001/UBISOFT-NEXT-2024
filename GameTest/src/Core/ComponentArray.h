@@ -1,24 +1,24 @@
 ﻿#pragma once
+#include "IComponentArray.h"
 //template stuff
 //this is a sparseSet
 template <class T>
-class ComponentArray
+class ComponentArray : IComponentArray
 {
 public:
-    ComponentArray(uint32_t max = 32, uint32_t cap = 32):
-    maxVal(max),
-    capacity(cap),
-    sparse(std::vector<uint32_t>(capacity, 0))
+    ComponentArray(uint32_t cap = 32):
+        capacity(cap),
+        sparse(std::vector<uint32_t>(capacity, 0))
     {}
+    
     void AddComponent(Entity entityID, T component); //insert new element
     void RemoveComponent(Entity entityID); //remove element
-    void Clear();
     bool HasEntity(Entity entityID);
-
+    T GetComponent(Entity entityID);
+    void Clear();
 
 private:
     
-    uint32_t maxVal;
     uint32_t capacity;
     std::vector<uint32_t> sparse; //indices
     std::vector<uint32_t> dense; //list
@@ -49,6 +49,14 @@ void ComponentArray<T>::RemoveComponent(Entity entityID)
     componentList.pop_back();
 }
 
+template <class T>
+T ComponentArray<T>::GetComponent(Entity entityID)
+{
+    if(!HasEntity(entityID))
+        return {};
+    return componentList[sparse[entityID]];
+}
+
 
 template <typename T>
 void ComponentArray<T>::Clear()
@@ -59,10 +67,7 @@ void ComponentArray<T>::Clear()
 template <class T>
 bool ComponentArray<T>::HasEntity(Entity entityID)
 {
-    
-    if (dense.size()<=sparse[entityID])
-        return false;
-    return dense[sparse[entityID]] == entityID;
+    return (entityID < sparse.size() && sparse[entityID] < dense.size() && dense[sparse[entityID]] == entityID);
 }
 
 

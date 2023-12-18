@@ -1,6 +1,7 @@
 ﻿#pragma once
+#include "ISystem.h"
 
-class SRender
+class SRender : ISystem
 {
 public:
     void Update();

@@ -193,7 +193,7 @@
     <ClInclude Include="src\Components\CTransform.h" />
     <ClInclude Include="src\Core\Camera.h" />
     <ClInclude Include="src\Core\ComponentArray.h" />
-    <ClInclude Include="src\Core\ComponentMap.h" />
+    <ClInclude Include="src\Core\IComponentArray.h" />
     <ClInclude Include="src\Core\Scene.h" />
     <ClInclude Include="src\Systems\SPhysics.h" />
     <ClInclude Include="src\Systems\SPlayer.h" />
@@ -376,6 +376,7 @@
     <ClInclude Include="src\Components\CBoxCollider.h" />
     <ClInclude Include="src\Components\CAudio.h" />
     <Content Include="src\Graphics\NewFile1.txt" />
+    <ClInclude Include="src\Systems\ISystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
