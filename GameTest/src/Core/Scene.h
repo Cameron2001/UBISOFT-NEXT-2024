@@ -3,13 +3,25 @@
 #include "ComponentArray.h"
 #include "../Systems/ISystem.h"
 
-enum Components
+enum class Components
 {
-    
+    Audio,
+    BoxCollider,
+    Button,
+    CapsuleCollider,
+    CircleCollider,
+    Color,
+    Label,
+    Player,
+    Rigidbody,
+    Sprite,
+    Transform
 };
-enum Systems
+enum class Systems
 {
-    
+    Physics,
+    Player,
+    Render
 };
 class Scene
 {
@@ -37,15 +49,10 @@ public:
 
     template<typename T>
     void CreateComponentArray();
-    
-    template<typename T>
-    T GetComponentArray();
 
     template<typename T>
-    void CreateSystem();
+    ComponentArray<T>* GetComponentArray();
     
-    template<typename T>
-    T GetSystem();
     
     Camera m_camera;
     Entity m_player;
