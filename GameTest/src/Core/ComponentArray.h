@@ -5,44 +5,25 @@ template <class T>
 class ComponentArray
 {
 public:
-    ComponentArray()
-    {
-        capacity = 32;
-        maxVal = 32;
-        sparse = new uint32_t[maxVal+1];
-        dense = new uint32_t[capacity];
-        componentList = new T[capacity];
-        n=0;
-    }
-    ComponentArray(uint32_t max, uint32_t cap)
-    {
-        sparse = new uint32_t[max+1];
-        dense = new uint32_t[cap];
-        componentList = new T[cap];
-        capacity = cap;
-        maxVal = max;
-        n=0;
-    }
-    ~ComponentArray()
-    {
-        delete[] sparse;
-        delete[] dense;
-        
-    }
-    
+    ComponentArray(uint32_t max = 32, uint32_t cap = 32):
+    maxVal(max),
+    capacity(cap),
+    sparse(std::vector<uint32_t>(capacity, 0))
+    {}
     void AddComponent(Entity entityID, T component); //insert new element
     void RemoveComponent(Entity entityID); //remove element
-    bool HasComponent(Entity entityID);
     void Clear();
+    bool HasEntity(Entity entityID);
+
 
 private:
     
     uint32_t maxVal;
     uint32_t capacity;
-    uint32_t n;
-    uint32_t *sparse; //indices
-    uint32_t *dense; //list 
-    T *componentList;
+    std::vector<uint32_t> sparse; //indices
+    std::vector<uint32_t> dense; //list
+    std::vector<T> componentList;
+    //T *componentList;
     //dense is index of componemts in spare array. Index of components is also the entityID of the owning entity of said component
     //meaning that the dense array is a list of entityID's that contain said component
 };
@@ -51,28 +32,37 @@ private:
 template <typename T>
 void ComponentArray<T>::AddComponent(Entity entityID, T component)
 {
-    componentList[n] = component;
-    dense[n] = entityID;
-    sparse[entityID] = n;
-    n++;
+    const auto pos = dense.size();
+    dense.push_back(entityID);
+    componentList.push_back(component);
+    sparse[entityID] = pos;
 }
 
 template <typename T>
 void ComponentArray<T>::RemoveComponent(Entity entityID)
 {
-    
+    const auto last = dense.back();
+    std::swap(dense.back(), dense[sparse[entityID]]);
+    std::swap(componentList.back(), componentList[sparse[entityID]]);
+    std::swap(sparse[last], sparse[entityID]);
+    dense.pop_back();
+    componentList.pop_back();
 }
 
-template <typename T>
-bool ComponentArray<T>::HasComponent(Entity entityID)
-{
-    return true;
-}
 
 template <typename T>
 void ComponentArray<T>::Clear()
 {
-    n=0;
+    
+}
+
+template <class T>
+bool ComponentArray<T>::HasEntity(Entity entityID)
+{
+    
+    if (dense.size()<=sparse[entityID])
+        return false;
+    return dense[sparse[entityID]] == entityID;
 }
 
 

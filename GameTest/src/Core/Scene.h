@@ -1,9 +1,6 @@
 ﻿#pragma once
 #include "Camera.h"
-#include "ComponentMap.h"
-#include "../Systems/SPhysics.h"
-#include "../Systems/SPlayer.h"
-#include "../Systems/SRender.h"
+
 
 class Scene
 {
@@ -29,15 +26,17 @@ public:
     template<typename T>
     void DeleteComponent(Entity entityID, T component);
 
+    template<typename T>
+    void GetComponentArray();
+
+    void SetCamera(Camera cam);
     Camera GetCamera();
 private:
     std::vector<Entity> m_entityArray; //just a vector of uint32_t. Hold all entity ids 
     //maybe create some type of storage to contain all systems in
     //maybe vector isnt correct storage. If an entity is removed the index and entityID will no longer be alligned
-    SPlayer m_systemPlayer;
-    SRender m_systemRender;
-    SPhysics m_systemPhysics;
     Camera m_camera;
+    
 
     
     //create 2d array that holds component array

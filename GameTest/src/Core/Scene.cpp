@@ -10,25 +10,27 @@ Scene::Scene()
 
 void Scene::Init()
 {
-    Entity player = CreateEntity();
+    SetCamera(Camera());
+    auto player = CreateEntity();
+    
     auto transformArray = ComponentArray<CTransform>(32,32);
     transformArray.AddComponent(player, CTransform(vec2(5,5),90));
+    bool test = transformArray.HasEntity(player);
+    transformArray.RemoveComponent(player);
+    test = transformArray.HasEntity(player);
+    
     
     
 }
 
 void Scene::Update(float dt)
 {
-    m_systemPlayer.HandleInput();
-    m_systemPhysics.UpdateCollision();
-    m_systemPhysics.CollisionResponse();
-    m_systemPhysics.ResolveCollision();
-    m_systemPhysics.UpdatePosition();
+    
 }
 
 void Scene::Render()
 {
-    m_systemRender.Update();
+    
 }
 
 void Scene::Shutdown()
@@ -38,6 +40,7 @@ void Scene::Shutdown()
 
 Entity Scene::CreateEntity()
 {
+    m_entityArray.push_back(1);
     return 1;
 }
 
@@ -65,6 +68,11 @@ void Scene::AddComponent(Entity entityID, T component)
 template <typename T>
 void Scene::DeleteComponent(Entity entityID, T component)
 {
+}
+
+void Scene::SetCamera(Camera cam)
+{
+    m_camera = cam;
 }
 
 Camera Scene::GetCamera()
