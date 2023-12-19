@@ -14,9 +14,16 @@ void Scene::Init()
     CreateComponentArray<CTransform>();
     auto array = GetComponentArray<CTransform>();
     
-    /*array.AddComponent(m_player, CTransform(vec2(5,5),90));
-    bool test = transformArray.HasEntity(m_player);
-    auto component = transformArray.GetComponent(m_player);*/
+    array->AddComponent(m_player,CTransform());
+    auto has = array->HasComponent(m_player);
+    
+    has = HasComponent<CTransform>(m_player);
+    
+    array->RemoveComponent(m_player);
+
+    has = array->HasComponent(m_player);
+
+    has = HasComponent<CTransform>(m_player);
     
     
     
@@ -39,8 +46,9 @@ void Scene::Shutdown()
 
 Entity Scene::CreateEntity()
 {
-    m_entityArray.push_back(1);
-    return 1;
+    entityNum++;
+    m_entityArray.push_back(entityNum);
+    return entityNum;
 }
 
 void Scene::DeleteEntity(Entity entityID)
@@ -51,39 +59,54 @@ void Scene::DeleteEntity(Entity entityID)
 template <typename T>
 bool Scene::HasComponent(Entity entityID)
 {
-    
-    return true;
+    auto array =GetComponentArray<T>();
+    return array->HasComponent(entityID);
 }
 
 template <typename T>
 T Scene::GetComponent(Entity entityID)
 {
-    return 0;
+    auto array =GetComponentArray<T>();
+    return array->GetComponent(entityID);
 }
 
 template <typename T>
 void Scene::AddComponent(Entity entityID, T component)
 {
+    auto array =GetComponentArray<T>();
+    array->AddComponent(entityID,component);
 }
 
 template <typename T>
-void Scene::DeleteComponent(Entity entityID, T component)
+void Scene::RemoveComponent(Entity entityID, T component)
 {
+    auto array =GetComponentArray<T>();
+    array->RemoveComponent(entityID);
 }
 
 template <typename T>
 void Scene::CreateComponentArray()
 {
-    m_componentTypes.push_back(typeid(T).name());
-    m_componentArrays.push_back(new ComponentArray<T>());
+    /*m_componentTypes.push_back(typeid(T).name());
+    m_componentArrays.push_back(new ComponentArray<T>());*/
+    m_componentMap.insert({typeid(T).name(),new ComponentArray<T>()});
 }
 
 template <typename T>
 ComponentArray<T>* Scene::GetComponentArray()
 {
-    auto it = std::find(m_componentTypes.begin(),m_componentTypes.end(), typeid(T).name());
-    return static_cast<ComponentArray<T>*>(m_componentArrays[it-m_componentTypes.begin()]);
-    //return static_cast<ComponentArray<T>*>(m_componentArrays[0]);
+    /*auto it = std::find(m_componentTypes.begin(),m_componentTypes.end(), typeid(T).name());
+    return static_cast<ComponentArray<T>*>(m_componentArrays[it-m_componentTypes.begin()]);*/
+    //need to make this as fast as possible
+    return static_cast<ComponentArray<T>*>(m_componentMap.at(typeid(T).name()));
+
+    
+}
+
+template <typename T>
+bool Scene::HasComponentArray()
+{
+    return false;
 }
 
 

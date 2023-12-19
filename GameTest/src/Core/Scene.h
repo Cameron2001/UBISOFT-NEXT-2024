@@ -49,27 +49,38 @@ public:
     void AddComponent(Entity entityID, T component);
 
     template<typename T>
-    void DeleteComponent(Entity entityID, T component);
+    void RemoveComponent(Entity entityID, T component);
 
     template<typename T>
     void CreateComponentArray();
 
     template<typename T>
     ComponentArray<T>* GetComponentArray();
+
+    template<typename T>
+    bool HasComponentArray();
+
+    template<typename T>
+    void CreateSystem();
+
+    template<typename T>
+    void GetSystem();
+
+    template<typename T>
+    bool HasSystem();
     
     
     Camera m_camera;
     Entity m_player;
 private:
     std::vector<Entity> m_entityArray; //just a vector of uint32_t. Hold all entity ids
-    std::vector<IComponentArray*> m_componentArrays;
-    std::vector<ISystem*> m_sysyemArray;
-    std::vector<const char*> m_componentTypes;
+    std::unordered_map<const char*, IComponentArray*> m_componentMap;
+    std::unordered_map<const char*, ISystem*> m_systemMap;
+    Entity entityNum=0;
     //maybe create some type of storage to contain all systems in
     //maybe vector isnt correct storage. If an entity is removed the index and entityID will no longer be alligned
     
     
 
     
-    //create 2d array that holds component array
 };

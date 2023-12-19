@@ -13,7 +13,7 @@ public:
     
     void AddComponent(Entity entityID, T component); //insert new element
     void RemoveComponent(Entity entityID); //remove element
-    bool HasEntity(Entity entityID);
+    bool HasComponent(Entity entityID);
     T GetComponent(Entity entityID);
     void Clear();
 
@@ -52,7 +52,7 @@ void ComponentArray<T>::RemoveComponent(Entity entityID)
 template <class T>
 T ComponentArray<T>::GetComponent(Entity entityID)
 {
-    if(!HasEntity(entityID))
+    if(!HasComponent(entityID))
         return {};
     return componentList[sparse[entityID]];
 }
@@ -65,7 +65,7 @@ void ComponentArray<T>::Clear()
 }
 
 template <class T>
-bool ComponentArray<T>::HasEntity(Entity entityID)
+bool ComponentArray<T>::HasComponent(Entity entityID)
 {
     return (entityID < sparse.size() && sparse[entityID] < dense.size() && dense[sparse[entityID]] == entityID);
 }
