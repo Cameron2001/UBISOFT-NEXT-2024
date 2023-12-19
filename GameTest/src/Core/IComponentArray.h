@@ -1,5 +1,4 @@
 ﻿#pragma once
 
 class IComponentArray
-{
-};
+{};

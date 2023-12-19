@@ -1,4 +1,7 @@
 ﻿#pragma once
+#include <typeindex>
+#include <unordered_map>
+
 #include "Camera.h"
 #include "ComponentArray.h"
 #include "../Systems/ISystem.h"
@@ -15,7 +18,8 @@ enum class Components
     Player,
     Rigidbody,
     Sprite,
-    Transform
+    Transform,
+    NumOfComponents
 };
 enum class Systems
 {
@@ -60,6 +64,7 @@ private:
     std::vector<Entity> m_entityArray; //just a vector of uint32_t. Hold all entity ids
     std::vector<IComponentArray*> m_componentArrays;
     std::vector<ISystem*> m_sysyemArray;
+    std::vector<const char*> m_componentTypes;
     //maybe create some type of storage to contain all systems in
     //maybe vector isnt correct storage. If an entity is removed the index and entityID will no longer be alligned
     

@@ -11,7 +11,6 @@ Scene::Scene(): m_player(0)
 void Scene::Init()
 {
     m_player = CreateEntity();
-    
     CreateComponentArray<CTransform>();
     auto array = GetComponentArray<CTransform>();
     
@@ -75,13 +74,16 @@ void Scene::DeleteComponent(Entity entityID, T component)
 template <typename T>
 void Scene::CreateComponentArray()
 {
-    
+    m_componentTypes.push_back(typeid(T).name());
+    m_componentArrays.push_back(new ComponentArray<T>());
 }
 
 template <typename T>
 ComponentArray<T>* Scene::GetComponentArray()
 {
-    return 0;
+    auto it = std::find(m_componentTypes.begin(),m_componentTypes.end(), typeid(T).name());
+    return static_cast<ComponentArray<T>*>(m_componentArrays[it-m_componentTypes.begin()]);
+    //return static_cast<ComponentArray<T>*>(m_componentArrays[0]);
 }
 
 

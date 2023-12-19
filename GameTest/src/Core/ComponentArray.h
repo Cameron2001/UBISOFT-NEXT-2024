@@ -3,7 +3,7 @@
 //template stuff
 //this is a sparseSet
 template <class T>
-class ComponentArray : IComponentArray
+class ComponentArray : public IComponentArray
 {
 public:
     ComponentArray(uint32_t cap = 32):
