@@ -1,8 +1,14 @@
 ﻿#include "stdafx.h"
 #include "SPlayer.h"
-void SPlayer::Update()
+
+#include "../Components/CPlayer.h"
+
+void SPlayer::Update(Scene* scene)
 {
-    
+    for(auto entityID : scene->m_register.GetEntities<CPlayer>())
+    {
+        
+    }
 }
 
 

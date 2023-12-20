@@ -1,10 +1,10 @@
 ﻿#pragma once
 #include "ISystem.h"
+#include "../Core/Scene.h"
 
 class SRender: public ISystem
 {
 public:
-    void Update();
-    void Render();
+    void Update(Scene* scene);
     
 };

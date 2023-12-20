@@ -36,7 +36,7 @@ public:
     void CreateSystem();
 
     template<typename T>
-    T GetSystem();
+    T* GetSystem();
 
     template<typename T>
     bool HasSystem();
@@ -119,9 +119,9 @@ void Registry::CreateSystem()
 }
 
 template <typename T>
-T Registry::GetSystem()
+T* Registry::GetSystem()
 {
-    return m_systemMap.at(typeid(T).name());
+    return static_cast<T*>(m_systemMap.at(typeid(T).name()));
 }
 
 template <typename T>
@@ -133,6 +133,15 @@ bool Registry::HasSystem()
 template <typename T>
 std::vector<Entity> Registry::GetEntities()
 {
-    return 0;
+    //very important to optimize this
+    std::vector<Entity> entities;
+    for (auto entityID : m_entityArray)
+    {
+       if(HasComponent<T>(entityID))
+       {
+           entities.push_back(entityID);
+       } 
+    }
+    return entities;
 }
 

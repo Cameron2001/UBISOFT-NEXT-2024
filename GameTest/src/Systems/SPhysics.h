@@ -1,11 +1,13 @@
 ﻿#pragma once
 #include "ISystem.h"
+#include "../Core/Scene.h"
 #include "../Components/CRigidbody.h"
 #include "../Util/Vectors.h"
 
 class SPhysics : public ISystem
 {
 public:
+    void Update(Scene* scene);
     void UpdateCollision();
     void ResolveCollision();
     void CollisionResponse();
