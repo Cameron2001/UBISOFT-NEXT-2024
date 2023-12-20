@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include "ISystem.h"
-#include "../Core/Scene.h"
+#include "../Components/CPlayer.h"
 #include "../Components/CRigidbody.h"
-#include "../Util/Vectors.h"
-
+#include "../Components/CTransform.h"
+#include "../Components/CRender.h"
+#include "../Core/Scene.h"
 class SPhysics : public ISystem
 {
 public:
