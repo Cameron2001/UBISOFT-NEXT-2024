@@ -3,7 +3,7 @@
 #include "../Components/CRigidbody.h"
 #include "../Util/Vectors.h"
 
-class SPhysics : ISystem
+class SPhysics : public ISystem
 {
 public:
     void UpdateCollision();

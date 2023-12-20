@@ -1,6 +1,8 @@
 ﻿#include "stdafx.h"
 #include "SPlayer.h"
-
-void SPlayer::HandleInput()
+void SPlayer::Update()
 {
+    
 }
+
+

@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include "ISystem.h"
 
-class SPlayer :ISystem
+class SPlayer : public ISystem
 {
 public:
-    void HandleInput();
+    void Update();
     
 };
