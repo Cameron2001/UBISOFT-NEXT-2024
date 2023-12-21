@@ -5,4 +5,5 @@ struct CPlayer
     {
         
     };
+    float moveSpeed = 500;
 };

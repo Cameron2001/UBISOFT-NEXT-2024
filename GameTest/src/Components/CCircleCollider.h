@@ -3,6 +3,6 @@
 struct CCircleCollider
 {
     float radius;
-    vec2 normal;
+    bool isVisible = false;
     bool isTrigger = false;
 };

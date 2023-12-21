@@ -8,9 +8,5 @@
 class SPlayer : public ISystem
 {
 public:
-    void Update(Scene* scene);
-private:
-    float m_moveSpeed = 25.0f;
-    
-    
+    void Update(Scene* scene, float dt);
 };

@@ -30,8 +30,10 @@ void PlayScene::Init()
 
 void PlayScene::Update(float dt)
 {
-    m_register.GetSystem<SPlayer>()->Update(this);
-    m_register.GetSystem<SPhysics>()->Update(this);
+    dt/=1000.0f;
+    m_register.GetSystem<SPlayer>()->Update(this,dt);
+    
+    m_register.GetSystem<SPhysics>()->Update(this,dt);
 }
 
 void PlayScene::Render()

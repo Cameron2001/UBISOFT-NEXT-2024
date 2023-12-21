@@ -12,7 +12,7 @@
 class SPhysics : public ISystem
 {
 public:
-    void Update(Scene* scene);
+    void Update(Scene* scene, float dt);
 
 private:
     //create an array of current collisions
@@ -27,6 +27,11 @@ private:
 
     bool CapsuleCapsule(CCapsuleCollider capsule1, CTransform tf1, CCapsuleCollider capsule2, CTransform tf2);
     bool CapsulePlane(CCapsuleCollider capsule, CTransform tf1, CPlaneCollider plane, CTransform tf2);
+
+    void ResolveCollision(CRigidbody body1, CRigidbody body2); //resolve velocity, and position
     
-    void addImpulse(vec2 direction, CRigidbody body);
+    void AddImpulse(vec2 direction, CRigidbody body);
+    void ApplyKinematics(float dt);
+    
+    vec2 gravity = {0,0};
 };

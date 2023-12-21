@@ -1,6 +1,6 @@
 ﻿#pragma once
 struct CPlaneCollider
 {
-    float xNormal;
-    float yNormal;
+    bool isTrigger = false;
+    bool isVisible = false;
 };

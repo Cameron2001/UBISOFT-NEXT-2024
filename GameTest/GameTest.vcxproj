@@ -197,6 +197,7 @@
     <ClInclude Include="src\Core\Camera.h" />
     <ClInclude Include="src\Core\ComponentArray.h" />
     <ClInclude Include="src\Core\IComponentArray.h" />
+    <ClInclude Include="src\Core\MenuScene.h" />
     <ClInclude Include="src\Core\PlayScene.h" />
     <ClInclude Include="src\Core\Registry.h" />
     <ClInclude Include="src\Core\Scene.h" />
@@ -290,6 +291,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="src\Core\MenuScene.cpp" />
     <ClCompile Include="src\Core\PlayScene.cpp" />
     <ClCompile Include="src\Core\Scene.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>

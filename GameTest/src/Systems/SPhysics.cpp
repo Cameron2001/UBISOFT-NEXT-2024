@@ -3,18 +3,29 @@
 
 #include "../Util/Utils.h"
 
-void SPhysics::Update(Scene* scene)
+void SPhysics::Update(Scene* scene, float dt)
 {
     for(auto entityID : scene->m_register.GetEntities<CRigidbody>())
     {
         CTransform* transform = scene->m_register.GetComponent<CTransform>(entityID);
         CRigidbody* rigidbody = scene->m_register.GetComponent<CRigidbody>(entityID);
+        
+        vec2 fa = rigidbody->force * rigidbody->invMass;
+        vec2 fg = gravity*rigidbody->gravityScale;
+        
+        rigidbody->acceleration = fa+fg;
+        rigidbody->velocity=rigidbody->velocity + rigidbody->acceleration * dt;
+        transform->pos = transform->pos + rigidbody->velocity * dt;
+
+        rigidbody->force = {0,0};
     }
 }
 
 bool SPhysics::BoxBox(CBoxCollider box1, CTransform tf1, CBoxCollider box2, CTransform tf2)
 {
-    return false;
+    if(box1.max.x < box2.min.x || box1.min.x > box2.max.x) return false;
+    if(box1.max.y < box2.min.y || box1.min.y > box2.max.y) return false;
+    return true;
 }
 
 bool SPhysics::BoxCircle(CBoxCollider box, CTransform tf1, CCircleCollider circle, CTransform tf2)
@@ -60,7 +71,16 @@ bool SPhysics::CapsulePlane(CCapsuleCollider capsule, CTransform tf1, CPlaneColl
     return false;
 }
 
-void SPhysics::addImpulse(vec2 direction, CRigidbody body)
+void SPhysics::ResolveCollision(CRigidbody body1, CRigidbody body2)
 {
+}
+
+void SPhysics::AddImpulse(vec2 direction, CRigidbody body)
+{
+}
+
+void SPhysics::ApplyKinematics(float dt)
+{
+    
 }
 

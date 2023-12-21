@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
 #include "SPlayer.h"
 #include "../../App/app.h"
-void SPlayer::Update(Scene* scene)
+void SPlayer::Update(Scene* scene, float dt)
 {
     for(auto entityID : scene->m_register.GetEntities<CPlayer>())
     {
@@ -18,19 +18,23 @@ void SPlayer::Update(Scene* scene)
 
         if (up)
         {
-            transform->pos.y += speed;
+            //transform->pos.y += player->moveSpeed;
+            rigidbody->force = rigidbody->force+ vec2{0,player->moveSpeed};
         }
         if (down)
         {
-            transform->pos.y -= speed;
+            //transform->pos.y -= player->moveSpeed;
+            rigidbody->force = rigidbody->force - vec2{0,player->moveSpeed};
         }
         if (right)
         {
-            transform->pos.x += speed;
+            //transform->pos.x += player->moveSpeed;
+            rigidbody->force = rigidbody->force + vec2{player->moveSpeed,0};
         }
         if (left)
         {
-            transform->pos.x -= speed;
+            //transform->pos.x -= player->moveSpeed;
+            rigidbody->force = rigidbody->force - vec2{player->moveSpeed,0};
         }
         
     }
