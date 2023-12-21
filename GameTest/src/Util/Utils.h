@@ -24,6 +24,8 @@ public:
     static float SquaredMagnitude(vec2 vector);
     static vec2 LimitMagnitude(vec2 vector, float magnitude);
 
+    static float Length(vec2 vec);
+    static float LengthSquared(vec2 vec);
     static vec2 Min(vec2 vec_a, vec2 vec_b);
     static float Min(float a, float b);
     static vec2 Max(vec2 vec_a, vec2 vec_b);
@@ -34,6 +36,7 @@ public:
     static float Angle(vec2 from, vec2 to);
     static float Dot(vec2 lhs, vec2 rhs);
     static float SignedAngle(vec2 from, vec2 to);
+    static vec2 Project(vec2 a,vec2 b);
 private:
     Utils();
     ~Utils();

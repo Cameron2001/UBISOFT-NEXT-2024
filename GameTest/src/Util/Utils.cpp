@@ -121,6 +121,16 @@ vec2 Utils::LimitMagnitude(vec2 vector, float magnitude)
     return vector;
 }
 
+float Utils::Length(vec2 vec)
+{
+    return sqrtf(vec.x * vec.x + vec.y * vec.y);
+}
+
+float Utils::LengthSquared(vec2 vec)
+{
+    return vec.x * vec.x + vec.y * vec.y;
+}
+
 vec2 Utils::Min(vec2 vec_a, vec2 vec_b)
 {
     return { min(vec_a.x, vec_b.x) , min(vec_a.y, vec_b.y) };
@@ -181,6 +191,11 @@ float Utils::SignedAngle(vec2 from, vec2 to)
     const auto unsigned_angle = Utils::Angle(from, to);
     const auto sign = Utils::Sign(from.x * to.y - from.y * to.x);
     return unsigned_angle * sign;
+}
+
+vec2 Utils::Project(vec2 a, vec2 b)
+{
+    return b * (Dot(a, b) / LengthSquared(b));
 }
 
 Utils::Utils()
