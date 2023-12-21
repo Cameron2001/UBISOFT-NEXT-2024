@@ -14,7 +14,7 @@ public:
     void AddComponent(Entity entityID, T component); //insert new element
     void RemoveComponent(Entity entityID); //remove element
     bool HasComponent(Entity entityID);
-    T GetComponent(Entity entityID);
+    T* GetComponent(Entity entityID);
     void Clear();
 
 private:
@@ -50,11 +50,11 @@ void ComponentArray<T>::RemoveComponent(Entity entityID)
 }
 
 template <class T>
-T ComponentArray<T>::GetComponent(Entity entityID)
+T* ComponentArray<T>::GetComponent(Entity entityID)
 {
     if(!HasComponent(entityID))
         return {};
-    return componentList[sparse[entityID]];
+    return &componentList[sparse[entityID]];
 }
 
 

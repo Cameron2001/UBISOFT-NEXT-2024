@@ -15,7 +15,7 @@ public:
     bool HasComponent(Entity entityID);
 
     template<typename T>
-    T GetComponent(Entity entityID);
+    T* GetComponent(Entity entityID);
 
     template<typename T>
     void AddComponent(Entity entityID, T component);
@@ -74,7 +74,7 @@ bool Registry::HasComponent(Entity entityID)
 }
 
 template <typename T>
-T Registry::GetComponent(Entity entityID)
+T* Registry::GetComponent(Entity entityID)
 {
     auto array =GetComponentArray<T>();
     return array->GetComponent(entityID);

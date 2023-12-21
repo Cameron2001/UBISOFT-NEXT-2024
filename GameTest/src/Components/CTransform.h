@@ -2,17 +2,12 @@
 #include "../Util/Vectors.h"
 struct CTransform
 {
-    vec2 position;
-    float rotation;
-
-    CTransform()
+    vec2 pos;
+    float rot;
+    
+    CTransform(vec2 position = {0,0}, float rotation =0)
     {
-        position = vec2(0,0);
-        rotation = 0;
-    }
-    CTransform(vec2 pos, float rot)
-    {
-        position = pos;
-        rotation = rot;
+        pos = position;
+        rot = rotation;
     }
 };

@@ -188,6 +188,7 @@
     <ClInclude Include="src\Components\CColor.h" />
     <ClInclude Include="src\Components\CHealth.h" />
     <ClInclude Include="src\Components\CLabel.h" />
+    <ClInclude Include="src\Components\CPlaneCollider.h" />
     <ClInclude Include="src\Components\CPlayer.h" />
     <ClInclude Include="src\Components\CRender.h" />
     <ClInclude Include="src\Components\CRigidbody.h" />

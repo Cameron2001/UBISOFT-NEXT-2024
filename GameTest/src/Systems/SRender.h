@@ -11,5 +11,6 @@ class SRender: public ISystem
 {
 public:
     void Update(Scene* scene);
+    void DrawSquare(float xMin,float yMin, float xMax, float yMax);
     
 };

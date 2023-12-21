@@ -23,7 +23,7 @@ void PlayScene::Init()
     
     m_player = m_register.CreateEntity();
     m_register.AddComponent(m_player, CPlayer());
-    m_register.AddComponent(m_player, CTransform());
+    m_register.AddComponent(m_player, CTransform(vec2{500,400}));
     m_register.AddComponent(m_player, CRigidbody());
     m_register.AddComponent(m_player, CRender());
 }
