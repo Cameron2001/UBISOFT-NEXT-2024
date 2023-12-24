@@ -1,7 +1,5 @@
 ﻿#include "stdafx.h"
 #include "Scene.h"
-#include "../Components/CTransform.h"
-#include "../Systems/SPlayer.h"
 
 
 

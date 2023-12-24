@@ -1,13 +1,6 @@
 ﻿#pragma once
 #include "ISystem.h"
-#include "../Components/CBoxCollider.h"
-#include "../Components/CCapsuleCollider.h"
-#include "../Components/CCircleCollider.h"
-#include "../Components/CPlaneCollider.h"
-#include "../Components/CPlayer.h"
-#include "../Components/CRigidbody.h"
-#include "../Components/CTransform.h"
-#include "../Components/CRender.h"
+#include "../Components/Components.h"
 #include "../Core/Scene.h"
 class SPhysics : public ISystem
 {

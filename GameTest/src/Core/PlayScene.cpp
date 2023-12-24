@@ -1,8 +1,7 @@
 ﻿#include "stdafx.h"
 #include "PlayScene.h"
 
-#include "../Components/CPlayer.h"
-#include "../Components/CTransform.h"
+#include "../Components/Components.h"
 #include "../Systems/SPhysics.h"
 #include "../Systems/SPlayer.h"
 #include "../Systems/SRender.h"

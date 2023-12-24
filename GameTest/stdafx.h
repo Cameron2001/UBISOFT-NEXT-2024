@@ -22,5 +22,6 @@
 #include <Windows.h>
 
 using Entity = std::uint32_t;
+static constexpr Entity INVALID_ENTITY = 0;
 //max components 32
 //max entites

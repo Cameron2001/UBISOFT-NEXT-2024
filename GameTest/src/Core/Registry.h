@@ -3,6 +3,7 @@
 
 #include "ComponentArray.h"
 #include "IComponentArray.h"
+#include "../Components/CTransform.h"
 #include "../Systems/ISystem.h"
 
 class Registry
@@ -21,7 +22,7 @@ public:
     void AddComponent(Entity entityID, T component);
 
     template<typename T>
-    void RemoveComponent(Entity entityID, T component);
+    void RemoveComponent(Entity entityID);
 
     template<typename T>
     void CreateComponentArray();
@@ -62,8 +63,15 @@ inline Entity Registry::CreateEntity()
 
 inline void Registry::DeleteEntity(Entity entityID)
 {
-    //remove from entity array (or not???)
-    //remove all its components
+    auto pos = std::find(m_entityArray.begin(),m_entityArray.end(), entityID);
+    if(pos!= m_entityArray.end())
+    {
+        m_entityArray.erase(pos);
+        for (auto element : m_componentMap)
+        {
+            element.second->RemoveComponent(entityID);
+        }
+    }
 }
 
 template <typename T>
@@ -88,7 +96,7 @@ void Registry::AddComponent(Entity entityID, T component)
 }
 
 template <typename T>
-void Registry::RemoveComponent(Entity entityID, T component)
+void Registry::RemoveComponent(Entity entityID)
 {
     auto array =GetComponentArray<T>();
     array->RemoveComponent(entityID);

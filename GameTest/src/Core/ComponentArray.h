@@ -12,8 +12,8 @@ public:
     {}
     
     void AddComponent(Entity entityID, T component); //insert new element
-    void RemoveComponent(Entity entityID); //remove element
-    bool HasComponent(Entity entityID);
+    void RemoveComponent(Entity entityID) override; //remove element
+    bool HasComponent(Entity entityID) override;
     T* GetComponent(Entity entityID);
     void Clear();
 
@@ -61,8 +61,8 @@ T* ComponentArray<T>::GetComponent(Entity entityID)
 template <typename T>
 void ComponentArray<T>::Clear()
 {
-    
 }
+
 
 template <class T>
 bool ComponentArray<T>::HasComponent(Entity entityID)
