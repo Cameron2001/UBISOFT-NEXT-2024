@@ -183,7 +183,6 @@
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
     <ClInclude Include="src\Components\CButton.h" />
-    <ClInclude Include="src\Components\CCapsuleCollider.h" />
     <ClInclude Include="src\Components\CCircleCollider.h" />
     <ClInclude Include="src\Components\CColor.h" />
     <ClInclude Include="src\Components\CHealth.h" />

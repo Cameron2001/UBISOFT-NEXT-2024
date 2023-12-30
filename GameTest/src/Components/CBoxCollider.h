@@ -2,14 +2,11 @@
 #include "../Util/Vectors.h"
 struct CBoxCollider
 {
-    vec2 min;
-    vec2 max;
+    vec2 extents;
     bool isVisible = false;
     bool isTrigger = false;
-    CBoxCollider(vec2 minimum, vec2 maximum)
+    CBoxCollider(vec2 boxExtents)
     {
-        min = minimum;
-        max = maximum;
+        extents = boxExtents;
     }
-    
 };

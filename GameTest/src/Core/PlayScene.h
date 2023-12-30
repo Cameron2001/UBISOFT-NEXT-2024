@@ -11,4 +11,5 @@ public:
     void Shutdown() override;
 private:
     Entity m_player;
+    Entity m_box;
 };

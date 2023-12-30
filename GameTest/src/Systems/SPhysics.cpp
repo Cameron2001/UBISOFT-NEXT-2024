@@ -5,26 +5,24 @@
 
 void SPhysics::Update(Scene* scene, float dt)
 {
-    for(auto entityID : scene->m_register.GetEntities<CRigidbody>())
-    {
-        CTransform* transform = scene->m_register.GetComponent<CTransform>(entityID);
-        CRigidbody* rigidbody = scene->m_register.GetComponent<CRigidbody>(entityID);
-        
-        vec2 fa = rigidbody->force * rigidbody->invMass;
-        vec2 fg = gravity*rigidbody->gravityScale;
-        
-        rigidbody->acceleration = fa+fg;
-        rigidbody->velocity=rigidbody->velocity + rigidbody->acceleration * dt;
-        transform->pos = transform->pos + rigidbody->velocity * dt;
-
-        rigidbody->force = {0,0};
-    }
+    ApplyKinematics(scene,dt);
+    CheckCollisions(scene);
 }
 
 bool SPhysics::BoxBox(CBoxCollider box1, CTransform tf1, CBoxCollider box2, CTransform tf2)
 {
-    if(box1.max.x < box2.min.x || box1.min.x > box2.max.x) return false;
-    if(box1.max.y < box2.min.y || box1.min.y > box2.max.y) return false;
+    float xMin1 = tf1.pos.x - box1.extents.x;
+    float xMax1 = tf1.pos.x + box1.extents.x;
+    float yMin1 = tf1.pos.y - box1.extents.y;
+    float yMax1 = tf1.pos.y + box1.extents.y;
+
+    float xMin2 = tf2.pos.x - box2.extents.x;
+    float xMax2 = tf2.pos.x + box2.extents.x;
+    float yMin2 = tf2.pos.y - box2.extents.y;
+    float yMax2 = tf2.pos.y + box2.extents.y;
+    
+    if(xMax1 < xMin2 || xMin1 > xMax2) return false;
+    if(yMax1 < yMin2 || yMin1 > yMax2) return false;
     return true;
 }
 
@@ -32,10 +30,6 @@ bool SPhysics::BoxCircle(CBoxCollider box, CTransform tf1, CCircleCollider circl
 {return false;
 }
 
-bool SPhysics::BoxCapsule(CBoxCollider box, CTransform tf1, CCapsuleCollider capsule, CTransform tf2)
-{
-    return false;
-}
 
 bool SPhysics::BoxPlane(CBoxCollider box, CTransform tf1, CPlaneCollider plane, CTransform tf2)
 {
@@ -51,36 +45,57 @@ bool SPhysics::CircleCircle(CCircleCollider circle1, CTransform tf1, CCircleColl
     return collision;
 }
 
-bool SPhysics::CircleCapsule(CCircleCollider circle, CTransform tf1, CCapsuleCollider capsule, CTransform tf2)
-{
-    return false;
-}
 
 bool SPhysics::CirclePlane(CCircleCollider circle, CTransform tf1, CPlaneCollider plane, CTransform tf2)
 {
     return false;
 }
 
-bool SPhysics::CapsuleCapsule(CCapsuleCollider capsule1, CTransform tf1, CCapsuleCollider capsule2, CTransform tf2)
+void SPhysics::ResolveCollisions(Scene* scene)
 {
-    return false;
+    for (auto collision : collisions)
+    {
+        
+    }
 }
 
-bool SPhysics::CapsulePlane(CCapsuleCollider capsule, CTransform tf1, CPlaneCollider plane, CTransform tf2)
-{
-    return false;
-}
 
-void SPhysics::ResolveCollision(CRigidbody body1, CRigidbody body2)
+
+void SPhysics::CheckCollisions(Scene* scene)
 {
+    auto boxes = scene->m_register.GetEntities<CBoxCollider>();
+    for (size_t i =0; i< boxes.size();i++)
+    {
+        CTransform* transformI = scene->m_register.GetComponent<CTransform>(boxes[i]);
+        CBoxCollider* boxI = scene->m_register.GetComponent<CBoxCollider>(boxes[i]);
+        for(size_t j = i+1; j<boxes.size(); j++)
+        {
+            CTransform* transformJ = scene->m_register.GetComponent<CTransform>(boxes[j]);
+            CBoxCollider* boxJ = scene->m_register.GetComponent<CBoxCollider>(boxes[j]);
+            if(BoxBox(*boxI, *transformI, *boxJ, *transformJ))
+            {
+                collisions.push_back({boxes[i],boxes[j]});
+            }
+        }
+    } 
 }
 
 void SPhysics::AddImpulse(vec2 direction, CRigidbody body)
 {
 }
 
-void SPhysics::ApplyKinematics(float dt)
+void SPhysics::ApplyKinematics(Scene* scene, float dt)
 {
-    
+    for(auto entityID : scene->m_register.GetEntities<CRigidbody>())
+    {
+        CTransform* transform = scene->m_register.GetComponent<CTransform>(entityID);
+        CRigidbody* rigidbody = scene->m_register.GetComponent<CRigidbody>(entityID);
+        
+        rigidbody->velocity=rigidbody->velocity + rigidbody->acceleration * dt;
+        transform->pos = transform->pos + rigidbody->velocity * dt;
+
+        rigidbody->acceleration = {0,0};
+    }
 }
+
 

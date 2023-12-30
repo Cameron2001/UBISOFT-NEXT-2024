@@ -2,7 +2,6 @@
 #include "CAudio.h"
 #include "CBoxCollider.h"
 #include "CButton.h"
-#include "CCapsuleCollider.h"
 #include "CCircleCollider.h"
 #include "CColor.h"
 #include "CHealth.h"

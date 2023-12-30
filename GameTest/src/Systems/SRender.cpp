@@ -5,12 +5,19 @@
 
 void SRender::Update(Scene* scene)
 {
+    auto test = scene->m_register.GetEntities<CRender>();
+    
     for(auto entityID : scene->m_register.GetEntities<CRender>())
     {
         CTransform* transform = scene->m_register.GetComponent<CTransform>(entityID);
         CRender* render = scene->m_register.GetComponent<CRender>(entityID);
 
-        DrawSquare(transform->pos.x,transform->pos.y,transform->pos.x+10,transform->pos.y+10);
+        if(scene->m_register.HasComponent<CBoxCollider>(entityID))
+        {
+            CBoxCollider* box = scene->m_register.GetComponent<CBoxCollider>(entityID);
+            DrawSquare(transform->pos.x-box->extents.x,transform->pos.y-box->extents.y,transform->pos.x+box->extents.x,transform->pos.y+box->extents.y);
+        }
+        
     }
 }
 

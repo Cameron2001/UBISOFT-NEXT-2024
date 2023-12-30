@@ -20,22 +20,22 @@ void SPlayer::Update(Scene* scene, float dt)
         if (up)
         {
             //transform->pos.y += player->moveSpeed;
-            rigidbody->force = rigidbody->force+ vec2{0,player->moveSpeed};
+            rigidbody->acceleration  = rigidbody->acceleration+ vec2{0,player->moveSpeed};
         }
         if (down)
         {
             //transform->pos.y -= player->moveSpeed;
-            rigidbody->force = rigidbody->force - vec2{0,player->moveSpeed};
+            rigidbody->acceleration = rigidbody->acceleration - vec2{0,player->moveSpeed};
         }
         if (right)
         {
             //transform->pos.x += player->moveSpeed;
-            rigidbody->force = rigidbody->force + vec2{player->moveSpeed,0};
+            rigidbody->acceleration = rigidbody->acceleration + vec2{player->moveSpeed,0};
         }
         if (left)
         {
             //transform->pos.x -= player->moveSpeed;
-            rigidbody->force = rigidbody->force - vec2{player->moveSpeed,0};
+            rigidbody->acceleration = rigidbody->acceleration - vec2{player->moveSpeed,0};
         }
         if (add)
         {
