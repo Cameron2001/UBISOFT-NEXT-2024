@@ -8,6 +8,8 @@ class SRender: public ISystem
 {
 public:
     void Update(Scene* scene);
-    void DrawSquare(float xMin,float yMin, float xMax, float yMax);
+    void DrawSquare(vec2 pos, vec2 extents);
+    void DrawCircle(vec2 centre, float radius);
+    void DrawPlane(vec2 pos);
     
 };

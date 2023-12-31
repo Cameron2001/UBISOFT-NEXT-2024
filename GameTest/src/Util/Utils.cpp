@@ -198,6 +198,7 @@ vec2 Utils::Project(vec2 a, vec2 b)
     return b * (Dot(a, b) / LengthSquared(b));
 }
 
+
 Utils::Utils()
 = default;
 

@@ -26,6 +26,7 @@ private:
     void ResolveCollisions(Scene* scene);
 
     void CheckCollisions(Scene* scene);
+    bool CheckCollision(Scene* scene, Entity a, Entity b);
     void AddImpulse(vec2 direction, CRigidbody body);
     void ApplyKinematics(Scene* scene, float dt);
 
