@@ -12,6 +12,7 @@ void SPhysics::Update(Scene* scene, float dt)
 
 bool SPhysics::BoxBox(Scene* scene, Entity aID, Entity bID)
 {
+    //clean this up. all determine which side of the box was collided with
     auto tf1 = scene->m_register.GetComponent<CTransform>(aID);
     auto tf2 = scene->m_register.GetComponent<CTransform>(bID);
     auto box1 = scene->m_register.GetComponent<CBoxCollider>(aID);
@@ -32,35 +33,7 @@ bool SPhysics::BoxBox(Scene* scene, Entity aID, Entity bID)
     return true;
 }
 
-bool SPhysics::BoxBox(CBoxCollider box1, CTransform tf1, CBoxCollider box2, CTransform tf2)
-{
-    float xMin1 = tf1.pos.x - box1.extents.x;
-    float xMax1 = tf1.pos.x + box1.extents.x;
-    float yMin1 = tf1.pos.y - box1.extents.y;
-    float yMax1 = tf1.pos.y + box1.extents.y;
 
-    float xMin2 = tf2.pos.x - box2.extents.x;
-    float xMax2 = tf2.pos.x + box2.extents.x;
-    float yMin2 = tf2.pos.y - box2.extents.y;
-    float yMax2 = tf2.pos.y + box2.extents.y;
-    
-    if(xMax1 < xMin2 || xMin1 > xMax2) return false;
-    if(yMax1 < yMin2 || yMin1 > yMax2) return false;
-    
-    return true;
-}
-
-bool SPhysics::BoxCircle(CBoxCollider box, CTransform tf1, CCircleCollider circle, CTransform tf2)
-{
-    float x = Utils::Clamp(tf2.pos.x,tf1.pos.x-box.extents.x,tf1.pos.x+box.extents.x);
-    float y = Utils::Clamp(tf2.pos.y,tf1.pos.y-box.extents.y,tf1.pos.y+box.extents.y);
-    if(Utils::Distance({x,y},tf2.pos)<circle.radius)
-    {
-        return true;
-    }
-    return false;
-    
-}
 
 bool SPhysics::BoxCircle(Scene* scene, Entity boxID, Entity circleID)
 {
@@ -80,10 +53,6 @@ bool SPhysics::BoxCircle(Scene* scene, Entity boxID, Entity circleID)
 }
 
 
-bool SPhysics::BoxPlane(CBoxCollider box, CTransform tf1, CPlaneCollider plane, CTransform tf2)
-{
-    return false;
-}
 
 bool SPhysics::BoxPlane(Scene* scene, Entity boxID, Entity planeID)
 {
@@ -91,14 +60,6 @@ bool SPhysics::BoxPlane(Scene* scene, Entity boxID, Entity planeID)
 }
 
 
-bool SPhysics::CircleCircle(CCircleCollider circle1, CTransform tf1, CCircleCollider circle2, CTransform tf2)
-{
-    float distance = Utils::Distance(tf1.pos,tf2.pos);
-    float radiiSum = circle1.radius + circle2.radius;
-    bool collision = distance <= radiiSum;
-    //stuff here
-    return collision;
-}
 
 bool SPhysics::CircleCircle(Scene* scene, Entity aID, Entity bID)
 {
@@ -116,11 +77,6 @@ bool SPhysics::CircleCircle(Scene* scene, Entity aID, Entity bID)
     return false;
 }
 
-
-bool SPhysics::CirclePlane(CCircleCollider circle, CTransform tf1, CPlaneCollider plane, CTransform tf2)
-{
-    return false;
-}
 
 bool SPhysics::CirclePlane(Scene* scene, Entity circleID, Entity planeID)
 {

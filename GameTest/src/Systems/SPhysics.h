@@ -17,15 +17,10 @@ public:
 private:
     //create an array of current collisions
     bool BoxBox(Scene* scene, Entity aID, Entity bID);
-    bool BoxBox(CBoxCollider box1, CTransform tf1, CBoxCollider box2, CTransform tf2);
-    bool BoxCircle(CBoxCollider box, CTransform tf1, CCircleCollider circle,CTransform tf2);
     bool BoxCircle(Scene* scene, Entity boxID, Entity circleID);
-    bool BoxPlane(CBoxCollider box, CTransform tf1, CPlaneCollider plane, CTransform tf2);
     bool BoxPlane(Scene* scene, Entity boxID, Entity planeID);
-
-    bool CircleCircle(CCircleCollider circle1, CTransform tf1,CCircleCollider circle2, CTransform tf2);
+    
     bool CircleCircle(Scene* scene, Entity aID, Entity bID);
-    bool CirclePlane(CCircleCollider circle, CTransform tf1, CPlaneCollider plane, CTransform tf2);
     bool CirclePlane(Scene* scene, Entity circleID, Entity planeID);
 
     void ResolveCollisions(Scene* scene);
@@ -35,6 +30,5 @@ private:
     void ApplyKinematics(Scene* scene, float dt);
 
     std::vector<Collision> collisions;
-    vec2 gravity = {0,0};
 };
 

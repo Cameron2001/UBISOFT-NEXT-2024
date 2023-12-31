@@ -32,8 +32,6 @@ void SRender::DrawSquare(vec2 pos, vec2 extents)
     App::DrawLine(pos.x+extents.x, pos.y+extents.y, pos.x+extents.x,pos.y-extents.y); //top right to bottom right
     App::DrawLine(pos.x+extents.x,pos.y-extents.y, pos.x-extents.x,pos.y-extents.y); //bottom right to bottom left
     App::DrawLine(pos.x-1,pos.y-1,pos.x+1,pos.y+1); //centre
-
-    
     
 }
 

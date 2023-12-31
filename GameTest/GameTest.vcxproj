@@ -186,6 +186,7 @@
     <ClInclude Include="src\Components\CCircleCollider.h" />
     <ClInclude Include="src\Components\CCollider.h" />
     <ClInclude Include="src\Components\CColor.h" />
+    <ClInclude Include="src\Components\CEnemy.h" />
     <ClInclude Include="src\Components\CHealth.h" />
     <ClInclude Include="src\Components\CLabel.h" />
     <ClInclude Include="src\Components\Components.h" />
@@ -202,6 +203,7 @@
     <ClInclude Include="src\Core\PlayScene.h" />
     <ClInclude Include="src\Core\Registry.h" />
     <ClInclude Include="src\Core\Scene.h" />
+    <ClInclude Include="src\Systems\SEnemy.h" />
     <ClInclude Include="src\Systems\SPhysics.h" />
     <ClInclude Include="src\Systems\SPlayer.h" />
     <ClInclude Include="src\Systems\SRender.h" />
@@ -368,6 +370,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="src\Systems\SEnemy.cpp" />
     <ClCompile Include="src\Systems\SPhysics.cpp" />
     <ClCompile Include="src\Systems\SPlayer.cpp" />
     <ClCompile Include="src\Systems\SRender.cpp" />

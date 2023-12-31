@@ -13,3 +13,4 @@
 #include "CTransform.h"
 #include "CRigidbody.h"
 #include "CCollider.h"
+#include "CEnemy.h"

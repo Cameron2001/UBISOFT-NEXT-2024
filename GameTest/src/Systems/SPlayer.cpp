@@ -2,6 +2,10 @@
 #include "SPlayer.h"
 #include "../../App/app.h"
 
+void SPlayer::Init()
+{
+}
+
 void SPlayer::Update(Scene* scene, float dt)
 {
     for(auto entityID : scene->m_register.GetEntities<CPlayer>())
@@ -13,8 +17,7 @@ void SPlayer::Update(Scene* scene, float dt)
         bool down = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_DOWN, false) || App::IsKeyPressed('S');
         bool left = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_LEFT, false) || App::IsKeyPressed('A');
         bool right = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_RIGHT, false) || App::IsKeyPressed('D');
-        bool add  = App::IsKeyPressed('I');;
-        bool del = App::IsKeyPressed('O'); ;
+        bool shoot  = App::IsKeyPressed(VK_SPACE);
         
 
         if (up)
@@ -37,15 +40,24 @@ void SPlayer::Update(Scene* scene, float dt)
             //transform->pos.x -= player->moveSpeed;
             rigidbody->acceleration = rigidbody->acceleration - vec2{player->moveSpeed,0};
         }
-        if (add)
+        if(shoot)
         {
-        }
-        if(del)
-        {
-            
+            auto bullet = scene->m_register.CreateEntity();
+            scene->m_register.AddComponent(bullet,CRigidbody());
+            scene->m_register.AddComponent(bullet,CTransform({transform->pos.x,transform->pos.y}));
+            scene->m_register.AddComponent(bullet, CCircleCollider(50));
+            scene->m_register.AddComponent(bullet, CRender());
+            scene->m_register.AddComponent(bullet, CCollider());
+            scene->m_register.GetComponent<CRigidbody>(bullet)->acceleration.x+=500;
+            scene->m_register.GetComponent<CRigidbody>(bullet)->acceleration.y+=500;
         }
         
     }
+}
+
+Entity SPlayer::GetPlayer()
+{
+    return m_player;
 }
 
 
