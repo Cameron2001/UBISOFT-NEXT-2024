@@ -10,6 +10,28 @@ void SPhysics::Update(Scene* scene, float dt)
     ResolveCollisions(scene);
 }
 
+bool SPhysics::BoxBox(Scene* scene, Entity aID, Entity bID)
+{
+    auto tf1 = scene->m_register.GetComponent<CTransform>(aID);
+    auto tf2 = scene->m_register.GetComponent<CTransform>(bID);
+    auto box1 = scene->m_register.GetComponent<CBoxCollider>(aID);
+    auto box2 = scene->m_register.GetComponent<CBoxCollider>(bID);
+    float xMin1 = tf1->pos.x - box1->extents.x;
+    float xMax1 = tf1->pos.x + box1->extents.x;
+    float yMin1 = tf1->pos.y - box1->extents.y;
+    float yMax1 = tf1->pos.y + box1->extents.y;
+
+    float xMin2 = tf2->pos.x - box2->extents.x;
+    float xMax2 = tf2->pos.x + box2->extents.x;
+    float yMin2 = tf2->pos.y - box2->extents.y;
+    float yMax2 = tf2->pos.y + box2->extents.y;
+    
+    if(xMax1 < xMin2 || xMin1 > xMax2) return false;
+    if(yMax1 < yMin2 || yMin1 > yMax2) return false;
+    collisions.push_back({aID,bID});
+    return true;
+}
+
 bool SPhysics::BoxBox(CBoxCollider box1, CTransform tf1, CBoxCollider box2, CTransform tf2)
 {
     float xMin1 = tf1.pos.x - box1.extents.x;
@@ -24,6 +46,7 @@ bool SPhysics::BoxBox(CBoxCollider box1, CTransform tf1, CBoxCollider box2, CTra
     
     if(xMax1 < xMin2 || xMin1 > xMax2) return false;
     if(yMax1 < yMin2 || yMin1 > yMax2) return false;
+    
     return true;
 }
 
@@ -39,11 +62,34 @@ bool SPhysics::BoxCircle(CBoxCollider box, CTransform tf1, CCircleCollider circl
     
 }
 
+bool SPhysics::BoxCircle(Scene* scene, Entity boxID, Entity circleID)
+{
+    auto tf1 = scene->m_register.GetComponent<CTransform>(boxID);
+    auto tf2 = scene->m_register.GetComponent<CTransform>(circleID);
+    auto box = scene->m_register.GetComponent<CBoxCollider>(boxID);
+    auto circle = scene->m_register.GetComponent<CCircleCollider>(circleID);
+    float x = Utils::Clamp(tf2->pos.x,tf1->pos.x-box->extents.x,tf1->pos.x+box->extents.x);
+    float y = Utils::Clamp(tf2->pos.y,tf1->pos.y-box->extents.y,tf1->pos.y+box->extents.y);
+    if(Utils::Distance({x,y},tf2->pos)<circle->radius)
+    {
+        collisions.push_back({boxID,circleID});
+        return true;
+    }
+    return false;
+    
+}
+
 
 bool SPhysics::BoxPlane(CBoxCollider box, CTransform tf1, CPlaneCollider plane, CTransform tf2)
 {
     return false;
 }
+
+bool SPhysics::BoxPlane(Scene* scene, Entity boxID, Entity planeID)
+{
+    return false;
+}
+
 
 bool SPhysics::CircleCircle(CCircleCollider circle1, CTransform tf1, CCircleCollider circle2, CTransform tf2)
 {
@@ -54,11 +100,33 @@ bool SPhysics::CircleCircle(CCircleCollider circle1, CTransform tf1, CCircleColl
     return collision;
 }
 
+bool SPhysics::CircleCircle(Scene* scene, Entity aID, Entity bID)
+{
+    auto tf1 = scene->m_register.GetComponent<CTransform>(aID);
+    auto tf2 = scene->m_register.GetComponent<CTransform>(bID);
+    auto circle1 = scene->m_register.GetComponent<CCircleCollider>(aID);
+    auto circle2 = scene->m_register.GetComponent<CCircleCollider>(bID);
+    float distance = Utils::Distance(tf1->pos,tf2->pos);
+    float radiiSum = circle1->radius + circle2->radius;
+    if( distance <= radiiSum)
+    {
+        collisions.push_back({aID,bID});
+        return true;
+    }
+    return false;
+}
+
 
 bool SPhysics::CirclePlane(CCircleCollider circle, CTransform tf1, CPlaneCollider plane, CTransform tf2)
 {
     return false;
 }
+
+bool SPhysics::CirclePlane(Scene* scene, Entity circleID, Entity planeID)
+{
+    return false;
+}
+
 
 void SPhysics::ResolveCollisions(Scene* scene)
 {
@@ -67,13 +135,15 @@ void SPhysics::ResolveCollisions(Scene* scene)
     {
         auto tfA = scene->m_register.GetComponent<CTransform>(collision.entityA);
         auto tfB = scene->m_register.GetComponent<CTransform>(collision.entityB);
+        auto rbA = scene->m_register.GetComponent<CRigidbody>(collision.entityA);
+        auto rbB = scene->m_register.GetComponent<CRigidbody>(collision.entityB);
         if(scene->m_register.HasComponent<CRigidbody>(collision.entityA))
         {
-            scene->m_register.GetComponent<CRigidbody>(collision.entityA)->velocity = scene->m_register.GetComponent<CRigidbody>(collision.entityA)->velocity * -1.0f;
+            rbA->velocity = rbA->velocity*-1.0f;
         }
         if(scene->m_register.HasComponent<CRigidbody>(collision.entityB))
         {
-            scene->m_register.GetComponent<CRigidbody>(collision.entityB)->velocity = scene->m_register.GetComponent<CRigidbody>(collision.entityB)->velocity * -1.0f;
+            rbB->velocity = rbB->velocity*-1.0f;
         }
         tfA->pos = tfA->pos+collision.mtv;
     }
@@ -96,100 +166,50 @@ void SPhysics::CheckCollisions(Scene* scene)
 
 bool SPhysics::CheckCollision(Scene* scene, Entity a, Entity b)
 {
-    CTransform* transformA = scene->m_register.GetComponent<CTransform>(a);
-    CTransform* transformB = scene->m_register.GetComponent<CTransform>(b);
-
     if(scene->m_register.HasComponent<CBoxCollider>(a))
     {
-        auto boxA = scene->m_register.GetComponent<CBoxCollider>(a);
         if(scene->m_register.HasComponent<CBoxCollider>(b))
         {
-            auto boxB = scene->m_register.GetComponent<CBoxCollider>(b);
-            if(BoxBox(*boxA,*transformA,*boxB,*transformB))
-            {
-                collisions.push_back({a,b});
-                return true;
-            };
+            return BoxBox(scene,a,b);
         }
         if(scene->m_register.HasComponent<CCircleCollider>(b))
         {
-            auto circleB = scene->m_register.GetComponent<CCircleCollider>(b);
-            if(BoxCircle(*boxA,*transformA,*circleB,*transformB))
-            {
-                collisions.push_back({a,b});
-                return true;
-            }
+            return BoxCircle(scene,a,b);
         }
         if(scene->m_register.HasComponent<CPlaneCollider>(b))
         {
-            auto plane = scene->m_register.GetComponent<CPlaneCollider>(b);
-            if(BoxPlane(*boxA,*transformA,*plane,*transformB))
-            {
-                collisions.push_back({a,b});
-                return true;
-            }
+            return BoxPlane(scene,a,b);
         }
     }
     if(scene->m_register.HasComponent<CCircleCollider>(a))
     {
-        auto circleA = scene->m_register.GetComponent<CCircleCollider>(a);
         if(scene->m_register.HasComponent<CBoxCollider>(b))
         {
-            auto boxB = scene->m_register.GetComponent<CBoxCollider>(b);
-            if(BoxCircle(*boxB, *transformB, *circleA, *transformA))
-            {
-                collisions.push_back({a,b});
-                return true;
-            }
+            return BoxCircle(scene,a,b);
         }
         if(scene->m_register.HasComponent<CCircleCollider>(b))
         {
-            auto circleB = scene->m_register.GetComponent<CCircleCollider>(b);
-            if(CircleCircle(*circleA, *transformA, *circleB, *transformB))
-            {
-                collisions.push_back({a,b});
-                return true;
-            }
+            return CircleCircle(scene,a,b);
         }
         if(scene->m_register.HasComponent<CPlaneCollider>(b))
         {
-            auto plane = scene->m_register.GetComponent<CPlaneCollider>(b);
-            if(CirclePlane(*circleA,*transformA,*plane,*transformB))
-            {
-                collisions.push_back({a,b});
-                return true;
-            }
+            return CirclePlane(scene,a,b);
         }
     }
     if(scene->m_register.HasComponent<CPlaneCollider>(a))
     {
-        auto plane = scene->m_register.GetComponent<CPlaneCollider>(a);
         if(scene->m_register.HasComponent<CBoxCollider>(b))
         {
-            auto box = scene->m_register.GetComponent<CBoxCollider>(b);
-            if(BoxPlane(*box,*transformB,*plane,*transformA))
-            {
-                collisions.push_back({a,b});
-                return true;
-            }
+            return BoxPlane(scene, b, a);
         }
         if(scene->m_register.HasComponent<CCircleCollider>(b))
         {
-            auto circle = scene->m_register.GetComponent<CCircleCollider>(b);
-            if(CirclePlane(*circle,*transformB,*plane,*transformA))
-            {
-                collisions.push_back({a,b});
-                return true;
-            }
+            return CirclePlane(scene,b,a);
         }
-        
     }
     return false;
 }
 
-void SPhysics::AddImpulse(vec2 direction, CRigidbody body)
-{
-}
 
 void SPhysics::ApplyKinematics(Scene* scene, float dt)
 {
