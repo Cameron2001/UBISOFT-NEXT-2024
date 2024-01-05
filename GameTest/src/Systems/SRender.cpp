@@ -35,12 +35,17 @@ void SRender::DrawSquare(vec2 pos, vec2 extents)
     
 }
 
-void SRender::DrawCircle(vec2 centre, float radius)
+void SRender::DrawCircle(vec2 centre, float radius, int segments)
 {
-    App::DrawLine(centre.x,centre.y-radius,centre.x-radius,centre.y);
-    App::DrawLine(centre.x-radius,centre.y,centre.x,centre.y+radius);
-    App::DrawLine(centre.x,centre.y+radius,centre.x+radius,centre.y);
-    App::DrawLine(centre.x+radius,centre.y,centre.x,centre.y-radius);
+    for (int i = 0; i < segments; i++)
+    {
+        float angle = Utils::Deg2Rad*360/segments;
+        App::DrawLine(cos(angle*i)*radius + centre.x, sin(angle*i)*radius+centre.y,cos(angle*(i+1))*radius + centre.x, sin(angle*(i+1))*radius+centre.y);
+    }
+    //App::DrawLine(centre.x,centre.y-radius,centre.x-radius,centre.y);
+    //App::DrawLine(centre.x-radius,centre.y,centre.x,centre.y+radius);
+    //App::DrawLine(centre.x,centre.y+radius,centre.x+radius,centre.y);
+    //App::DrawLine(centre.x+radius,centre.y,centre.x,centre.y-radius);
     //App::DrawLine(centre.x-1,centre.y-1,centre.x+1,centre.y+1);
 }
 
