@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <deque>
 #include <unordered_map>
 
 #include "ComponentArray.h"
@@ -9,6 +10,7 @@
 class Registry
 {
 public:
+    Registry();
     Entity CreateEntity();
     void DeleteEntity(Entity entityID);
 
@@ -43,22 +45,38 @@ public:
     bool HasSystem();
 
     template<typename T>
-    std::vector<Entity> GetEntities(); 
+    std::vector<Entity> GetEntities();
+
+    template<typename T>
+    void ClearComponents();
+
+    template<typename T>
+    void ClearEntities();
+    
     
 private:
     std::vector<Entity> m_entityArray; //just a vector of uint32_t. Hold all entity ids
     std::unordered_map<const char*, IComponentArray*> m_componentMap;
     std::unordered_map<const char*, ISystem*> m_systemMap;
-    Entity entityNum=0;
+    std::deque<Entity> freeList;
     
 };
 
 
+inline Registry::Registry()
+{
+    for (Entity i = 1; i<MAX_IDS; i++)
+    {
+        freeList.push_back(i);
+    }
+}
+
 inline Entity Registry::CreateEntity()
 {
-    entityNum++;
-    m_entityArray.push_back(entityNum);
-    return entityNum;
+    Entity id = freeList.front();
+    freeList.pop_front();
+    m_entityArray.push_back(id);
+    return id;
 }
 
 inline void Registry::DeleteEntity(Entity entityID)
@@ -71,6 +89,7 @@ inline void Registry::DeleteEntity(Entity entityID)
         {
             element.second->RemoveComponent(entityID);
         }
+        freeList.push_back(entityID);
     }
 }
 
@@ -100,6 +119,7 @@ void Registry::RemoveComponent(Entity entityID)
 {
     auto array =GetComponentArray<T>();
     array->RemoveComponent(entityID);
+    
 }
 
 template <typename T>
@@ -151,5 +171,24 @@ std::vector<Entity> Registry::GetEntities()
        } 
     }
     return entities;
+}
+
+template <typename T>
+void Registry::ClearComponents()
+{
+    for (auto entity : GetEntities<T>())
+    {
+        RemoveComponent<T>(entity);
+    }
+}
+
+template <typename T>
+void Registry::ClearEntities()
+{
+    auto entities = GetEntities<T>();
+    for (auto entity : entities)
+    {
+        DeleteEntity(entity);
+    }
 }
 

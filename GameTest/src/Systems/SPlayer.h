@@ -7,7 +7,4 @@ class SPlayer : public ISystem
 public:
     void Init();
     void Update(Scene* scene, float dt);
-    Entity GetPlayer();
-private:
-    Entity m_player;
 };

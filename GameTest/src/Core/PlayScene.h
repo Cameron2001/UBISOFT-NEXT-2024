@@ -9,8 +9,4 @@ public:
     void Update(float dt) override;
     void Render() override;
     void Shutdown() override;
-private:
-    Entity m_player;
-    Entity m_box;
-    Entity m_circle;
 };

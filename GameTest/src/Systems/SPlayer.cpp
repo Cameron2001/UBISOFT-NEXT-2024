@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "SPlayer.h"
 #include "../../App/app.h"
+#include "../Components/CImpulseEvent.h"
 
 void SPlayer::Init()
 {
@@ -23,25 +24,34 @@ void SPlayer::Update(Scene* scene, float dt)
         if (up)
         {
             //transform->pos.y += player->moveSpeed;
-            rigidbody->acceleration  = rigidbody->acceleration+ vec2{0,player->moveSpeed};
+            auto impulse = scene->m_register.CreateEntity();
+            scene->m_register.AddComponent(impulse, CImpulseEvent(entityID,{0,1},player->moveSpeed));
+            //rigidbody->acceleration  = rigidbody->acceleration+ vec2{0,player->moveSpeed};
         }
         if (down)
         {
             //transform->pos.y -= player->moveSpeed;
-            rigidbody->acceleration = rigidbody->acceleration - vec2{0,player->moveSpeed};
+            auto impulse = scene->m_register.CreateEntity();
+            scene->m_register.AddComponent(impulse, CImpulseEvent(entityID,{0,-1},player->moveSpeed));
+            //rigidbody->acceleration = rigidbody->acceleration - vec2{0,player->moveSpeed};
         }
         if (right)
         {
             //transform->pos.x += player->moveSpeed;
-            rigidbody->acceleration = rigidbody->acceleration + vec2{player->moveSpeed,0};
+            auto impulse = scene->m_register.CreateEntity();
+            scene->m_register.AddComponent(impulse, CImpulseEvent(entityID,{1,0},player->moveSpeed));
+            //rigidbody->acceleration = rigidbody->acceleration + vec2{player->moveSpeed,0};
         }
         if (left)
         {
             //transform->pos.x -= player->moveSpeed;
-            rigidbody->acceleration = rigidbody->acceleration - vec2{player->moveSpeed,0};
+            auto impulse = scene->m_register.CreateEntity();
+            scene->m_register.AddComponent(impulse, CImpulseEvent(entityID,{-1,0},player->moveSpeed));
+            //rigidbody->acceleration = rigidbody->acceleration - vec2{player->moveSpeed,0};
         }
         if(shoot)
         {
+            
             auto bullet = scene->m_register.CreateEntity();
             scene->m_register.AddComponent(bullet,CRigidbody());
             scene->m_register.AddComponent(bullet,CTransform({transform->pos.x,transform->pos.y}));
@@ -55,9 +65,5 @@ void SPlayer::Update(Scene* scene, float dt)
     }
 }
 
-Entity SPlayer::GetPlayer()
-{
-    return m_player;
-}
 
 

@@ -6,7 +6,7 @@ template <class T>
 class ComponentArray : public IComponentArray
 {
 public:
-    ComponentArray(uint32_t cap = 32):
+    ComponentArray(uint32_t cap = MAX_IDS):
         capacity(cap),
         sparse(std::vector<uint32_t>(capacity, 0))
     {}
@@ -15,7 +15,6 @@ public:
     void RemoveComponent(Entity entityID) override; //remove element
     bool HasComponent(Entity entityID) override;
     T* GetComponent(Entity entityID);
-    void Clear();
 
 private:
     
@@ -23,7 +22,6 @@ private:
     std::vector<uint32_t> sparse; //indices
     std::vector<uint32_t> dense; //list
     std::vector<T> componentList;
-    //T *componentList;
     //dense is index of componemts in spare array. Index of components is also the entityID of the owning entity of said component
     //meaning that the dense array is a list of entityID's that contain said component
 };
@@ -41,12 +39,15 @@ void ComponentArray<T>::AddComponent(Entity entityID, T component)
 template <typename T>
 void ComponentArray<T>::RemoveComponent(Entity entityID)
 {
-    const auto last = dense.back();
-    std::swap(dense.back(), dense[sparse[entityID]]);
-    std::swap(componentList.back(), componentList[sparse[entityID]]);
-    std::swap(sparse[last], sparse[entityID]);
-    dense.pop_back();
-    componentList.pop_back();
+    if(HasComponent(entityID))
+    {
+        const auto last = dense.back();
+        std::swap(dense.back(), dense[sparse[entityID]]);
+        std::swap(componentList.back(), componentList[sparse[entityID]]);
+        std::swap(sparse[last], sparse[entityID]);
+        dense.pop_back();
+        componentList.pop_back();
+    }
 }
 
 template <class T>
@@ -55,12 +56,6 @@ T* ComponentArray<T>::GetComponent(Entity entityID)
     if(!HasComponent(entityID))
         return {};
     return &componentList[sparse[entityID]];
-}
-
-
-template <typename T>
-void ComponentArray<T>::Clear()
-{
 }
 
 

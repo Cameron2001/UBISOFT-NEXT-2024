@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "PlayScene.h"
 
+#include "../Components/CImpulseEvent.h"
 #include "../Components/Components.h"
 #include "../Systems/SPhysics.h"
 #include "../Systems/SPlayer.h"
@@ -21,10 +22,11 @@ void PlayScene::Init()
     m_register.CreateComponentArray<CRender>();
     m_register.CreateComponentArray<CBoxCollider>();
     m_register.CreateComponentArray<CCircleCollider>();
-    m_register.CreateComponentArray<CPlaneCollider>();
     m_register.CreateComponentArray<CCollider>();
+    m_register.CreateComponentArray<CCollisionEvent>();
+    m_register.CreateComponentArray<CImpulseEvent>();
     
-    m_player = m_register.CreateEntity();
+    auto m_player = m_register.CreateEntity();
     m_register.AddComponent(m_player, CPlayer());
     m_register.AddComponent(m_player, CTransform({400,400}));
     m_register.AddComponent(m_player, CRigidbody());
@@ -33,14 +35,14 @@ void PlayScene::Init()
     //m_register.AddComponent(m_player,CCircleCollider{30});
     m_register.AddComponent(m_player,CBoxCollider({25,25}));
 
-    m_box = m_register.CreateEntity();
-    m_register.AddComponent(m_box, CTransform(vec2{100,100}));
+    auto m_box = m_register.CreateEntity();
+    m_register.AddComponent(m_box, CTransform(vec2{500,500}));
     m_register.AddComponent(m_box, CRigidbody());
     m_register.AddComponent(m_box, CRender());
     m_register.AddComponent(m_box, CCollider());
     m_register.AddComponent(m_box,CBoxCollider({25,25}));
 
-    m_circle= m_register.CreateEntity();
+    auto m_circle= m_register.CreateEntity();
     m_register.AddComponent(m_circle, CTransform(vec2{300,300}));
     m_register.AddComponent(m_circle, CRigidbody());
     m_register.AddComponent(m_circle, CRender());
