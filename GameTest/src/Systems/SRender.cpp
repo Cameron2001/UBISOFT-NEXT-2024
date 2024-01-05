@@ -31,7 +31,7 @@ void SRender::DrawSquare(vec2 pos, vec2 extents)
     App::DrawLine(pos.x-extents.x,pos.y+extents.y, pos.x+extents.x,pos.y+extents.y); //top left to top right
     App::DrawLine(pos.x+extents.x, pos.y+extents.y, pos.x+extents.x,pos.y-extents.y); //top right to bottom right
     App::DrawLine(pos.x+extents.x,pos.y-extents.y, pos.x-extents.x,pos.y-extents.y); //bottom right to bottom left
-    //App::DrawLine(pos.x-1,pos.y-1,pos.x+1,pos.y+1); //centre
+    //App::DrawLine(pos.x-1,pos.y-1,pos.x+1,pos.y+1);
     
 }
 
@@ -42,10 +42,5 @@ void SRender::DrawCircle(vec2 centre, float radius, int segments)
         float angle = Utils::Deg2Rad*360/segments;
         App::DrawLine(cos(angle*i)*radius + centre.x, sin(angle*i)*radius+centre.y,cos(angle*(i+1))*radius + centre.x, sin(angle*(i+1))*radius+centre.y);
     }
-    //App::DrawLine(centre.x,centre.y-radius,centre.x-radius,centre.y);
-    //App::DrawLine(centre.x-radius,centre.y,centre.x,centre.y+radius);
-    //App::DrawLine(centre.x,centre.y+radius,centre.x+radius,centre.y);
-    //App::DrawLine(centre.x+radius,centre.y,centre.x,centre.y-radius);
-    //App::DrawLine(centre.x-1,centre.y-1,centre.x+1,centre.y+1);
 }
 

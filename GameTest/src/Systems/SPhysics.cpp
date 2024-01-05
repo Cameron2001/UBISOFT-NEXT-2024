@@ -33,7 +33,8 @@ bool SPhysics::BoxBox(Scene* scene, Entity aID, Entity bID)
     if(xMax1 < xMin2 || xMin1 > xMax2) return false;
     if(yMax1 < yMin2 || yMin1 > yMax2) return false;
     
-    vec2 diff= (tf2->pos+box2->extents*2)-(tf1->pos+box1->extents*2);
+    vec2 diff= (tf2->pos)-(tf1->pos);
+   // vec2 diff= (tf2->pos+box2->extents*2)-(tf1->pos+box1->extents*2);
     vec2 mtv = {(box1->extents.x+box2->extents.x)-abs(diff.x),
         (box1->extents.y+box2->extents.y) - abs(diff.y)};
     if(mtv.x < mtv.y)
