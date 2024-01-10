@@ -6,10 +6,7 @@ template <class T>
 class ComponentArray : public IComponentArray
 {
 public:
-    ComponentArray(uint32_t cap = MAX_IDS):
-        capacity(cap),
-        sparse(std::vector<uint32_t>(capacity, 0))
-    {}
+    ComponentArray():sparse(std::vector<uint32_t>(MAX_IDS, 0)){}
     
     void AddComponent(Entity entityID, T component); //insert new element
     void RemoveComponent(Entity entityID) override; //remove element
@@ -18,7 +15,6 @@ public:
 
 private:
     
-    uint32_t capacity;
     std::vector<uint32_t> sparse; //indices
     std::vector<uint32_t> dense; //list
     std::vector<T> componentList;
@@ -54,7 +50,7 @@ template <class T>
 T* ComponentArray<T>::GetComponent(Entity entityID)
 {
     if(!HasComponent(entityID))
-        return {};
+        return nullptr;
     return &componentList[sparse[entityID]];
 }
 
@@ -62,7 +58,7 @@ T* ComponentArray<T>::GetComponent(Entity entityID)
 template <class T>
 bool ComponentArray<T>::HasComponent(Entity entityID)
 {
-    return (entityID < sparse.size() && sparse[entityID] < dense.size() && dense[sparse[entityID]] == entityID);
+    return entityID < sparse.size() && sparse[entityID] < dense.size() && dense[sparse[entityID]] == entityID;
 }
 
 

@@ -6,3 +6,5 @@
 #include "SPhysics.h"
 #include "SPlayer.h"
 #include "SRender.h"
+#include "SCollision.h"
+#include "SFactory.h"

@@ -104,6 +104,8 @@ bool Registry::HasComponent(Entity entityID)
 template <typename T>
 T* Registry::GetComponent(Entity entityID)
 {
+    if(!HasComponentArray<T>())
+        return nullptr;
     return GetComponentArray<T>()->GetComponent(entityID);
 }
 
@@ -118,8 +120,8 @@ void Registry::AddComponent(Entity entityID, T component)
 template <typename T>
 void Registry::RemoveComponent(Entity entityID)
 {
-    GetComponentArray<T>()->RemoveComponent(entityID);
-    
+    if(HasComponentArray<T>())
+        GetComponentArray<T>()->RemoveComponent(entityID);
 }
 
 template <typename T>

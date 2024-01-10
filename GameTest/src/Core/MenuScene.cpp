@@ -11,20 +11,13 @@ void MenuScene::Init()
     reg.CreateSystem<SRender>();
     reg.CreateSystem<SButton>();
 
-    /*reg.CreateComponentArray<CButton>();
-    reg.CreateComponentArray<CTransform>();
-    reg.CreateComponentArray<CBoxCollider>();
-    reg.CreateComponentArray<CRender>();
-    reg.CreateComponentArray<CCamera>();
-    reg.CreateComponentArray<CCircleCollider>();*/
-    
-    auto button = reg.CreateEntity();
+    const auto button = reg.CreateEntity();
     reg.AddComponent(button, CButton());
     reg.AddComponent(button,CTransform({500,500}));
     reg.AddComponent(button,CBoxCollider({100,100}));
     reg.AddComponent(button,CRender());
 
-    auto camera = reg.CreateEntity();
+    const auto camera = reg.CreateEntity();
     reg.AddComponent(camera,CTransform({0,0}));
     reg.AddComponent(camera,CCamera());
 

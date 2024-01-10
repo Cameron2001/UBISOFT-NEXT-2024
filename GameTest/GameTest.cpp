@@ -9,13 +9,15 @@
 #include "app\app.h"
 #include "src/Core/MenuScene.h"
 #include "src/Core/PlayScene.h"
-MenuScene* scene;
+PlayScene* scene;
+//MenuScene* scene;
 //------------------------------------------------------------------------
 // Called before first update. Do any initial setup here.
 //------------------------------------------------------------------------
 void Init()
 {
-	scene = new MenuScene;
+	scene = new PlayScene;
+	//scene = new MenuScene;
 	scene->Init();
 }
 //------------------------------------------------------------------------

@@ -206,7 +206,9 @@
     <ClInclude Include="src\Core\Registry.h" />
     <ClInclude Include="src\Core\Scene.h" />
     <ClInclude Include="src\Systems\SButton.h" />
+    <ClInclude Include="src\Systems\SCollision.h" />
     <ClInclude Include="src\Systems\SEnemy.h" />
+    <ClInclude Include="src\Systems\SFactory.h" />
     <ClInclude Include="src\Systems\SPhysics.h" />
     <ClInclude Include="src\Systems\SPlayer.h" />
     <ClInclude Include="src\Systems\SRender.h" />
@@ -301,7 +303,9 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="src\Systems\SButton.cpp" />
+    <ClCompile Include="src\Systems\SCollision.cpp" />
     <ClCompile Include="src\Systems\SEnemy.cpp" />
+    <ClCompile Include="src\Systems\SFactory.cpp" />
     <ClCompile Include="src\Systems\SPhysics.cpp" />
     <ClCompile Include="src\Systems\SPlayer.cpp" />
     <ClCompile Include="src\Systems\SRender.cpp" />
