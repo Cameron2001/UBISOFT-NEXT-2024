@@ -7,12 +7,11 @@ class SFactory : public ISystem
 {
 public:
     void CreateWall();
-    void CreatePlayer(Scene* scene, vec2 pos, vec2 bounds);
+    Entity CreatePlayer(Scene* scene, vec2 pos, vec2 bounds, Entity id = NULL);
+    Entity CreateButton(Scene* scene, vec2 pos, vec2 bounds, Entity id = NULL);
     void CreateEnemy();
-    void CreateButton();
-    void CreateLevelBounds();
-    void CreateBox(Scene* scene, vec2 pos, vec2 bounds);
-    void CreateCircle(Scene* scene, vec2 pos, float radius);
-    void CreateCamera(Scene* scene, vec2 pos);
+    Entity CreateBox(Scene* scene, vec2 pos, vec2 bounds, Entity id = NULL);
+    Entity CreateCircle(Scene* scene, vec2 pos, float radius, Entity id = NULL);
+    Entity CreateCamera(Scene* scene, vec2 pos, Entity id = NULL);
     
 };

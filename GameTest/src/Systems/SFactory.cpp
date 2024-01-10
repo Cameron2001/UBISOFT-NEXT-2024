@@ -1,40 +1,62 @@
 ﻿#include "stdafx.h"
 #include "SFactory.h"
 
-void SFactory::CreatePlayer(Scene* scene, vec2 pos, vec2 bounds)
+Entity SFactory::CreatePlayer(Scene* scene, vec2 pos, vec2 bounds, Entity id)
 {
-    const auto m_player = scene->reg.CreateEntity();
-    scene->reg.AddComponent(m_player, CPlayer());
-    scene->reg.AddComponent(m_player, CTransform(pos));
-    scene->reg.AddComponent(m_player, CRigidbody());
-    scene->reg.AddComponent(m_player, CRender());
-    scene->reg.AddComponent(m_player,CCollider());
-    scene->reg.AddComponent(m_player,CBoxCollider(bounds));
+    if (id == NULL)
+    {
+        id = scene->reg.CreateEntity();
+    }
+    CreateBox(scene,pos,bounds,id);
+    scene->reg.AddComponent(id, CPlayer());
+    return id;
 }
 
-void SFactory::CreateBox(Scene* scene, vec2 pos, vec2 bounds)
+Entity SFactory::CreateButton(Scene* scene, vec2 pos, vec2 bounds,Entity id)
 {
-    const auto m_box = scene->reg.CreateEntity();
-    scene->reg.AddComponent(m_box, CTransform(pos));
-    scene->reg.AddComponent(m_box, CRigidbody());
-    scene->reg.AddComponent(m_box, CRender());
-    scene->reg.AddComponent(m_box, CCollider());
-    scene->reg.AddComponent(m_box,CBoxCollider(bounds));
+    if (id == NULL)
+    {
+        id = scene->reg.CreateEntity();
+    }
+    CreateBox(scene,pos,bounds,id);
+    return id;
 }
 
-void SFactory::CreateCircle(Scene* scene, vec2 pos, float radius)
+Entity SFactory::CreateBox(Scene* scene, vec2 pos, vec2 bounds, Entity id)
 {
-    const auto m_circle= scene->reg.CreateEntity();
-    scene->reg.AddComponent(m_circle, CTransform(pos));
-    scene->reg.AddComponent(m_circle, CRigidbody());
-    scene->reg.AddComponent(m_circle, CRender());
-    scene->reg.AddComponent(m_circle, CCollider());
-    scene->reg.AddComponent(m_circle,CCircleCollider(radius));
+    if (id == NULL)
+    {
+        id = scene->reg.CreateEntity();
+    }
+    scene->reg.AddComponent(id, CTransform(pos));
+    scene->reg.AddComponent(id, CRigidbody());
+    scene->reg.AddComponent(id, CRender());
+    scene->reg.AddComponent(id, CCollider());
+    scene->reg.AddComponent(id,CBoxCollider(bounds));
+    return  id;
 }
 
-void SFactory::CreateCamera(Scene* scene, vec2 pos)
+Entity SFactory::CreateCircle(Scene* scene, vec2 pos, float radius, Entity id)
 {
-    const auto camera = scene->reg.CreateEntity();
-    scene->reg.AddComponent(camera, CCamera());
-    scene->reg.AddComponent(camera, CTransform(pos));
+    if (id == NULL)
+    {
+        id = scene->reg.CreateEntity();
+    }
+    scene->reg.AddComponent(id, CTransform(pos));
+    scene->reg.AddComponent(id, CRigidbody());
+    scene->reg.AddComponent(id, CRender());
+    scene->reg.AddComponent(id, CCollider());
+    scene->reg.AddComponent(id,CCircleCollider(radius));
+    return id;
+}
+
+Entity SFactory::CreateCamera(Scene* scene, vec2 pos, Entity id)
+{
+    if (id == NULL)
+    {
+        id = scene->reg.CreateEntity();
+    }
+    scene->reg.AddComponent(id, CCamera());
+    scene->reg.AddComponent(id, CTransform(pos));
+    return id;
 }

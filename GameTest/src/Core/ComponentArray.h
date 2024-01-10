@@ -26,10 +26,13 @@ private:
 template <typename T>
 void ComponentArray<T>::AddComponent(Entity entityID, T component)
 {
-    const auto pos = dense.size();
-    dense.push_back(entityID);
-    componentList.push_back(component);
-    sparse[entityID] = pos;
+    if(!HasComponent(entityID))
+    {
+        const auto pos = dense.size();
+        dense.push_back(entityID);
+        componentList.push_back(component);
+        sparse[entityID] = pos;
+    }
 }
 
 template <typename T>

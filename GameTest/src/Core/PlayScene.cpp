@@ -2,11 +2,7 @@
 #include "PlayScene.h"
 
 #include "../Components/Components.h"
-#include "../Systems/SEnemy.h"
-#include "../Systems/SFactory.h"
-#include "../Systems/SPhysics.h"
-#include "../Systems/SPlayer.h"
-#include "../Systems/SRender.h"
+#include "../Systems/Systems.h"
 
 PlayScene::~PlayScene()
 =default;
@@ -23,6 +19,7 @@ void PlayScene::Init()
     reg.GetSystem<SFactory>()->CreatePlayer(this,{200,300},{50,25});
     reg.GetSystem<SFactory>()->CreateBox(this,{500,400},{25,25});
     reg.GetSystem<SFactory>()->CreateCircle(this,{100,100},60);
+    reg.GetSystem<SFactory>()->CreateButton(this, {500,600},{30,30});
     
     reg.GetSystem<SRender>()->Init(this);
     reg.GetSystem<SPlayer>()->Init(this);
