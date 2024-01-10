@@ -1,8 +1,8 @@
 ﻿#include "stdafx.h"
 #include "PlayScene.h"
 
-#include "../Components/CImpulseEvent.h"
 #include "../Components/Components.h"
+#include "../Systems/SEnemy.h"
 #include "../Systems/SPhysics.h"
 #include "../Systems/SPlayer.h"
 #include "../Systems/SRender.h"
@@ -12,80 +12,90 @@ PlayScene::~PlayScene()
 
 void PlayScene::Init()
 {
-    m_register.CreateSystem<SPlayer>();
-    m_register.CreateSystem<SPhysics>();
-    m_register.CreateSystem<SRender>();
+    reg.CreateSystem<SPlayer>();
+    reg.CreateSystem<SPhysics>();
+    reg.CreateSystem<SRender>();
+    reg.CreateSystem<SEnemy>();
     
-    m_register.CreateComponentArray<CPlayer>();
-    m_register.CreateComponentArray<CTransform>();
-    m_register.CreateComponentArray<CRigidbody>();
-    m_register.CreateComponentArray<CRender>();
-    m_register.CreateComponentArray<CBoxCollider>();
-    m_register.CreateComponentArray<CCircleCollider>();
-    m_register.CreateComponentArray<CCollider>();
-    m_register.CreateComponentArray<CCollisionEvent>();
-    m_register.CreateComponentArray<CImpulseEvent>();
+    reg.CreateComponentArray<CPlayer>();
+    reg.CreateComponentArray<CTransform>();
+    reg.CreateComponentArray<CRigidbody>();
+    reg.CreateComponentArray<CRender>();
+    reg.CreateComponentArray<CBoxCollider>();
+    reg.CreateComponentArray<CCircleCollider>();
+    reg.CreateComponentArray<CCollider>();
+    reg.CreateComponentArray<CCollisionEvent>();
+    reg.CreateComponentArray<CImpulseEvent>();
+    reg.CreateComponentArray<CCamera>();
+
+    auto camera = reg.CreateEntity();
+    reg.AddComponent(camera, CCamera());
+    reg.AddComponent(camera, CTransform({0,0}));
     
-    auto m_player = m_register.CreateEntity();
-    m_register.AddComponent(m_player, CPlayer());
-    m_register.AddComponent(m_player, CTransform({400,400}));
-    m_register.AddComponent(m_player, CRigidbody());
-    m_register.AddComponent(m_player, CRender());
-    m_register.AddComponent(m_player,CCollider());
+    auto m_player = reg.CreateEntity();
+    reg.AddComponent(m_player, CPlayer());
+    reg.AddComponent(m_player, CTransform({400,400}));
+    reg.AddComponent(m_player, CRigidbody());
+    reg.AddComponent(m_player, CRender());
+    reg.AddComponent(m_player,CCollider());
     //m_register.AddComponent(m_player,CCircleCollider{30});
-    m_register.AddComponent(m_player,CBoxCollider({25,25}));
+    reg.AddComponent(m_player,CBoxCollider({25,25}));
 
-    auto m_box = m_register.CreateEntity();
-    m_register.AddComponent(m_box, CTransform(vec2{500,500}));
-    m_register.AddComponent(m_box, CRigidbody());
-    m_register.AddComponent(m_box, CRender());
-    m_register.AddComponent(m_box, CCollider());
-    m_register.AddComponent(m_box,CBoxCollider({25,25}));
+    auto m_box = reg.CreateEntity();
+    reg.AddComponent(m_box, CTransform({500,500}));
+    reg.AddComponent(m_box, CRigidbody());
+    reg.AddComponent(m_box, CRender());
+    reg.AddComponent(m_box, CCollider());
+    reg.AddComponent(m_box,CBoxCollider({25,25}));
 
-    auto m_circle= m_register.CreateEntity();
-    m_register.AddComponent(m_circle, CTransform(vec2{300,300}));
-    m_register.AddComponent(m_circle, CRigidbody());
-    m_register.AddComponent(m_circle, CRender());
-    m_register.AddComponent(m_circle, CCollider());
-    m_register.AddComponent(m_circle,CCircleCollider{70});
+    auto m_circle= reg.CreateEntity();
+    reg.AddComponent(m_circle, CTransform({300,300}));
+    reg.AddComponent(m_circle, CRigidbody());
+    reg.AddComponent(m_circle, CRender());
+    reg.AddComponent(m_circle, CCollider());
+    reg.AddComponent(m_circle,CCircleCollider{70});
 
-    auto leftWall = m_register.CreateEntity();
-    m_register.AddComponent(leftWall,CTransform{{1,500}});
-    m_register.AddComponent(leftWall,CRender());
-    m_register.AddComponent(leftWall, CCollider());
-    m_register.AddComponent(leftWall,CBoxCollider{{0,600}});
+    auto leftWall = reg.CreateEntity();
+    reg.AddComponent(leftWall,CTransform{{1,500}});
+    reg.AddComponent(leftWall,CRender());
+    reg.AddComponent(leftWall, CCollider());
+    reg.AddComponent(leftWall,CBoxCollider{{0,600}});
 
-    auto bottomWall = m_register.CreateEntity();
-    m_register.AddComponent(bottomWall,CTransform{{700,1}});
-    m_register.AddComponent(bottomWall,CRender());
-    m_register.AddComponent(bottomWall, CCollider());
-    m_register.AddComponent(bottomWall,CBoxCollider{{900,0}});
+    auto bottomWall = reg.CreateEntity();
+    reg.AddComponent(bottomWall,CTransform{{700,1}});
+    reg.AddComponent(bottomWall,CRender());
+    reg.AddComponent(bottomWall, CCollider());
+    reg.AddComponent(bottomWall,CBoxCollider{{900,0}});
 
-    auto rightWall = m_register.CreateEntity();
-    m_register.AddComponent(rightWall,CTransform{{1600,500}});
-    m_register.AddComponent(rightWall,CRender());
-    m_register.AddComponent(rightWall, CCollider());
-    m_register.AddComponent(rightWall,CBoxCollider{{0,600}});
+    auto rightWall = reg.CreateEntity();
+    reg.AddComponent(rightWall,CTransform{{1600,500}});
+    reg.AddComponent(rightWall,CRender());
+    reg.AddComponent(rightWall, CCollider());
+    reg.AddComponent(rightWall,CBoxCollider{{0,600}});
 
-    auto topWall = m_register.CreateEntity();
-    m_register.AddComponent(topWall,CTransform{{700,900}});
-    m_register.AddComponent(topWall,CRender());
-    m_register.AddComponent(topWall, CCollider());
-    m_register.AddComponent(topWall,CBoxCollider{{900,0}});
+    auto topWall = reg.CreateEntity();
+    reg.AddComponent(topWall,CTransform{{700,900}});
+    reg.AddComponent(topWall,CRender());
+    reg.AddComponent(topWall, CCollider());
+    reg.AddComponent(topWall,CBoxCollider{{900,0}});
     //m_register.AddComponent(leftWall,CRigidbody());
+
+    reg.GetSystem<SRender>()->Init(this);
+    reg.GetSystem<SPlayer>()->Init(this);
+   
 }
 
 void PlayScene::Update(float dt)
 {
     dt/=1000.0f;
-    m_register.GetSystem<SPlayer>()->Update(this,dt);
+    reg.GetSystem<SPlayer>()->Update(this,dt);
     
-    m_register.GetSystem<SPhysics>()->Update(this,dt);
+    reg.GetSystem<SPhysics>()->Update(this,dt);
 }
 
 void PlayScene::Render()
 {
-    m_register.GetSystem<SRender>()->Update(this);
+    reg.GetSystem<SRender>()->Update(this);
 }
 
 void PlayScene::Shutdown()

@@ -183,6 +183,7 @@
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
     <ClInclude Include="src\Components\CButton.h" />
+    <ClInclude Include="src\Components\CButtonClickEvent.h" />
     <ClInclude Include="src\Components\CCamera.h" />
     <ClInclude Include="src\Components\CCircleCollider.h" />
     <ClInclude Include="src\Components\CCollider.h" />
@@ -204,11 +205,12 @@
     <ClInclude Include="src\Core\PlayScene.h" />
     <ClInclude Include="src\Core\Registry.h" />
     <ClInclude Include="src\Core\Scene.h" />
-    <ClInclude Include="src\Systems\SCamera.h" />
+    <ClInclude Include="src\Systems\SButton.h" />
     <ClInclude Include="src\Systems\SEnemy.h" />
     <ClInclude Include="src\Systems\SPhysics.h" />
     <ClInclude Include="src\Systems\SPlayer.h" />
     <ClInclude Include="src\Systems\SRender.h" />
+    <ClInclude Include="src\Systems\Systems.h" />
     <ClInclude Include="src\Util\Utils.h" />
     <ClInclude Include="src\Util\Vectors.h" />
     <ClInclude Include="stb_image\stb_image.h" />
@@ -298,7 +300,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="src\Systems\SCamera.cpp" />
+    <ClCompile Include="src\Systems\SButton.cpp" />
     <ClCompile Include="src\Systems\SEnemy.cpp" />
     <ClCompile Include="src\Systems\SPhysics.cpp" />
     <ClCompile Include="src\Systems\SPlayer.cpp" />

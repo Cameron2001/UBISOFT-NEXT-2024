@@ -5,6 +5,7 @@
 class SPlayer : public ISystem
 {
 public:
-    void Init();
+    void Init(Scene* scene);
     void Update(Scene* scene, float dt);
+    Entity m_camera;
 };

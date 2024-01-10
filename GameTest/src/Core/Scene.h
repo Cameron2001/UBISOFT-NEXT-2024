@@ -9,7 +9,7 @@ public:
     virtual void Render();
     virtual void Shutdown();
     
-    Registry m_register;
+    Registry reg;
     
     //maybe create some type of storage to contain all systems in
     //maybe vector isnt correct storage. If an entity is removed the index and entityID will no longer be alligned

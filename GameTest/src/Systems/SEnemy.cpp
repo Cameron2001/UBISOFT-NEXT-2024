@@ -11,14 +11,14 @@ void SEnemy::Update(Scene* scene, float dt)
 
 void SEnemy::ResolveDamage(Scene* scene)
 {
-    auto damageIDs = scene->m_register.GetEntities<CDamageEvent>();
+    auto damageIDs = scene->reg.GetEntities<CDamageEvent>();
     for (auto damage_id : damageIDs)
     {
-        auto damageEvent = scene->m_register.GetComponent<CDamageEvent>(damage_id);
-        if(scene->m_register.HasComponent<CHealth>(damageEvent->target))
+        auto damageEvent = scene->reg.GetComponent<CDamageEvent>(damage_id);
+        if(scene->reg.HasComponent<CHealth>(damageEvent->target))
         {
-            scene->m_register.GetComponent<CHealth>(damageEvent->target)->health-=damageEvent->damage;
+            scene->reg.GetComponent<CHealth>(damageEvent->target)->health-=damageEvent->damage;
         }
     }
-    scene->m_register.ClearEntities<CDamageEvent>();
+    scene->reg.ClearEntities<CDamageEvent>();
 }

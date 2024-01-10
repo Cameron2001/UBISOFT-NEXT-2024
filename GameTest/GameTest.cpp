@@ -7,14 +7,15 @@
 #include <math.h>  
 //------------------------------------------------------------------------
 #include "app\app.h"
+#include "src/Core/MenuScene.h"
 #include "src/Core/PlayScene.h"
-PlayScene* scene;
+MenuScene* scene;
 //------------------------------------------------------------------------
 // Called before first update. Do any initial setup here.
 //------------------------------------------------------------------------
 void Init()
 {
-	scene = new PlayScene;
+	scene = new MenuScene;
 	scene->Init();
 }
 //------------------------------------------------------------------------

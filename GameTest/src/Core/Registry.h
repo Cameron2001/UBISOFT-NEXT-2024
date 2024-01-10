@@ -96,42 +96,45 @@ inline void Registry::DeleteEntity(Entity entityID)
 template <typename T>
 bool Registry::HasComponent(Entity entityID)
 {
-    auto array =GetComponentArray<T>();
-    return array->HasComponent(entityID);
+    if(!HasComponentArray<T>())
+        return false;
+    return GetComponentArray<T>()->HasComponent(entityID);
 }
 
 template <typename T>
 T* Registry::GetComponent(Entity entityID)
 {
-    auto array =GetComponentArray<T>();
-    return array->GetComponent(entityID);
+    return GetComponentArray<T>()->GetComponent(entityID);
 }
 
 template <typename T>
 void Registry::AddComponent(Entity entityID, T component)
 {
-    auto array =GetComponentArray<T>();
-    array->AddComponent(entityID,component);
+    if(!HasComponentArray<T>())
+        CreateComponentArray<T>();
+    GetComponentArray<T>()->AddComponent(entityID,component);
 }
 
 template <typename T>
 void Registry::RemoveComponent(Entity entityID)
 {
-    auto array =GetComponentArray<T>();
-    array->RemoveComponent(entityID);
+    GetComponentArray<T>()->RemoveComponent(entityID);
     
 }
 
 template <typename T>
 void Registry::CreateComponentArray()
 {
-    m_componentMap.insert({typeid(T).name(),new ComponentArray<T>()});
+    if(!HasComponentArray<T>())
+        m_componentMap.insert({typeid(T).name(),new ComponentArray<T>()});
 }
 
 template <typename T>
 ComponentArray<T>* Registry::GetComponentArray()
 {
-    return static_cast<ComponentArray<T>*>(m_componentMap.at(typeid(T).name()));
+    if(HasComponentArray<T>())
+        return static_cast<ComponentArray<T>*>(m_componentMap.at(typeid(T).name()));
+    return {};
 }
 
 template <typename T>
@@ -185,8 +188,7 @@ void Registry::ClearComponents()
 template <typename T>
 void Registry::ClearEntities()
 {
-    auto entities = GetEntities<T>();
-    for (auto entity : entities)
+    for (auto entity : GetEntities<T>())
     {
         DeleteEntity(entity);
     }
