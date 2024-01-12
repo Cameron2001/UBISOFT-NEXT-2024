@@ -15,6 +15,19 @@ void PlayScene::Init()
     reg.CreateSystem<SEnemy>();
     reg.CreateSystem<SFactory>();
     
+    reg.CreateComponentArray<CCircleCollider>();
+    reg.CreateComponentArray<CCollisionEvent>();
+    reg.CreateComponentArray<CImpulseEvent>();
+    reg.CreateComponentArray<CButton>();
+    reg.CreateComponentArray<CPlayer>();
+    reg.CreateComponentArray<CCamera>();
+    reg.CreateComponentArray<CCollider>();
+    reg.CreateComponentArray<CBoxCollider>();
+    reg.CreateComponentArray<CRender>();
+    reg.CreateComponentArray<CTransform>();
+    reg.CreateComponentArray<CRigidbody>();
+    reg.CreateComponentArray<CHealth>();
+    
     reg.GetSystem<SFactory>()->CreateCamera(this,{0,0});
     reg.GetSystem<SFactory>()->CreatePlayer(this,{200,300},{50,25});
     reg.GetSystem<SFactory>()->CreateBox(this,{500,400},{25,25});

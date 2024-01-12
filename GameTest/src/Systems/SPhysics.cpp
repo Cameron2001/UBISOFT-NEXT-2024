@@ -105,8 +105,7 @@ bool SPhysics::CircleCircle(Scene* scene, Entity aID, Entity bID)
 
 void SPhysics::ResolveImpulses(Scene* scene)
 {
-    auto impulseIDs = scene->reg.GetEntities<CImpulseEvent>();
-    for (auto impulse_id : impulseIDs)
+    for (auto impulse_id : scene->reg.GetEntities<CImpulseEvent>())
     {
         auto impulseEvent = scene->reg.GetComponent<CImpulseEvent>(impulse_id);
         if(scene->reg.HasComponent<CRigidbody>(impulseEvent->target))
@@ -122,8 +121,7 @@ void SPhysics::ResolveImpulses(Scene* scene)
 
 void SPhysics::ResolveCollisions(Scene* scene)
 {
-    auto Collisions = scene->reg.GetEntities<CCollisionEvent>();
-    for (auto current : Collisions)
+    for (auto current : scene->reg.GetEntities<CCollisionEvent>())
     {
         auto collision = scene->reg.GetComponent<CCollisionEvent>(current);
         auto tfA = scene->reg.GetComponent<CTransform>(collision->entityA);

@@ -9,6 +9,7 @@ Entity SFactory::CreatePlayer(Scene* scene, vec2 pos, vec2 bounds, Entity id)
     }
     CreateBox(scene,pos,bounds,id);
     scene->reg.AddComponent(id, CPlayer());
+    scene->reg.AddComponent(id,CHealth(100));
     return id;
 }
 

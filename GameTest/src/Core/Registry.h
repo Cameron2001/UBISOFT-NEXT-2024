@@ -96,47 +96,53 @@ inline void Registry::DeleteEntity(Entity entityID)
 template <typename T>
 bool Registry::HasComponent(Entity entityID)
 {
-    if(!HasComponentArray<T>())
-        return false;
+    assert("Has Component, Array not found" && HasComponentArray<T>());
+    /*if(!HasComponentArray<T>())
+        return false;*/
     return GetComponentArray<T>()->HasComponent(entityID);
 }
 
 template <typename T>
 T* Registry::GetComponent(Entity entityID)
 {
-    if(!HasComponentArray<T>())
-        return nullptr;
+    assert("Get Component, Array not found" && HasComponentArray<T>());
+    /*if(!HasComponentArray<T>())
+        return nullptr;*/
     return GetComponentArray<T>()->GetComponent(entityID);
 }
 
 template <typename T>
 void Registry::AddComponent(Entity entityID, T component)
 {
-    if(!HasComponentArray<T>())
-        CreateComponentArray<T>();
+    assert("Add Component, Array not found" && HasComponentArray<T>());
+    /*if(!HasComponentArray<T>())
+        CreateComponentArray<T>();*/
     GetComponentArray<T>()->AddComponent(entityID,component);
 }
 
 template <typename T>
 void Registry::RemoveComponent(Entity entityID)
 {
-    if(HasComponentArray<T>())
+    assert("Remove Component, Array not found" && HasComponentArray<T>());
+    //if(HasComponentArray<T>())
         GetComponentArray<T>()->RemoveComponent(entityID);
 }
 
 template <typename T>
 void Registry::CreateComponentArray()
 {
-    if(!HasComponentArray<T>())
+    assert("Create array, Array found" && !HasComponentArray<T>());
+    //if(!HasComponentArray<T>())
         m_componentMap.insert({typeid(T).name(),new ComponentArray<T>()});
 }
 
 template <typename T>
 ComponentArray<T>* Registry::GetComponentArray()
 {
-    if(HasComponentArray<T>())
-        return static_cast<ComponentArray<T>*>(m_componentMap.at(typeid(T).name()));
-    return {};
+    assert("Get Component Array, Array not found" && HasComponentArray<T>());
+    /*if(!HasComponentArray<T>())
+        return {};*/
+    return static_cast<ComponentArray<T>*>(m_componentMap.at(typeid(T).name()));
 }
 
 template <typename T>

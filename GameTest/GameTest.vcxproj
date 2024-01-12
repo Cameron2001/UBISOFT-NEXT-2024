@@ -200,6 +200,7 @@
     <ClInclude Include="src\Components\CSprite.h" />
     <ClInclude Include="src\Components\CTransform.h" />
     <ClInclude Include="src\Core\ComponentArray.h" />
+    <ClInclude Include="src\Core\ECSTestScene.h" />
     <ClInclude Include="src\Core\IComponentArray.h" />
     <ClInclude Include="src\Core\MenuScene.h" />
     <ClInclude Include="src\Core\PlayScene.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="App\SimpleSound.cpp" />
     <ClCompile Include="App\SimpleSprite.cpp" />
     <ClCompile Include="GameTest.cpp" />
+    <ClCompile Include="src\Core\ECSTestScene.cpp" />
     <ClCompile Include="src\Core\MenuScene.cpp" />
     <ClCompile Include="src\Core\PlayScene.cpp" />
     <ClCompile Include="src\Core\Scene.cpp">
