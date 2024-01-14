@@ -5,6 +5,6 @@
 class SEnemy : public ISystem
 {
 public:
-    void Update(Scene* scene, float dt);
-    void ResolveDamage(Scene* scene);
+    void Update(Scene& scene, float dt);
+    void ResolveDamage(Scene& scene);
 };

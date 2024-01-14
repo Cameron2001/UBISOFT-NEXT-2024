@@ -21,17 +21,18 @@ void MenuScene::Init()
     reg.AddComponent(camera,CTransform({0,0}));
     reg.AddComponent(camera,CCamera());
 
-    reg.GetSystem<SRender>()->Init(this);
+    reg.GetSystem<SRender>().Init(*this);
 }
 
 void MenuScene::Update(float dt)
 {
-    reg.GetSystem<SButton>()->Update(this,dt);
+    dt/=1000.0f;
+    reg.GetSystem<SButton>().Update(*this,dt);
 }
 
 void MenuScene::Render()
 {
-    reg.GetSystem<SRender>()->Update(this);
+    reg.GetSystem<SRender>().Update(*this);
 }
 
 void MenuScene::Shutdown()

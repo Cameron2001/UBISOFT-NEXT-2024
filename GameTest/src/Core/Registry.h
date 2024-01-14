@@ -4,7 +4,7 @@
 
 #include "ComponentArray.h"
 #include "IComponentArray.h"
-#include "../Components/CTransform.h"
+#include "../Components/CDeleteMe.h"
 #include "../Systems/ISystem.h"
 
 class Registry
@@ -13,12 +13,13 @@ public:
     Registry();
     Entity CreateEntity();
     void DeleteEntity(Entity entityID);
+    void DeleteEntities();
 
     template<typename T>
     bool HasComponent(Entity entityID);
 
     template<typename T>
-    T* GetComponent(Entity entityID);
+    T& GetComponent(Entity entityID);
 
     template<typename T>
     void AddComponent(Entity entityID, T component);
@@ -30,19 +31,19 @@ public:
     void CreateComponentArray();
 
     template<typename T>
-    ComponentArray<T>* GetComponentArray();
+    ComponentArray<T>& GetComponentArray();
 
     template<typename T>
-    bool HasComponentArray();
+    bool HasComponentArray() const;
 
     template<typename T>
     void CreateSystem();
 
     template<typename T>
-    T* GetSystem();
+    T& GetSystem();
 
     template<typename T>
-    bool HasSystem();
+    bool HasSystem() const;
 
     template<typename T>
     std::vector<Entity> GetEntities();
@@ -52,20 +53,21 @@ public:
 
     template<typename T>
     void ClearEntities();
+
+    void ClearAllEntities();
     
-    
-private:
     std::vector<Entity> m_entityArray; //just a vector of uint32_t. Hold all entity ids
     std::unordered_map<const char*, IComponentArray*> m_componentMap;
     std::unordered_map<const char*, ISystem*> m_systemMap;
     std::deque<Entity> freeList;
+    
     
 };
 
 
 inline Registry::Registry()
 {
-    for (Entity i = 1; i<MAX_IDS; i++)
+    for (Entity i = 0; i<MAX_IDS; i++)
     {
         freeList.push_back(i);
     }
@@ -81,15 +83,17 @@ inline Entity Registry::CreateEntity()
 
 inline void Registry::DeleteEntity(Entity entityID)
 {
-    auto pos = std::find(m_entityArray.begin(),m_entityArray.end(), entityID);
-    if(pos!= m_entityArray.end())
+    //auto pos = std::find(m_entityArray.begin(),m_entityArray.end(), entityID);
+    //if(pos!= m_entityArray.end())
+    AddComponent(entityID,CDeleteMe());
+    
+}
+
+inline void Registry::ClearAllEntities()
+{
+    for (const auto entity : m_entityArray)
     {
-        m_entityArray.erase(pos);
-        for (auto element : m_componentMap)
-        {
-            element.second->RemoveComponent(entityID);
-        }
-        freeList.push_back(entityID);
+        DeleteEntity(entity);
     }
 }
 
@@ -99,16 +103,16 @@ bool Registry::HasComponent(Entity entityID)
     assert("Has Component, Array not found" && HasComponentArray<T>());
     /*if(!HasComponentArray<T>())
         return false;*/
-    return GetComponentArray<T>()->HasComponent(entityID);
+    return GetComponentArray<T>().HasComponent(entityID);
 }
 
 template <typename T>
-T* Registry::GetComponent(Entity entityID)
+T& Registry::GetComponent(Entity entityID)
 {
     assert("Get Component, Array not found" && HasComponentArray<T>());
     /*if(!HasComponentArray<T>())
         return nullptr;*/
-    return GetComponentArray<T>()->GetComponent(entityID);
+    return *GetComponentArray<T>().GetComponent(entityID);
 }
 
 template <typename T>
@@ -117,7 +121,7 @@ void Registry::AddComponent(Entity entityID, T component)
     assert("Add Component, Array not found" && HasComponentArray<T>());
     /*if(!HasComponentArray<T>())
         CreateComponentArray<T>();*/
-    GetComponentArray<T>()->AddComponent(entityID,component);
+    GetComponentArray<T>().AddComponent(entityID,component);
 }
 
 template <typename T>
@@ -125,7 +129,7 @@ void Registry::RemoveComponent(Entity entityID)
 {
     assert("Remove Component, Array not found" && HasComponentArray<T>());
     //if(HasComponentArray<T>())
-        GetComponentArray<T>()->RemoveComponent(entityID);
+        GetComponentArray<T>().RemoveComponent(entityID);
 }
 
 template <typename T>
@@ -137,18 +141,19 @@ void Registry::CreateComponentArray()
 }
 
 template <typename T>
-ComponentArray<T>* Registry::GetComponentArray()
+ComponentArray<T>& Registry::GetComponentArray()
 {
     assert("Get Component Array, Array not found" && HasComponentArray<T>());
     /*if(!HasComponentArray<T>())
         return {};*/
-    return static_cast<ComponentArray<T>*>(m_componentMap.at(typeid(T).name()));
+    
+    return static_cast<ComponentArray<T>&>(*m_componentMap.at(typeid(T).name()));
 }
 
 template <typename T>
-bool Registry::HasComponentArray()
+bool Registry::HasComponentArray() const
 {
-    return m_componentMap.find(typeid(T).name())!=m_componentMap.end();
+    return m_componentMap.count(typeid(T).name());
 }
 
 template <typename T>
@@ -158,15 +163,15 @@ void Registry::CreateSystem()
 }
 
 template <typename T>
-T* Registry::GetSystem()
+T& Registry::GetSystem()
 {
-    return static_cast<T*>(m_systemMap.at(typeid(T).name()));
+    return static_cast<T&>(*m_systemMap.at(typeid(T).name()));
 }
 
 template <typename T>
-bool Registry::HasSystem()
+bool Registry::HasSystem() const
 {
-    return m_systemMap.find(typeid(T).name())!=m_systemMap.end();
+    return m_systemMap.count(typeid(T).name());
 }
 
 template <typename T>

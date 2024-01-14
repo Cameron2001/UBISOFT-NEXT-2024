@@ -208,6 +208,7 @@
     <ClInclude Include="src\Core\Scene.h" />
     <ClInclude Include="src\Systems\SButton.h" />
     <ClInclude Include="src\Systems\SCollision.h" />
+    <ClInclude Include="src\Systems\SDelete.h" />
     <ClInclude Include="src\Systems\SEnemy.h" />
     <ClInclude Include="src\Systems\SFactory.h" />
     <ClInclude Include="src\Systems\SPhysics.h" />
@@ -306,6 +307,7 @@
     </ClCompile>
     <ClCompile Include="src\Systems\SButton.cpp" />
     <ClCompile Include="src\Systems\SCollision.cpp" />
+    <ClCompile Include="src\Systems\SDelete.cpp" />
     <ClCompile Include="src\Systems\SEnemy.cpp" />
     <ClCompile Include="src\Systems\SFactory.cpp" />
     <ClCompile Include="src\Systems\SPhysics.cpp" />
@@ -325,6 +327,7 @@
     <ClInclude Include="src\Components\CBoxCollider.h" />
     <ClInclude Include="src\Components\CAudio.h" />
     <ClInclude Include="src\Components\CCollisionEvent.h" />
+    <Content Include="src\Components\CDeleteMe.h" />
     <Content Include="src\Graphics\NewFile1.txt" />
     <ClInclude Include="src\Systems\ISystem.h" />
   </ItemGroup>

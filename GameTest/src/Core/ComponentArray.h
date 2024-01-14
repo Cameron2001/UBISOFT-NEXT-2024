@@ -26,34 +26,28 @@ private:
 template <typename T>
 void ComponentArray<T>::AddComponent(Entity entityID, T component)
 {
-    if(!HasComponent(entityID))
-    {
-        const auto pos = dense.size();
-        dense.push_back(entityID);
-        componentList.push_back(component);
-        sparse[entityID] = pos;
-    }
+    assert("Add component" && !HasComponent(entityID));
+    const auto pos = dense.size();
+    dense.push_back(entityID);
+    componentList.push_back(component);
+    sparse[entityID] = pos;
 }
 
 template <typename T>
 void ComponentArray<T>::RemoveComponent(Entity entityID)
 {
-    if(HasComponent(entityID))
-    {
-        const auto last = dense.back();
-        std::swap(dense.back(), dense[sparse[entityID]]);
-        std::swap(componentList.back(), componentList[sparse[entityID]]);
-        std::swap(sparse[last], sparse[entityID]);
-        dense.pop_back();
-        componentList.pop_back();
-    }
+    assert("remove component" && HasComponent(entityID));
+    const auto last = dense.back();
+    std::swap(dense.back(), dense[sparse[entityID]]);
+    std::swap(componentList.back(), componentList[sparse[entityID]]);
+    std::swap(sparse[last], sparse[entityID]);
+    dense.pop_back();
+    componentList.pop_back();
 }
 
 template <class T>
 T* ComponentArray<T>::GetComponent(Entity entityID)
 {
-    if(!HasComponent(entityID))
-        return nullptr;
     return &componentList[sparse[entityID]];
 }
 
