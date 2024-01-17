@@ -9,8 +9,8 @@ void SButton::Update(Scene& scene, float dt)
 {
     for (auto entityID : scene.reg.GetEntities<CButton>())
     {
-        CTransform& transform = scene.reg.GetComponent<CTransform>(entityID);
-        CBoxCollider& box = scene.reg.GetComponent<CBoxCollider>(entityID);
+        CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
+        CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(entityID);
         /*float mouseX;
         float mouseY;
         App::GetMousePos(mouseX,mouseY);

@@ -8,4 +8,5 @@ public:
     void Init(Scene& scene);
     void Update(Scene& scene, float dt);
     Entity m_camera;
+    bool shot = false;
 };

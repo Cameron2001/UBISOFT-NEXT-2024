@@ -6,24 +6,24 @@
 
 void SRender::Init(Scene& scene)
 {
-    cameraTransform = scene.reg.GetComponent<CTransform>(scene.reg.GetEntities<CCamera>()[0]);
+    //cameraTransform = scene.reg.GetComponent<CTransform>(scene.reg.GetEntities<CCamera>()[0]);
 }
 
 void SRender::Update(Scene& scene)
 {
     for(auto entityID : scene.reg.GetEntities<CRender>())
     {
-        CTransform& transform = scene.reg.GetComponent<CTransform>(entityID);
+        CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
 
         if(scene.reg.HasComponent<CBoxCollider>(entityID))
         {
-            CBoxCollider& box = scene.reg.GetComponent<CBoxCollider>(entityID);
-            DrawSquare(transform.pos,box.extents);
+            CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(entityID);
+            DrawSquare(transform->pos,box->extents);
         }
         if(scene.reg.HasComponent<CCircleCollider>(entityID))
         {
-            CCircleCollider& circle = scene.reg.GetComponent<CCircleCollider>(entityID);
-            DrawCircle(transform.pos,circle.radius);
+            CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(entityID);
+            DrawCircle(transform->pos,circle->radius);
         }
         
     }

@@ -26,7 +26,7 @@ private:
 template <typename T>
 void ComponentArray<T>::AddComponent(Entity entityID, T component)
 {
-    assert("Add component" && !HasComponent(entityID));
+    //assert("Add component" && !HasComponent(entityID));
     const auto pos = dense.size();
     dense.push_back(entityID);
     componentList.push_back(component);
@@ -36,7 +36,7 @@ void ComponentArray<T>::AddComponent(Entity entityID, T component)
 template <typename T>
 void ComponentArray<T>::RemoveComponent(Entity entityID)
 {
-    assert("remove component" && HasComponent(entityID));
+    //assert("remove component" && HasComponent(entityID));
     const auto last = dense.back();
     std::swap(dense.back(), dense[sparse[entityID]]);
     std::swap(componentList.back(), componentList[sparse[entityID]]);

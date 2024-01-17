@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
 #include "SDelete.h"
 
-#include "../Components/CDeleteMe.h"
+#include "../Components/Components.h"
 
 void SDelete::Update(Scene& scene)
 {
@@ -17,4 +17,12 @@ void SDelete::Update(Scene& scene)
         }
         scene.reg.freeList.push_back(ID);
     }
+}
+
+void SDelete::ClearEvents(Scene& scene)
+{
+    scene.reg.ClearEntities<CImpulseEvent>();
+    scene.reg.ClearEntities<CCollisionEvent>();
+    scene.reg.ClearEntities<CDamageEvent>();
+    scene.reg.ClearEntities<CButtonClickEvent>();
 }

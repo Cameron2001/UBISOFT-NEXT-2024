@@ -7,6 +7,6 @@ public:
     void Init() override;
     void Update(float dt) override;
     void Shutdown() override;
-    int count = 0;
+    int count = 1;
     
 };

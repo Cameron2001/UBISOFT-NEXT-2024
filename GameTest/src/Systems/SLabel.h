@@ -1,11 +1,9 @@
 ﻿#pragma once
 #include "ISystem.h"
 #include "../Core/Scene.h"
-
-class SDelete : public ISystem
+class SLabel : public ISystem
 {
 public:
     void Update(Scene& scene);
-    void ClearEvents(Scene& scene);
     
 };

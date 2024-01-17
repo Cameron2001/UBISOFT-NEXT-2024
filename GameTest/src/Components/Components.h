@@ -18,3 +18,5 @@
 #include "CDamageEvent.h"
 #include "CImpulseEvent.h"
 #include "CDeleteMe.h"
+#include "CProjectile.h"
+#include "CButtonClickEvent.h"

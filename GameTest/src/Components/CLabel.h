@@ -1,9 +1,6 @@
 ﻿#pragma once
 struct CLabel
 {
-    std::string text;
-    CLabel(const std::string& string = "Label")
-    {
-        text = string;
-    }
+    const char* labelText;
+    CLabel(const char* myText = "Label"): labelText(myText){}
 };
