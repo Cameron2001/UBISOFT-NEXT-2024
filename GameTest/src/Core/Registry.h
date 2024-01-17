@@ -196,6 +196,7 @@ void Registry::ClearComponents()
     {
         RemoveComponent<T>(entity);
     }
+    
 }
 
 template <typename T>

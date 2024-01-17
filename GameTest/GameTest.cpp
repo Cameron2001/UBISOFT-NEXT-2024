@@ -10,12 +10,12 @@
 #include "src/Core/ECSTestScene.h"
 #include "src/Core/MenuScene.h"
 #include "src/Core/PlayScene.h"
-PlayScene* scene;
+//PlayScene* scene;
 //MenuScene* scene;
-//ECSTestScene* scene;
+ECSTestScene* scene;
 void Init()
 {
-	scene = new PlayScene;
+	scene = new ECSTestScene;
 	//scene = new MenuScene;
 	scene->Init();
 }

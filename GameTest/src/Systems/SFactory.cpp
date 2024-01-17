@@ -19,6 +19,16 @@ Entity SFactory::CreateButton(Scene& scene, vec2 pos, vec2 bounds,Entity id)
     return id;
 }
 
+Entity SFactory::CreateEnemy(Scene& scene, vec2 pos, vec2 bounds, Entity id)
+{
+    if(id == NULL)
+        id = scene.reg.CreateEntity();
+    CreateBox(scene,pos,bounds,id);
+    scene.reg.AddComponent(id, CEnemy());
+    scene.reg.AddComponent(id, CHealth(200));
+    return id;
+}
+
 Entity SFactory::CreateBox(Scene& scene, vec2 pos, vec2 bounds, Entity id)
 {
     if (id == NULL)
@@ -50,6 +60,16 @@ Entity SFactory::CreateCamera(Scene& scene, vec2 pos, Entity id)
     scene.reg.AddComponent(id, CCamera());
     scene.reg.AddComponent(id, CTransform(pos));
     return id;
+}
+
+Entity SFactory::CreateProjectile(Scene& scene, vec2 pos, float radius, Entity id)
+{
+    if(id==NULL)
+        id = scene.reg.CreateEntity();
+    CreateCircle(scene,pos,radius,id);
+    scene.reg.AddComponent(id,CProjectile());
+    return id;
+    
 }
 
 Entity SFactory::CreateDamageEvent(Scene& scene, Entity target, float damage, Entity id)

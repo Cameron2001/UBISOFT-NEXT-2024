@@ -41,29 +41,37 @@ void ECSTestScene::Init()
     //reg.AddComponent(camera, CCamera());
     //reg.AddComponent(camera,CTransform({0,0}));
     //reg.GetSystem<SRender>()->Init(*this);
+    for (int i = 0; i < MAX_IDS; ++i)
+    {
+        reg.CreateEntity();
+    }
 }
 
 void ECSTestScene::Update(float dt)
 {
     dt/=1000.0f;
-    if(count<MAX_IDS)
+    if(count<MAX_IDS-1)
     {
         count++;
-        auto ID = reg.CreateEntity();
-        reg.AddComponent(ID,CCircleCollider(50));
+        /*reg.AddComponent(ID,CCircleCollider(50));
         reg.AddComponent(ID, CButton());
         reg.AddComponent(ID,CPlayer());
         reg.AddComponent(ID,CCollider());
         reg.AddComponent(ID,CRender());
-        reg.AddComponent(ID,CTransform());
         reg.AddComponent(ID,CHealth());
-        reg.AddComponent(ID,CRigidbody());
-        reg.AddComponent(ID,CProjectile());
+        reg.AddComponent(ID,CProjectile());*/
+        reg.AddComponent(count,CTransform());
+        reg.AddComponent(count,CRigidbody());
+        reg.AddComponent(count,CHealth());
+        reg.RemoveComponent<CTransform>(count);
+        reg.AddComponent(count,CTransform());
     }
     else
     {
-        reg.ClearAllEntities();
-        count = 1;
+        count = 0;
+        reg.ClearComponents<CTransform>();
+        reg.ClearComponents<CRigidbody>();
+        reg.ClearComponents<CHealth>();
     }
     reg.GetSystem<SRender>()->Update(*this);
     reg.GetSystem<SPlayer>()->Update(*this,dt);
