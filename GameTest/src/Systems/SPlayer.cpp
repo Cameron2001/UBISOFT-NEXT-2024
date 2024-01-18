@@ -1,5 +1,7 @@
 ﻿#include "stdafx.h"
 #include "SPlayer.h"
+
+#include "SFactory.h"
 #include "../../App/app.h"
 #include "../Components/CImpulseEvent.h"
 #include "../Util/Utils.h"
@@ -21,49 +23,39 @@ void SPlayer::Update(Scene& scene, float dt)
         bool left = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_LEFT, false) || App::IsKeyPressed('A');
         bool right = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_RIGHT, false) || App::IsKeyPressed('D');
         bool shoot  = App::IsKeyPressed(VK_SPACE);
+        bool turnLeft = App::IsKeyPressed('Q');
+        bool turnRight = App::IsKeyPressed('E');
         
 
         if (up)
         {
-            //transform.pos.y += player.moveSpeed;
-            //auto impulse = scene.reg.CreateEntity();
-            //scene.reg.AddComponent(impulse, CImpulseEvent(entityID,{0,1},player.moveSpeed));
             rigidbody->acceleration  = rigidbody->acceleration+ vec2{0,player->moveSpeed};
         }
         if (down)
         {
-            //transform.pos.y -= player.moveSpeed;
-            //auto impulse = scene.reg.CreateEntity();
-            //scene.reg.AddComponent(impulse, CImpulseEvent(entityID,{0,-1},player.moveSpeed));
             rigidbody->acceleration = rigidbody->acceleration - vec2{0,player->moveSpeed};
         }
         if (right)
         {
-            //transform.pos.x += player.moveSpeed;
-            //auto impulse = scene.reg.CreateEntity();
-            //scene.reg.AddComponent(impulse, CImpulseEvent(entityID,{1,0},player.moveSpeed));
             rigidbody->acceleration = rigidbody->acceleration + vec2{player->moveSpeed,0};
         }
         if (left)
         {
-            //transform.pos.x -= player.moveSpeed;
-            //uto impulse = scene.reg.CreateEntity();
-            //scene.reg.AddComponent(impulse, CImpulseEvent(entityID,{-1,0},player.moveSpeed));
             rigidbody->acceleration = rigidbody->acceleration - vec2{player->moveSpeed,0};
         }
         if(shoot && !shot)
         {
-            
-            auto bullet = scene.reg.CreateEntity();
-            scene.reg.AddComponent(bullet,CRigidbody());
-            scene.reg.AddComponent(bullet,CTransform({transform->pos.x+100,transform->pos.y-100}));
-            scene.reg.AddComponent(bullet, CCircleCollider(5));
-            scene.reg.AddComponent(bullet, CRender());
-            scene.reg.AddComponent(bullet, CCollider());
-            scene.reg.AddComponent(bullet, CProjectile());
-            scene.reg.GetComponent<CRigidbody>(bullet)->acceleration.x+=500;
-            scene.reg.GetComponent<CRigidbody>(bullet)->acceleration.y+=500;
+            //figure out some off set to make it not spawn on player
+            scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,{200,200},10,{1,0},10000);
             shot = true;
+        }
+        if(turnLeft)
+        {
+            scene.reg.GetSystem<SFactory>()->CreateAngularImpulseEvent(scene,entityID,100);
+        }
+        if(turnRight)
+        {
+            scene.reg.GetSystem<SFactory>()->CreateAngularImpulseEvent(scene,entityID,-100);
         }
         
         //scene->m_register.GetComponent<CTransform>(m_camera)->pos={transform->pos.x-APP_VIRTUAL_WIDTH/2,transform->pos.y-APP_VIRTUAL_HEIGHT/2};

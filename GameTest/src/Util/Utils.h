@@ -9,7 +9,7 @@ public:
 
     static float Sign(float value);
     static float Clamp(float value, float min, float max);
-    static vec2 Clamp(const vec2 vector, const float max_length);
+    static vec2 Clamp(vec2 vector,float max_length);
     static float Clamp(float value);
 
     static float Lerp(float a, float b, float t);
@@ -37,6 +37,7 @@ public:
     static float Dot(vec2 lhs, vec2 rhs);
     static float SignedAngle(vec2 from, vec2 to);
     static vec2 Project(vec2 a,vec2 b);
+    static vec2 Rotate(vec2 vec, float rot, vec2 point);
 private:
     Utils();
     ~Utils();

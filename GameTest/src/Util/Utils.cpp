@@ -198,6 +198,15 @@ vec2 Utils::Project(vec2 a, vec2 b)
     return b * (Dot(a, b) / LengthSquared(b));
 }
 
+vec2 Utils::Rotate(vec2 vec, float rot, vec2 point)
+{
+    rot*=Deg2Rad;
+    vec2 v;
+    v.x = (vec.x-point.x) * cosf(rot) - (vec.y-point.y) * sinf(rot) + point.x;
+    v.y = (vec.y-point.y) * cosf(rot) + (vec.x-point.x) * sinf(rot) + point.y; 
+    return v;
+}
+
 
 Utils::Utils()
 = default;

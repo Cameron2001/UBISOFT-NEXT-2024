@@ -3,8 +3,6 @@
 #include "../Components/Components.h"
 #include "../Systems/Systems.h"
 
-MenuScene::~MenuScene()
-= default;
 
 void MenuScene::Init()
 {

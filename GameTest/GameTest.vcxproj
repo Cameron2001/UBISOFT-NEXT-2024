@@ -182,12 +182,14 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
+    <ClInclude Include="src\Components\CAngularImpulseEvent.h" />
     <ClInclude Include="src\Components\CButton.h" />
     <ClInclude Include="src\Components\CButtonClickEvent.h" />
     <ClInclude Include="src\Components\CCamera.h" />
     <ClInclude Include="src\Components\CCircleCollider.h" />
     <ClInclude Include="src\Components\CCollider.h" />
     <ClInclude Include="src\Components\CColor.h" />
+    <ClInclude Include="src\Components\CDamage.h" />
     <ClInclude Include="src\Components\CDamageEvent.h" />
     <ClInclude Include="src\Components\CEnemy.h" />
     <ClInclude Include="src\Components\CHealth.h" />
@@ -195,7 +197,6 @@
     <ClInclude Include="src\Components\CLabel.h" />
     <ClInclude Include="src\Components\Components.h" />
     <ClInclude Include="src\Components\CPlayer.h" />
-    <ClInclude Include="src\Components\CProjectile.h" />
     <ClInclude Include="src\Components\CRender.h" />
     <ClInclude Include="src\Components\CRigidbody.h" />
     <ClInclude Include="src\Components\CSprite.h" />
@@ -215,7 +216,6 @@
     <ClInclude Include="src\Systems\SLabel.h" />
     <ClInclude Include="src\Systems\SPhysics.h" />
     <ClInclude Include="src\Systems\SPlayer.h" />
-    <ClInclude Include="src\Systems\SProjectile.h" />
     <ClInclude Include="src\Systems\SRender.h" />
     <ClInclude Include="src\Systems\Systems.h" />
     <ClInclude Include="src\Util\Utils.h" />
@@ -234,80 +234,7 @@
     <ClCompile Include="src\Core\ECSTestScene.cpp" />
     <ClCompile Include="src\Core\MenuScene.cpp" />
     <ClCompile Include="src\Core\PlayScene.cpp" />
-    <ClCompile Include="src\Core\Scene.cpp">
-      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <Optimization>Disabled</Optimization>
-      <SupportJustMyCode>true</SupportJustMyCode>
-      <AssemblerOutput>NoListing</AssemblerOutput>
-      <AssemblerListingLocation>x64\Debug\</AssemblerListingLocation>
-      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
-      <BrowseInformation>false</BrowseInformation>
-      <BrowseInformationFile>x64\Debug\</BrowseInformationFile>
-      <CompileAs>Default</CompileAs>
-      <ConformanceMode>Default</ConformanceMode>
-      <DiagnosticsFormat>Column</DiagnosticsFormat>
-      <DisableLanguageExtensions>false</DisableLanguageExtensions>
-      <ErrorReporting>Prompt</ErrorReporting>
-      <ExpandAttributedSource>false</ExpandAttributedSource>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <EnableASAN>false</EnableASAN>
-      <EnableFuzzer>false</EnableFuzzer>
-      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Precise</FloatingPointModel>
-      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <GenerateModuleDependencies>false</GenerateModuleDependencies>
-      <GenerateSourceDependencies>false</GenerateSourceDependencies>
-      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <IntrinsicFunctions>false</IntrinsicFunctions>
-      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
-      <LanguageStandard>Default</LanguageStandard>
-      <LanguageStandard_C>Default</LanguageStandard_C>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ModuleDependenciesFile>x64\Debug\</ModuleDependenciesFile>
-      <ModuleOutputFile>x64\Debug\</ModuleOutputFile>
-      <OmitDefaultLibName>false</OmitDefaultLibName>
-      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
-      <ObjectFileName>x64\Debug\</ObjectFileName>
-      <CallingConvention>Cdecl</CallingConvention>
-      <ProgramDataBaseFileName>x64\Debug\vc143.pdb</ProgramDataBaseFileName>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>x64\Debug\GameTest.pch</PrecompiledHeaderOutputFile>
-      <PreprocessToFile>false</PreprocessToFile>
-      <PreprocessKeepComments>false</PreprocessKeepComments>
-      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
-      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
-      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
-      <ShowIncludes>false</ShowIncludes>
-      <SourceDependenciesFile>x64\Debug\</SourceDependenciesFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
-      <SmallerTypeCheck>false</SmallerTypeCheck>
-      <SpectreMitigation>false</SpectreMitigation>
-      <StructMemberAlignment>Default</StructMemberAlignment>
-      <TrackerLogDirectory>x64\Debug\GameTest.tlog\</TrackerLogDirectory>
-      <TranslateIncludes>false</TranslateIncludes>
-      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
-      <TreatWarningAsError>false</TreatWarningAsError>
-      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <UseFullPaths>true</UseFullPaths>
-      <WarningLevel>Level3</WarningLevel>
-      <XMLDocumentationFileName>x64\Debug\</XMLDocumentationFileName>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <IntelJCCErratum>false</IntelJCCErratum>
-      <BuildStlModules>false</BuildStlModules>
-      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
-      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
-      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
-      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;_UNICODE;UNICODE;</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-      <LinkCompiled>true</LinkCompiled>
-    </ClCompile>
+    <ClCompile Include="src\Core\Scene.cpp" />
     <ClCompile Include="src\Systems\SButton.cpp" />
     <ClCompile Include="src\Systems\SDamage.cpp" />
     <ClCompile Include="src\Systems\SDelete.cpp" />
@@ -316,7 +243,6 @@
     <ClCompile Include="src\Systems\SLabel.cpp" />
     <ClCompile Include="src\Systems\SPhysics.cpp" />
     <ClCompile Include="src\Systems\SPlayer.cpp" />
-    <ClCompile Include="src\Systems\SProjectile.cpp" />
     <ClCompile Include="src\Systems\SRender.cpp" />
     <ClCompile Include="src\Util\Utils.cpp" />
     <ClCompile Include="src\Util\Vectors.cpp" />

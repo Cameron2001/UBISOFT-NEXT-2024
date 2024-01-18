@@ -12,6 +12,7 @@ void SPhysics::Update(Scene& scene, float dt)
     CheckCollisions(scene);
     ResolveCollisions(scene);
     ResolveImpulses(scene);
+    ResolveAngularImpulses(scene);
 }
 
 bool SPhysics::BoxBox(Scene& scene, Entity aID, Entity bID)
@@ -21,18 +22,16 @@ bool SPhysics::BoxBox(Scene& scene, Entity aID, Entity bID)
     CTransform* tf2 = scene.reg.GetComponent<CTransform>(bID);
     CBoxCollider* box1 = scene.reg.GetComponent<CBoxCollider>(aID);
     CBoxCollider* box2 = scene.reg.GetComponent<CBoxCollider>(bID);
-    float xMin1 = tf1->pos.x - box1->extents.x;
-    float xMax1 = tf1->pos.x + box1->extents.x;
-    float yMin1 = tf1->pos.y - box1->extents.y;
-    float yMax1 = tf1->pos.y + box1->extents.y;
-
-    float xMin2 = tf2->pos.x - box2->extents.x;
-    float xMax2 = tf2->pos.x + box2->extents.x;
-    float yMin2 = tf2->pos.y - box2->extents.y;
-    float yMax2 = tf2->pos.y + box2->extents.y;
-    
-    if(xMax1 < xMin2 || xMin1 > xMax2) return false;
-    if(yMax1 < yMin2 || yMin1 > yMax2) return false;
+    vec2 min1 = {tf1->pos.x - box1->extents.x,tf1->pos.y - box1->extents.y};
+    vec2 min2 = { tf2->pos.x - box2->extents.x,tf2->pos.y - box2->extents.y};
+    vec2 max1 = {tf1->pos.x + box1->extents.x, tf1->pos.y + box1->extents.y};
+    vec2 max2 = {tf2->pos.x + box2->extents.x, tf2->pos.y + box2->extents.y};
+    //max1 = Utils::Rotate(max1,tf1->rot,tf1->pos);
+    //max2 = Utils::Rotate(max2, tf2->rot,tf2->pos);
+    //min1 = Utils::Rotate(min1,tf1->rot,tf1->pos);
+    //min2 = Utils::Rotate(min2,tf2->rot,tf2->pos);
+    if(max1.x < min2.x || min1.x > max2.x) return false;
+    if(max1.y < min2.y || min1.y > max2.y) return false;
     
     vec2 diff= (tf2->pos)-(tf1->pos);
     vec2 mtv = {(box1->extents.x+box2->extents.x)-abs(diff.x),
@@ -109,12 +108,25 @@ void SPhysics::ResolveImpulses(Scene& scene)
         if(scene.reg.HasComponent<CRigidbody>(impulseEvent->target))
         {
             CRigidbody* rb = scene.reg.GetComponent<CRigidbody>(impulseEvent->target);
-            
-            rb->acceleration+=rb->acceleration+=impulseEvent->direction*impulseEvent->force;
+            rb->acceleration+=impulseEvent->direction*impulseEvent->force;
         }
         
     }
     scene.reg.ClearEntities<CImpulseEvent>();
+}
+
+void SPhysics::ResolveAngularImpulses(Scene& scene)
+{
+    for (auto impulse_id : scene.reg.GetEntities<CAngularImpulseEvent>())
+    {
+        CAngularImpulseEvent* impulseEvent = scene.reg.GetComponent<CAngularImpulseEvent>(impulse_id);
+        if(scene.reg.HasComponent<CRigidbody>(impulseEvent->target))
+        {
+            CRigidbody* rb = scene.reg.GetComponent<CRigidbody>(impulseEvent->target);
+            rb->angularAcceleration+=impulseEvent->force;
+        }
+    }
+    scene.reg.ClearEntities<CAngularImpulseEvent>();
 }
 
 
@@ -137,6 +149,16 @@ void SPhysics::ResolveCollisions(Scene& scene)
         else if(scene.reg.HasComponent<CRigidbody>(collision->entityB))
         {
             tfB->pos = tfB->pos+collision->mtv;
+        }
+        if(scene.reg.HasComponent<CDamage>(collision->entityA)&&scene.reg.HasComponent<CHealth>(collision->entityB))
+        {
+            auto damge = scene.reg.GetComponent<CDamage>(collision->entityA);
+            scene.reg.GetSystem<SFactory>()->CreateDamageEvent(scene,collision->entityB,damge->damage);
+        }
+        if(scene.reg.HasComponent<CDamage>(collision->entityB)&&scene.reg.HasComponent<CHealth>(collision->entityA))
+        {
+            auto damge = scene.reg.GetComponent<CDamage>(collision->entityB);
+            scene.reg.GetSystem<SFactory>()->CreateDamageEvent(scene,collision->entityA,damge->damage);
         }
     }
     
@@ -194,9 +216,14 @@ void SPhysics::ApplyKinematics(Scene& scene, float dt)
         
         rigidbody->velocity+= rigidbody->acceleration * dt;
         rigidbody->velocity*=pow((1-rigidbody->drag),dt);
-        transform->pos = transform->pos + rigidbody->velocity * dt;
+        transform->pos+= rigidbody->velocity * dt;
+
+        rigidbody->angularVelocity+=rigidbody->angularAcceleration*dt;
+        rigidbody->angularVelocity*=pow((1-rigidbody->angularDrag),dt);
+        transform->rot+= rigidbody->angularVelocity * dt;
 
         rigidbody->acceleration = {0,0};
+        rigidbody->angularAcceleration = 0;
     }
 }
 

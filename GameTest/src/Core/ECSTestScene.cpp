@@ -6,7 +6,6 @@
 #include "../Systems/SEnemy.h"
 #include "../Systems/SPhysics.h"
 #include "../Systems/SPlayer.h"
-#include "../Systems/SProjectile.h"
 #include "../Systems/SRender.h"
 
 void ECSTestScene::Init()
@@ -17,7 +16,6 @@ void ECSTestScene::Init()
     reg.CreateSystem<SButton>();
     reg.CreateSystem<SEnemy>();
     reg.CreateSystem<SDelete>();
-    reg.CreateSystem<SProjectile>();
 
     
     
@@ -34,7 +32,6 @@ void ECSTestScene::Init()
     reg.CreateComponentArray<CRigidbody>();
     reg.CreateComponentArray<CHealth>();
     reg.CreateComponentArray<CDeleteMe>();
-    reg.CreateComponentArray<CProjectile>();
 
     
     //auto camera = reg.CreateEntity();
@@ -76,7 +73,6 @@ void ECSTestScene::Update(float dt)
     reg.GetSystem<SRender>()->Update(*this);
     reg.GetSystem<SPlayer>()->Update(*this,dt);
     //reg.GetSystem<SPhysics>()->Update(this,dt);
-    reg.GetSystem<SProjectile>()->Update(*this,dt);
     reg.GetSystem<SDelete>()->Update(*this);
 }
 

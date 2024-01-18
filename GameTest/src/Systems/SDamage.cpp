@@ -13,4 +13,13 @@ void SDamage::Update(Scene& scene, float dt)
         health->health-= event->damage;
         
     }
+    
+    for (auto health_id : scene.reg.GetEntities<CHealth>())
+    {
+        CHealth* health = scene.reg.GetComponent<CHealth>(health_id);
+        if(health->health<=0)
+        {
+            scene.reg.AddComponent(health_id,CDeleteMe());
+        }
+    }
 }
