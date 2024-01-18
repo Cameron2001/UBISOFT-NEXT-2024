@@ -2,8 +2,9 @@
 #include "ISystem.h"
 #include "../Core/Scene.h"
 
-class SEnemy : public ISystem
+class SAudio : public ISystem
 {
 public:
-    void Update(Scene& scene, float dt);
+    void Update(Scene& scene);
+    
 };

@@ -15,9 +15,12 @@ void SPlayer::Update(Scene& scene, float dt)
 {
     for(auto entityID : scene.reg.GetEntities<CPlayer>())
     {
-        CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
+        //CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
         CPlayer* player = scene.reg.GetComponent<CPlayer>(entityID);
         CRigidbody* rigidbody = scene.reg.GetComponent<CRigidbody>(entityID);
+        CLabel* label = scene.reg.GetComponent<CLabel>(entityID);
+        CHealth* health = scene.reg.GetComponent<CHealth>(entityID);
+        
         bool up = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_UP, false) || App::IsKeyPressed('W');
         bool down = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_DOWN, false) || App::IsKeyPressed('S');
         bool left = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_LEFT, false) || App::IsKeyPressed('A');
@@ -25,6 +28,9 @@ void SPlayer::Update(Scene& scene, float dt)
         bool shoot  = App::IsKeyPressed(VK_SPACE);
         bool turnLeft = App::IsKeyPressed('Q');
         bool turnRight = App::IsKeyPressed('E');
+        //char buf[1000];
+        //sprintf(buf,"%f", health->health);
+        //label->labelText = buf;
         
 
         if (up)

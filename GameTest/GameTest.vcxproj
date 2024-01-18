@@ -183,6 +183,7 @@
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
     <ClInclude Include="src\Components\CAngularImpulseEvent.h" />
+    <ClInclude Include="src\Components\CAudioEvent.h" />
     <ClInclude Include="src\Components\CButton.h" />
     <ClInclude Include="src\Components\CButtonClickEvent.h" />
     <ClInclude Include="src\Components\CCamera.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="src\Core\PlayScene.h" />
     <ClInclude Include="src\Core\Registry.h" />
     <ClInclude Include="src\Core\Scene.h" />
+    <ClInclude Include="src\Systems\SAudio.h" />
     <ClInclude Include="src\Systems\SButton.h" />
     <ClInclude Include="src\Systems\SDamage.h" />
     <ClInclude Include="src\Systems\SDelete.h" />
@@ -235,6 +237,7 @@
     <ClCompile Include="src\Core\MenuScene.cpp" />
     <ClCompile Include="src\Core\PlayScene.cpp" />
     <ClCompile Include="src\Core\Scene.cpp" />
+    <ClCompile Include="src\Systems\SAudio.cpp" />
     <ClCompile Include="src\Systems\SButton.cpp" />
     <ClCompile Include="src\Systems\SDamage.cpp" />
     <ClCompile Include="src\Systems\SDelete.cpp" />

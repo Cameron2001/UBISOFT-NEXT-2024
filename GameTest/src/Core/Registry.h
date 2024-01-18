@@ -84,9 +84,7 @@ inline Entity Registry::CreateEntity()
 inline void Registry::DeleteEntity(Entity entityID)
 {
     //auto pos = std::find(m_entityArray.begin(),m_entityArray.end(), entityID);
-    //if(pos!= m_entityArray.end())
     AddComponent(entityID,CDeleteMe());
-    
 }
 
 inline void Registry::ClearAllEntities()
@@ -101,8 +99,6 @@ template <typename T>
 bool Registry::HasComponent(Entity entityID)
 {
     //assert("Has Component, Array not found" && HasComponentArray<T>());
-    /*if(!HasComponentArray<T>())
-        return false;*/
     return GetComponentArray<T>()->HasComponent(entityID);
 }
 
@@ -110,8 +106,6 @@ template <typename T>
 T* Registry::GetComponent(Entity entityID)
 {
     //assert("Get Component, Array not found" && HasComponentArray<T>());
-    /*if(!HasComponentArray<T>())
-        return nullptr;*/
     return GetComponentArray<T>()->GetComponent(entityID);
 }
 
@@ -119,8 +113,6 @@ template <typename T>
 void Registry::AddComponent(Entity entityID, T component)
 {
     //assert("Add Component, Array not found" && HasComponentArray<T>());
-    /*if(!HasComponentArray<T>())
-        CreateComponentArray<T>();*/
     GetComponentArray<T>()->AddComponent(entityID,component);
 }
 
@@ -128,24 +120,20 @@ template <typename T>
 void Registry::RemoveComponent(Entity entityID)
 {
     //assert("Remove Component, Array not found" && HasComponentArray<T>());
-    //if(HasComponentArray<T>())
-        GetComponentArray<T>()->RemoveComponent(entityID);
+    GetComponentArray<T>()->RemoveComponent(entityID);
 }
 
 template <typename T>
 void Registry::CreateComponentArray()
 {
     //assert("Create array, Array found" && !HasComponentArray<T>());
-    //if(!HasComponentArray<T>())
-        m_componentMap.insert({typeid(T).name(),new ComponentArray<T>()});
+    m_componentMap.insert({typeid(T).name(),new ComponentArray<T>()});
 }
 
 template <typename T>
 ComponentArray<T>* Registry::GetComponentArray()
 {
     //assert("Get Component Array, Array not found" && HasComponentArray<T>());
-    /*if(!HasComponentArray<T>())
-        return {};*/
     
     return static_cast<ComponentArray<T>*>(m_componentMap.at(typeid(T).name()));
 }

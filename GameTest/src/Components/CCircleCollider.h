@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "../Util/Vectors.h"
 struct CCircleCollider
 {
     float radius;

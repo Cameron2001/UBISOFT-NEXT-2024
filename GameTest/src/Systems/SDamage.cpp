@@ -22,4 +22,5 @@ void SDamage::Update(Scene& scene, float dt)
             scene.reg.AddComponent(health_id,CDeleteMe());
         }
     }
+    scene.reg.ClearEntities<CDamageEvent>();
 }
