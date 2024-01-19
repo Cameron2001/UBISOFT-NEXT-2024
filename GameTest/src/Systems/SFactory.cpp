@@ -19,7 +19,8 @@ Entity SFactory::CreateButton(Scene& scene, vec2 pos, vec2 bounds,Entity id)
 {
     if (id == NULL)
         id = scene.reg.CreateEntity();
-    CreateBox(scene,pos,bounds,id);
+    scene.reg.AddComponent(id,CButton(CButton::ButtonTypes::START,{50,50}));
+    scene.reg.AddComponent(id,CTransform(pos));
     return id;
 }
 

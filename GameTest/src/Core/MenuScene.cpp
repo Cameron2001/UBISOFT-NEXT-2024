@@ -10,7 +10,6 @@ void MenuScene::Init()
     reg.CreateSystem<SButton>();
 
     const auto button = reg.CreateEntity();
-    reg.AddComponent(button, CButton());
     reg.AddComponent(button,CTransform({500,500}));
     reg.AddComponent(button,CBoxCollider({100,100}));
     reg.AddComponent(button,CRender());

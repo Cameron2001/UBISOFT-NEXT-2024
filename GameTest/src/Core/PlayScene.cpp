@@ -14,6 +14,7 @@ void PlayScene::Init()
     reg.CreateSystem<SEnemy>();
     reg.CreateSystem<SFactory>();
     reg.CreateSystem<SDamage>();
+    reg.CreateSystem<SButton>();
     
     reg.CreateComponentArray<CTransform>();
     reg.CreateComponentArray<CRigidbody>();
@@ -26,18 +27,20 @@ void PlayScene::Init()
     reg.CreateComponentArray<CEnemy>();
     reg.CreateComponentArray<CHealth>();
     reg.CreateComponentArray<CDamage>();
+    reg.CreateComponentArray<CButton>();
     
     
-   
+   SFactory* factory = reg.GetSystem<SFactory>();
     
     
     //reg.GetSystem<SFactory>()->CreateBox(*this, {300,300}, {500,20});
     //reg.GetSystem<SFactory>()->CreateEnemy(*this,{100,500},{54,55},50);
     reg.CreateEntity();
-    auto circle = reg.GetSystem<SFactory>()->CreateCircle(*this, {300,300}, 30);
-    auto player = reg.GetSystem<SFactory>()->CreatePlayer(*this,{300,500},50);
-    auto box = reg.GetSystem<SFactory>()->CreateBox(*this, {900,300}, {20,500});
-    auto enemy = reg.GetSystem<SFactory>()->CreateEnemy(*this, {800,500},{35,35},100);
+    auto circle = factory->CreateCircle(*this, {300,300}, 30);
+    auto player = factory->CreatePlayer(*this,{300,500},50);
+    auto box = factory->CreateBox(*this, {900,300}, {20,500});
+    auto enemy = factory->CreateEnemy(*this, {800,500},{35,35},100);
+    auto button = factory->CreateButton(*this,{300,300},{100,100});
     
     reg.AddComponent(circle,CRigidbody());
     //reg.GetSystem<SFactory>()->CreateButton(*this, {500,600},{30,30});
@@ -52,6 +55,7 @@ void PlayScene::Update(float dt)
     reg.GetSystem<SPhysics>()->Update(*this,dt);
     reg.GetSystem<SPlayer>()->Update(*this,dt);
     reg.GetSystem<SDamage>()->Update(*this,dt);
+    reg.GetSystem<SButton>()->Update(*this,dt);
 }
 
 void PlayScene::Render()

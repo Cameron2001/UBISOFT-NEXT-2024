@@ -62,7 +62,7 @@ void SPlayer::Update(Scene& scene, float dt)
         if(player->state==CPlayer::States::RELOADING)
         {
             player->timer +=dt;
-            if(player->timer>3)
+            if(player->timer>player->shootCooldown)
             {
                 player->state = CPlayer::States::IDLE;
             }

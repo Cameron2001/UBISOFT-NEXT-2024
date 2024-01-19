@@ -253,7 +253,6 @@
     <ClInclude Include="src\Components\CBoxCollider.h" />
     <ClInclude Include="src\Components\CAudio.h" />
     <ClInclude Include="src\Components\CCollisionEvent.h" />
-    <Content Include="src\Graphics\NewFile1.txt" />
     <ClInclude Include="src\Systems\ISystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
