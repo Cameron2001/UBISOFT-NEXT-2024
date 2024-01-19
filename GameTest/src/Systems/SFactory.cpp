@@ -7,7 +7,7 @@ Entity SFactory::CreatePlayer(Scene& scene, vec2 pos, float radius, Entity id)
 {
     if (id == NULL)
         id = scene.reg.CreateEntity();
-    //CreateBox(scene,pos,bounds,id);
+    //CreateBox(scene,pos,{25,25},id);
     CreateCircle(scene,pos,radius,id);
     scene.reg.AddComponent(id, CPlayer(10,1000));
     scene.reg.AddComponent(id,CRigidbody());
@@ -28,7 +28,6 @@ Entity SFactory::CreateEnemy(Scene& scene, vec2 pos, vec2 bounds, float hp, Enti
     if(id == NULL)
         id = scene.reg.CreateEntity();
     CreateBox(scene,pos,bounds,id);
-    //CreateCircle(scene,pos,50,id);
     scene.reg.AddComponent(id, CEnemy());
     scene.reg.AddComponent(id, CHealth(hp));
     scene.reg.AddComponent(id, CRigidbody());
@@ -40,7 +39,6 @@ Entity SFactory::CreateBox(Scene& scene, vec2 pos, vec2 bounds,  Entity id)
     if (id == NULL)
         id = scene.reg.CreateEntity();
     scene.reg.AddComponent(id, CTransform(pos));
-    //scene.reg.AddComponent(id, CRigidbody());
     scene.reg.AddComponent(id, CRender());
     scene.reg.AddComponent(id,CBoxCollider(bounds));
     return  id;
@@ -51,7 +49,6 @@ Entity SFactory::CreateCircle(Scene& scene, vec2 pos, float radius, Entity id)
     if (id == NULL)
         id = scene.reg.CreateEntity();
     scene.reg.AddComponent(id, CTransform(pos));
-    //scene.reg.AddComponent(id, CRigidbody());
     scene.reg.AddComponent(id, CRender());
     scene.reg.AddComponent(id,CCircleCollider(radius));
     return id;
