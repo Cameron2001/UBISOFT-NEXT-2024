@@ -1,9 +1,18 @@
 ﻿#pragma once
 struct CPlayer
 {
-    enum State
+    enum class States
     {
-        
+        IDLE,
+        SHOOTING,
+        RELOADING
     };
-    float moveSpeed = 500;
+    States state = States::IDLE;
+    float moveSpeed;
+    int ammo;
+    float rot;
+    float timer = 0.0f;
+    float damageScale = 1.0f;
+    float aimLength = 50.0f;
+    CPlayer(int a,float speed=500, float rotation = 0):moveSpeed(speed),ammo(a),rot(rotation){}
 };

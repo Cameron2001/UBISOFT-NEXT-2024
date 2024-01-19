@@ -6,41 +6,51 @@
 
 void SRender::Init(Scene& scene)
 {
-    //cameraTransform = scene.reg.GetComponent<CTransform>(scene.reg.GetEntities<CCamera>()[0]);
 }
 
 void SRender::Update(Scene& scene)
 {
     for(auto entityID : scene.reg.GetEntities<CRender>())
     {
+        CRender* render = scene.reg.GetComponent<CRender>(entityID);
         CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
-        vec3 color = {1,1,1};
-        if(scene.reg.HasComponent<CColor>(entityID))
-            color = scene.reg.GetComponent<CColor>(entityID)->rgbValue;
 
         if(scene.reg.HasComponent<CBoxCollider>(entityID))
         {
             CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(entityID);
-            DrawSquare(transform->pos,box->extents,transform->rot,color);
+            DrawSquare(transform->pos,box->extents,render->Color);
         }
         if(scene.reg.HasComponent<CCircleCollider>(entityID))
         {
             CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(entityID);
-            DrawCircle(transform->pos,circle->radius,16,color);
+            DrawCircle(transform->pos,circle->radius,8,render->Color);
         }
-        
     }
+    DrawPlayerAim(scene);
 }
 
-void SRender::DrawSquare(vec2 pos, vec2 extents, float rotation, vec3 color)
+void SRender::DrawPlayerAim(Scene& scene)
+{
+    auto player = scene.reg.GetEntities<CPlayer>()[0];
+    CTransform* playerTransform = scene.reg.GetComponent<CTransform>(player);
+    CPlayer* playerComponent = scene.reg.GetComponent<CPlayer>(player);
+    vec2 dir = {cos(playerComponent->rot),sin(playerComponent->rot)};
+    dir*=playerComponent->aimLength;
+    App::DrawLine(playerTransform->pos.x,playerTransform->pos.y, playerTransform->pos.x*dir.x,playerTransform->pos.y*dir.y);
+}
+
+void SRender::DrawSquare(vec2 pos, vec2 extents, vec3 color)
 {
     //pos.x = pos.x * cosf(rotation) - pos.y * sinf(rotation);
     //pos.y = pos.x * sinf(rotation) + pos.y * cosf(rotation);
-    //pos-=cameraTransform->pos;
-    vec2 bottomLeft = Utils::Rotate({pos.x-extents.x,pos.y-extents.y},rotation,pos);
-    vec2 bottomRight = Utils::Rotate({pos.x+extents.x, pos.y-extents.y},rotation,pos);
-    vec2 topLeft = Utils::Rotate({pos.x-extents.x,pos.y+extents.y},rotation,pos);
-    vec2 topRight = Utils::Rotate({pos.x+extents.x, pos.y+extents.y},rotation,pos);
+    vec2 bottomLeft = {pos.x-extents.x,pos.y-extents.y};
+    vec2 bottomRight = {pos.x+extents.x, pos.y-extents.y};
+    vec2 topLeft = {pos.x-extents.x,pos.y+extents.y};
+    vec2 topRight = {pos.x+extents.x, pos.y+extents.y};
+    //vec2 bottomLeft = Utils::Rotate({pos.x-extents.x,pos.y-extents.y},rotation,pos);
+    //vec2 bottomRight = Utils::Rotate({pos.x+extents.x, pos.y-extents.y},rotation,pos);
+    //vec2 topLeft = Utils::Rotate({pos.x-extents.x,pos.y+extents.y},rotation,pos);
+    //vec2 topRight = Utils::Rotate({pos.x+extents.x, pos.y+extents.y},rotation,pos);
     
     App::DrawLine(bottomLeft.x,bottomLeft.y, topLeft.x,topLeft.y,color.x,color.y,color.z); //bottom left to top left
     App::DrawLine(topLeft.x,topLeft.y,topRight.x,topRight.y,color.x,color.y,color.z); //top left to top right
@@ -52,7 +62,6 @@ void SRender::DrawSquare(vec2 pos, vec2 extents, float rotation, vec3 color)
 
 void SRender::DrawCircle(vec2 centre, float radius, int segments, vec3 color)
 {
-    //centre-=cameraTransform->pos;
     for (int i = 0; i < segments; i++)
     {
         float angle = Utils::Deg2Rad*360/segments;

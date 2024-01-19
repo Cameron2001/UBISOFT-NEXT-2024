@@ -4,7 +4,6 @@
 
 #include "ComponentArray.h"
 #include "IComponentArray.h"
-#include "../Components/CDeleteMe.h"
 #include "../Systems/ISystem.h"
 
 class Registry
@@ -84,7 +83,14 @@ inline Entity Registry::CreateEntity()
 inline void Registry::DeleteEntity(Entity entityID)
 {
     //auto pos = std::find(m_entityArray.begin(),m_entityArray.end(), entityID);
-    AddComponent(entityID,CDeleteMe());
+    m_entityArray.erase(std::remove(m_entityArray.begin(), m_entityArray.end(), entityID), m_entityArray.end());
+    for (auto element : m_componentMap)
+    {
+        if (element.second->HasComponent(entityID))
+            element.second->RemoveComponent(entityID);
+    }
+    freeList.push_back(entityID);
+    //AddComponent(entityID,CDeleteMe());
 }
 
 inline void Registry::ClearAllEntities()

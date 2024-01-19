@@ -13,9 +13,7 @@ private:
     bool BoxCircle(Scene& scene, Entity boxID, Entity circleID);
     
     bool CircleCircle(Scene& scene, Entity aID, Entity bID);
-
-    void ResolveImpulses(Scene& scene);
-    void ResolveAngularImpulses(Scene& scene);
+    
     void ResolveCollisions(Scene& scene);
 
     void CheckCollisions(Scene& scene);

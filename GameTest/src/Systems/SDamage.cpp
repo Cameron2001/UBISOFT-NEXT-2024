@@ -19,7 +19,7 @@ void SDamage::Update(Scene& scene, float dt)
         CHealth* health = scene.reg.GetComponent<CHealth>(health_id);
         if(health->health<=0)
         {
-            scene.reg.AddComponent(health_id,CDeleteMe());
+            scene.reg.DeleteEntity(health_id);
         }
     }
     scene.reg.ClearEntities<CDamageEvent>();

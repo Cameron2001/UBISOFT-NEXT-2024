@@ -5,10 +5,6 @@ struct CRigidbody
     vec2 velocity;
     vec2 acceleration;
     float drag;
-
-    float angularVelocity = 0;
-    float angularAcceleration=0;
-    float angularDrag=0.8;
     
-    CRigidbody(vec2 velo = {0,0}, vec2 accel = {0,0}, float d = 0.8):velocity(velo),acceleration(accel), drag(d){}
+    CRigidbody(vec2 velo = {0,0}, vec2 accel = {0,0}, float d = 0.0):velocity(velo),acceleration(accel), drag(d){}
 };

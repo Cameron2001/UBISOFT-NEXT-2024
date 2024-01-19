@@ -2,17 +2,14 @@
 #include "SPhysics.h"
 
 #include "SFactory.h"
-#include "../Components/CImpulseEvent.h"
 #include "../Util/Utils.h"
 #include "../Components/Components.h"
 
 void SPhysics::Update(Scene& scene, float dt)
 {
-    ApplyKinematics(scene,dt);
     CheckCollisions(scene);
     ResolveCollisions(scene);
-    ResolveImpulses(scene);
-    ResolveAngularImpulses(scene);
+    ApplyKinematics(scene,dt);
 }
 
 bool SPhysics::BoxBox(Scene& scene, Entity aID, Entity bID)
@@ -26,27 +23,25 @@ bool SPhysics::BoxBox(Scene& scene, Entity aID, Entity bID)
     vec2 min2 = { tf2->pos.x - box2->extents.x,tf2->pos.y - box2->extents.y};
     vec2 max1 = {tf1->pos.x + box1->extents.x, tf1->pos.y + box1->extents.y};
     vec2 max2 = {tf2->pos.x + box2->extents.x, tf2->pos.y + box2->extents.y};
-    //max1 = Utils::Rotate(max1,tf1->rot,tf1->pos);
-    //max2 = Utils::Rotate(max2, tf2->rot,tf2->pos);
-    //min1 = Utils::Rotate(min1,tf1->rot,tf1->pos);
-    //min2 = Utils::Rotate(min2,tf2->rot,tf2->pos);
     if(max1.x < min2.x || min1.x > max2.x) return false;
     if(max1.y < min2.y || min1.y > max2.y) return false;
     
-    vec2 diff= (tf2->pos)-(tf1->pos);
+    vec2 diff= tf2->pos-tf1->pos;
+    
+    //subtract smaller from bigger
     vec2 mtv = {(box1->extents.x+box2->extents.x)-abs(diff.x),
         (box1->extents.y+box2->extents.y) - abs(diff.y)};
     if(mtv.x < mtv.y)
     {
-        mtv.x*=-Utils::Sign(diff.x);
+        mtv.x*=-Utils::Sign(abs(diff.x));
         mtv.y=0;
     }
     else
     {
         mtv.x = 0.0f;
-        mtv.y*=-Utils::Sign(diff.y);
+        mtv.y*=-Utils::Sign(abs(diff.y));
     }
-    scene.reg.GetSystem<SFactory>()->CreateCollisionEvent(scene,aID,bID,mtv);
+    scene.reg.GetSystem<SFactory>()->CreateCollisionEvent(scene,aID,bID,mtv,{0,0});
     return true;
 }
 
@@ -66,18 +61,14 @@ bool SPhysics::BoxCircle(Scene& scene, Entity boxID, Entity circleID)
     {
         vec2 diff = tf2->pos-closest;
         float minDist = distance-circle->radius;
+        vec2 normal = Utils::Normalize(diff);
         vec2 mtv = Utils::Normalize(diff)*minDist;
-
-        scene.reg.GetSystem<SFactory>()->CreateCollisionEvent(scene,boxID,circleID,mtv);
+        scene.reg.GetSystem<SFactory>()->CreateCollisionEvent(scene,boxID,circleID,mtv,normal);
         return true;
     }
     return false;
     
 }
-
-
-
-
 
 
 bool SPhysics::CircleCircle(Scene& scene, Entity aID, Entity bID)
@@ -92,41 +83,12 @@ bool SPhysics::CircleCircle(Scene& scene, Entity aID, Entity bID)
     {
         float minDist = distance-radiiSum;
         vec2 diff = tf2->pos-tf1->pos;
+        vec2 normal = Utils::Normalize(diff);
         vec2 mtv = Utils::Normalize(diff)*minDist;
-
-        scene.reg.GetSystem<SFactory>()->CreateCollisionEvent(scene,aID,bID,mtv);
+        scene.reg.GetSystem<SFactory>()->CreateCollisionEvent(scene,aID,bID,mtv,normal);
         return true;
     }
     return false;
-}
-
-void SPhysics::ResolveImpulses(Scene& scene)
-{
-    for (auto impulse_id : scene.reg.GetEntities<CImpulseEvent>())
-    {
-        auto impulseEvent = scene.reg.GetComponent<CImpulseEvent>(impulse_id);
-        if(scene.reg.HasComponent<CRigidbody>(impulseEvent->target))
-        {
-            CRigidbody* rb = scene.reg.GetComponent<CRigidbody>(impulseEvent->target);
-            rb->acceleration+=impulseEvent->direction*impulseEvent->force;
-        }
-        
-    }
-    scene.reg.ClearEntities<CImpulseEvent>();
-}
-
-void SPhysics::ResolveAngularImpulses(Scene& scene)
-{
-    for (auto impulse_id : scene.reg.GetEntities<CAngularImpulseEvent>())
-    {
-        CAngularImpulseEvent* impulseEvent = scene.reg.GetComponent<CAngularImpulseEvent>(impulse_id);
-        if(scene.reg.HasComponent<CRigidbody>(impulseEvent->target))
-        {
-            CRigidbody* rb = scene.reg.GetComponent<CRigidbody>(impulseEvent->target);
-            rb->angularAcceleration+=impulseEvent->force;
-        }
-    }
-    scene.reg.ClearEntities<CAngularImpulseEvent>();
 }
 
 
@@ -139,17 +101,34 @@ void SPhysics::ResolveCollisions(Scene& scene)
         CTransform* tfB = scene.reg.GetComponent<CTransform>(collision->entityB);
         if(scene.reg.HasComponent<CRigidbody>(collision->entityA)&&scene.reg.HasComponent<CRigidbody>(collision->entityB))
         {
+            CRigidbody* bodyA = scene.reg.GetComponent<CRigidbody>(collision->entityA);
+            CRigidbody* bodyB = scene.reg.GetComponent<CRigidbody>(collision->entityB);
+            vec2 projectionA = Utils::Project(bodyA->velocity,collision->normal);
+            vec2 projectionB = Utils::Project(bodyB->velocity,collision->normal);
+            
             tfA->pos = tfA->pos+(collision->mtv/2);
-            tfB->pos = tfB->pos-(collision->mtv/2); 
+            tfB->pos = tfB->pos-(collision->mtv/2);
+
+            bodyA->velocity-=projectionA;
+            bodyB->velocity+=projectionB;
         }
         else if(scene.reg.HasComponent<CRigidbody>(collision->entityA))
         {
+            CRigidbody* body = scene.reg.GetComponent<CRigidbody>(collision->entityA);
+            vec2 projection = Utils::Project(body->velocity,collision->normal);
             tfA->pos = tfA->pos+collision->mtv;
+            body->velocity+=projection;
+            
         }
-        else if(scene.reg.HasComponent<CRigidbody>(collision->entityB))
+        else
         {
-            tfB->pos = tfB->pos+collision->mtv;
+            CRigidbody* body = scene.reg.GetComponent<CRigidbody>(collision->entityB);
+            vec2 projection = Utils::Project(body->velocity,collision->normal);
+            tfB->pos = tfB->pos-collision->mtv;
+            body->velocity-=projection;
+            
         }
+            
         if(scene.reg.HasComponent<CDamage>(collision->entityA)&&scene.reg.HasComponent<CHealth>(collision->entityB))
         {
             auto damge = scene.reg.GetComponent<CDamage>(collision->entityA);
@@ -169,14 +148,52 @@ void SPhysics::ResolveCollisions(Scene& scene)
 
 void SPhysics::CheckCollisions(Scene& scene)
 {
+    const std::vector<unsigned> boxes = scene.reg.GetEntities<CBoxCollider>();
+    const std::vector<unsigned> circles = scene.reg.GetEntities<CCircleCollider>();
+    for (size_t i =0; i< boxes.size();i++)
+    {
+        for(size_t j = i+1; j<boxes.size(); j++)
+        {
+            BoxBox(scene,boxes[i],boxes[j]);
+        }
+    }
+    for (size_t i =0; i< circles.size();i++)
+    {
+        for(size_t j = i+1; j<circles.size(); j++)
+        {
+            CircleCircle(scene,circles[i],circles[j]);
+        }
+    }
+    for (size_t i =0; i< boxes.size();i++)
+    {
+        for(size_t j = 0; j<circles.size(); j++)
+        {
+            BoxCircle(scene,boxes[i],circles[j]);
+        }
+    }
+    
+
+
+
+    
+    /*const std::vector<unsigned> rb = scene.reg.GetEntities<CRigidbody>();
     const std::vector<unsigned> colliders = scene.reg.GetEntities<CCollider>();
-    for (size_t i =0; i< colliders.size();i++)
+    for (size_t i = 0; i<rb.size();i++)
+    {
+        
+        for(size_t j = 0; j<colliders.size(); j++)
+        {
+            if(rb[i]!=colliders[i])
+                CheckCollision(scene, rb[i],colliders[j]);
+        }
+    }*/
+    /*for (size_t i =0; i< colliders.size();i++)
     {
         for(size_t j = i+1; j<colliders.size(); j++)
         {
             CheckCollision(scene, colliders[i],colliders[j]);
         }
-    } 
+    } */
 }
 
 bool SPhysics::CheckCollision(Scene& scene, Entity a, Entity b)
@@ -218,12 +235,7 @@ void SPhysics::ApplyKinematics(Scene& scene, float dt)
         rigidbody->velocity*=pow((1-rigidbody->drag),dt);
         transform->pos+= rigidbody->velocity * dt;
 
-        rigidbody->angularVelocity+=rigidbody->angularAcceleration*dt;
-        rigidbody->angularVelocity*=pow((1-rigidbody->angularDrag),dt);
-        transform->rot+= rigidbody->angularVelocity * dt;
-
         rigidbody->acceleration = {0,0};
-        rigidbody->angularAcceleration = 0;
     }
 }
 

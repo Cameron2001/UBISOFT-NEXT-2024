@@ -17,7 +17,6 @@ void MenuScene::Init()
 
     const auto camera = reg.CreateEntity();
     reg.AddComponent(camera,CTransform({0,0}));
-    reg.AddComponent(camera,CCamera());
 
     reg.GetSystem<SRender>()->Init(*this);
 }

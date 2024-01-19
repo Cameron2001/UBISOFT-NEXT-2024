@@ -182,25 +182,19 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
-    <ClInclude Include="src\Components\CAngularImpulseEvent.h" />
     <ClInclude Include="src\Components\CAudioEvent.h" />
     <ClInclude Include="src\Components\CButton.h" />
     <ClInclude Include="src\Components\CButtonClickEvent.h" />
-    <ClInclude Include="src\Components\CCamera.h" />
     <ClInclude Include="src\Components\CCircleCollider.h" />
-    <ClInclude Include="src\Components\CCollider.h" />
-    <ClInclude Include="src\Components\CColor.h" />
     <ClInclude Include="src\Components\CDamage.h" />
     <ClInclude Include="src\Components\CDamageEvent.h" />
     <ClInclude Include="src\Components\CEnemy.h" />
     <ClInclude Include="src\Components\CHealth.h" />
-    <ClInclude Include="src\Components\CImpulseEvent.h" />
     <ClInclude Include="src\Components\CLabel.h" />
     <ClInclude Include="src\Components\Components.h" />
     <ClInclude Include="src\Components\CPlayer.h" />
     <ClInclude Include="src\Components\CRender.h" />
     <ClInclude Include="src\Components\CRigidbody.h" />
-    <ClInclude Include="src\Components\CSprite.h" />
     <ClInclude Include="src\Components\CTransform.h" />
     <ClInclude Include="src\Core\ComponentArray.h" />
     <ClInclude Include="src\Core\ECSTestScene.h" />
@@ -212,7 +206,6 @@
     <ClInclude Include="src\Systems\SAudio.h" />
     <ClInclude Include="src\Systems\SButton.h" />
     <ClInclude Include="src\Systems\SDamage.h" />
-    <ClInclude Include="src\Systems\SDelete.h" />
     <ClInclude Include="src\Systems\SEnemy.h" />
     <ClInclude Include="src\Systems\SFactory.h" />
     <ClInclude Include="src\Systems\SLabel.h" />
@@ -240,7 +233,6 @@
     <ClCompile Include="src\Systems\SAudio.cpp" />
     <ClCompile Include="src\Systems\SButton.cpp" />
     <ClCompile Include="src\Systems\SDamage.cpp" />
-    <ClCompile Include="src\Systems\SDelete.cpp" />
     <ClCompile Include="src\Systems\SEnemy.cpp" />
     <ClCompile Include="src\Systems\SFactory.cpp" />
     <ClCompile Include="src\Systems\SLabel.cpp" />
@@ -261,7 +253,6 @@
     <ClInclude Include="src\Components\CBoxCollider.h" />
     <ClInclude Include="src\Components\CAudio.h" />
     <ClInclude Include="src\Components\CCollisionEvent.h" />
-    <Content Include="src\Components\CDeleteMe.h" />
     <Content Include="src\Graphics\NewFile1.txt" />
     <ClInclude Include="src\Systems\ISystem.h" />
   </ItemGroup>
