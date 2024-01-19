@@ -58,15 +58,15 @@ Entity SFactory::CreateCircle(Scene& scene, vec2 pos, float radius, Entity id)
 }
 
 
-Entity SFactory::CreateProjectile(Scene& scene, vec2 pos, float radius, float force, float angle, Entity id)
+Entity SFactory::CreateProjectile(Scene& scene, vec2 pos, float radius, float force, float angle, float health, Entity id)
 {
     if(id==NULL)
         id = scene.reg.CreateEntity();
     vec2 dir = {cos(angle),sin(angle)};
-    CreateCircle(scene,pos+(dir*radius*10),radius,id);
-    scene.reg.AddComponent(id, CHealth(1));
-    scene.reg.AddComponent(id,CRigidbody());
-    scene.reg.GetComponent<CRigidbody>(id)->drag=0;
+    //the 50 is player radius
+    CreateCircle(scene,pos+(dir*(radius+50.0f)),radius,id);
+    scene.reg.AddComponent(id, CHealth(health));
+    scene.reg.AddComponent(id,CRigidbody(0));
     scene.reg.GetComponent<CRigidbody>(id)->acceleration+=dir*force;
     return id;
     

@@ -26,17 +26,23 @@ void SRender::Update(Scene& scene)
             DrawCircle(transform->pos,circle->radius,8,render->Color);
         }
     }
-    DrawPlayerAim(scene);
+    DrawPlayer(scene);
 }
 
-void SRender::DrawPlayerAim(Scene& scene)
+void SRender::DrawPlayer(Scene& scene)
 {
     auto player = scene.reg.GetEntities<CPlayer>()[0];
     CTransform* playerTransform = scene.reg.GetComponent<CTransform>(player);
     CPlayer* playerComponent = scene.reg.GetComponent<CPlayer>(player);
     vec2 dir = {cos(playerComponent->rot),sin(playerComponent->rot)};
+    vec3 color = {1.0f,1.0f,1.0f};
     dir*=playerComponent->aimLength;
-    App::DrawLine(playerTransform->pos.x,playerTransform->pos.y, playerTransform->pos.x*dir.x,playerTransform->pos.y*dir.y);
+    auto playerState = playerComponent->state;
+    if (playerState == CPlayer::States::SHOOTING)
+        color = {1.0f,0.0f,0.0f};
+    if (playerState==CPlayer::States::RELOADING)
+        color = {1.0f,1.0f,0.0f};
+    App::DrawLine(playerTransform->pos.x,playerTransform->pos.y, playerTransform->pos.x*dir.x,playerTransform->pos.y*dir.y,color.x,color.y,color.z);
 }
 
 void SRender::DrawSquare(vec2 pos, vec2 extents, vec3 color)

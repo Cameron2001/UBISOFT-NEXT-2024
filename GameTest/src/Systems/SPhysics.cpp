@@ -27,7 +27,7 @@ bool SPhysics::BoxBox(Scene& scene, Entity aID, Entity bID)
     if(max1.y < min2.y || min1.y > max2.y) return false;
     
     vec2 diff= tf2->pos-tf1->pos;
-    
+    vec2 normal;
     //subtract smaller from bigger
     vec2 mtv = {(box1->extents.x+box2->extents.x)-abs(diff.x),
         (box1->extents.y+box2->extents.y) - abs(diff.y)};
@@ -41,7 +41,7 @@ bool SPhysics::BoxBox(Scene& scene, Entity aID, Entity bID)
         mtv.x = 0.0f;
         mtv.y*=-Utils::Sign(abs(diff.y));
     }
-    scene.reg.GetSystem<SFactory>()->CreateCollisionEvent(scene,aID,bID,mtv,{0,0});
+    scene.reg.GetSystem<SFactory>()->CreateCollisionEvent(scene,aID,bID,mtv,normal);
     return true;
 }
 
@@ -59,8 +59,8 @@ bool SPhysics::BoxCircle(Scene& scene, Entity boxID, Entity circleID)
     float distance = Utils::Distance(closest,tf2->pos);
     if(distance<circle->radius)
     {
-        vec2 diff = tf2->pos-closest;
         float minDist = distance-circle->radius;
+        vec2 diff = tf2->pos-closest;
         vec2 normal = Utils::Normalize(diff);
         vec2 mtv = Utils::Normalize(diff)*minDist;
         scene.reg.GetSystem<SFactory>()->CreateCollisionEvent(scene,boxID,circleID,mtv,normal);
@@ -83,6 +83,7 @@ bool SPhysics::CircleCircle(Scene& scene, Entity aID, Entity bID)
     {
         float minDist = distance-radiiSum;
         vec2 diff = tf2->pos-tf1->pos;
+        //diff = {abs(diff.x),abs(diff.y)};
         vec2 normal = Utils::Normalize(diff);
         vec2 mtv = Utils::Normalize(diff)*minDist;
         scene.reg.GetSystem<SFactory>()->CreateCollisionEvent(scene,aID,bID,mtv,normal);
@@ -103,14 +104,14 @@ void SPhysics::ResolveCollisions(Scene& scene)
         {
             CRigidbody* bodyA = scene.reg.GetComponent<CRigidbody>(collision->entityA);
             CRigidbody* bodyB = scene.reg.GetComponent<CRigidbody>(collision->entityB);
-            vec2 projectionA = Utils::Project(bodyA->velocity,collision->normal);
-            vec2 projectionB = Utils::Project(bodyB->velocity,collision->normal);
+            vec2 veloAlongNormal = bodyB->velocity-bodyA->velocity;
+            vec2 projection = Utils::Project(veloAlongNormal,collision->normal);
             
             tfA->pos = tfA->pos+(collision->mtv/2);
             tfB->pos = tfB->pos-(collision->mtv/2);
 
-            bodyA->velocity-=projectionA;
-            bodyB->velocity+=projectionB;
+            bodyA->velocity+=projection;
+            bodyB->velocity-=projection;
         }
         else if(scene.reg.HasComponent<CRigidbody>(collision->entityA))
         {
@@ -118,9 +119,9 @@ void SPhysics::ResolveCollisions(Scene& scene)
             vec2 projection = Utils::Project(body->velocity,collision->normal);
             tfA->pos = tfA->pos+collision->mtv;
             body->velocity+=projection;
-            
         }
-        else
+        
+        else if (scene.reg.HasComponent<CRigidbody>(collision->entityB))
         {
             CRigidbody* body = scene.reg.GetComponent<CRigidbody>(collision->entityB);
             vec2 projection = Utils::Project(body->velocity,collision->normal);
@@ -150,23 +151,23 @@ void SPhysics::CheckCollisions(Scene& scene)
 {
     const std::vector<unsigned> boxes = scene.reg.GetEntities<CBoxCollider>();
     const std::vector<unsigned> circles = scene.reg.GetEntities<CCircleCollider>();
-    for (size_t i =0; i< boxes.size();i++)
+    for (size_t i =0; i< boxes.size();++i)
     {
-        for(size_t j = i+1; j<boxes.size(); j++)
+        for(size_t j = i+1; j<boxes.size(); ++i)
         {
             BoxBox(scene,boxes[i],boxes[j]);
         }
     }
-    for (size_t i =0; i< circles.size();i++)
+    for (size_t i =0; i< circles.size();++i)
     {
-        for(size_t j = i+1; j<circles.size(); j++)
+        for(size_t j = i+1; j<circles.size(); ++j)
         {
             CircleCircle(scene,circles[i],circles[j]);
         }
     }
-    for (size_t i =0; i< boxes.size();i++)
+    for (size_t i =0; i< boxes.size();++i)
     {
-        for(size_t j = 0; j<circles.size(); j++)
+        for(size_t j = 0; j<circles.size(); ++j)
         {
             BoxCircle(scene,boxes[i],circles[j]);
         }

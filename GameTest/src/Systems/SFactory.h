@@ -11,7 +11,7 @@ public:
     Entity CreateEnemy(Scene& scene, vec2 pos, vec2 bounds, float hp, Entity id = NULL);
     Entity CreateBox(Scene& scene, vec2 pos, vec2 bounds, Entity id = NULL);
     Entity CreateCircle(Scene& scene, vec2 pos, float radius, Entity id = NULL);
-    Entity CreateProjectile(Scene& scene,vec2 pos, float radius, float force, float angle, Entity id = NULL);
+    Entity CreateProjectile(Scene& scene,vec2 pos, float radius, float force, float angle, float health=1, Entity id = NULL);
     Entity CreateDamageEvent(Scene& scene, Entity target, float damage, Entity id = NULL);
     Entity CreateCollisionEvent(Scene& scene, Entity entityA, Entity entityB, vec2 mtv, vec2 normal, Entity id = NULL);
     

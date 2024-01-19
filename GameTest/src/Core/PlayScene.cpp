@@ -33,9 +33,11 @@ void PlayScene::Init()
     
     //reg.GetSystem<SFactory>()->CreateBox(*this, {300,300}, {500,20});
     //reg.GetSystem<SFactory>()->CreateEnemy(*this,{100,500},{54,55},50);
+    reg.CreateEntity();
+    auto circle = reg.GetSystem<SFactory>()->CreateCircle(*this, {300,300}, 30);
     auto player = reg.GetSystem<SFactory>()->CreatePlayer(*this,{300,500},50);
     auto box = reg.GetSystem<SFactory>()->CreateBox(*this, {600,300}, {20,500});
-    auto circle = reg.GetSystem<SFactory>()->CreateCircle(*this, {300,300}, 30);
+    
     reg.AddComponent(circle,CRigidbody());
     //reg.GetSystem<SFactory>()->CreateButton(*this, {500,600},{30,30});
     reg.GetSystem<SRender>()->Init(*this);
