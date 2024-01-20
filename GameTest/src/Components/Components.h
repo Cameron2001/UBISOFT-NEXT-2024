@@ -12,6 +12,5 @@
 #include "CEnemy.h"
 #include "CDamage.h"
 
-#include "CButtonClickEvent.h"
 #include "CCollisionEvent.h"
 #include "CDamageEvent.h"

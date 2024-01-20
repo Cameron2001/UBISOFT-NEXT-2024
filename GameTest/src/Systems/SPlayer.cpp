@@ -54,7 +54,7 @@ void SPlayer::Update(Scene& scene, float dt)
             player->timer+=dt;
             if(shoot == false)
             {
-                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,transform->pos,50*player->timer,50000*player->timer,player->rot,100*player->timer);
+                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,transform->pos,50*player->timer,50000*player->timer,player->rot,100*player->timer,50*player->timer);
                 player->state=CPlayer::States::RELOADING;
                 player->timer = 0;
             }

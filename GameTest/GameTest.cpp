@@ -10,13 +10,13 @@
 #include "src/Core/ECSTestScene.h"
 #include "src/Core/MenuScene.h"
 #include "src/Core/PlayScene.h"
-PlayScene* scene;
-//MenuScene* scene;
+//PlayScene* scene;
+MenuScene* scene;
 //ECSTestScene* scene;
 void Init()
 {
-	scene = new PlayScene;
-	//scene = new MenuScene;
+	//scene = new PlayScene;
+	scene = new MenuScene;
 	scene->Init();
 }
 void Update(float deltaTime)

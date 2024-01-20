@@ -115,15 +115,15 @@ void SPhysics::ResolveCollisions(Scene& scene)
             tfA->pos = tfA->pos+(collision->mtv/2);
             tfB->pos = tfB->pos-(collision->mtv/2);
 
-            bodyA->velocity+=projection;
-            bodyB->velocity-=projection;
+            bodyA->velocity+=projection*1.5;
+            bodyB->velocity-=projection*1.5;
         }
         else if(scene.reg.HasComponent<CRigidbody>(collision->entityA))
         {
             CRigidbody* body = scene.reg.GetComponent<CRigidbody>(collision->entityA);
             vec2 projection = Utils::Project(body->velocity,collision->normal);
             tfA->pos = tfA->pos+collision->mtv;
-            body->velocity-=projection;
+            body->velocity-=projection*1.5;
         }
         
         else if (scene.reg.HasComponent<CRigidbody>(collision->entityB))
@@ -131,7 +131,7 @@ void SPhysics::ResolveCollisions(Scene& scene)
             CRigidbody* body = scene.reg.GetComponent<CRigidbody>(collision->entityB);
             vec2 projection = Utils::Project(body->velocity,collision->normal);
             tfB->pos = tfB->pos-collision->mtv;
-            body->velocity-=projection;
+            body->velocity-=projection*1.5;
             
         }
             

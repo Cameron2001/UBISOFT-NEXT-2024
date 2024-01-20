@@ -15,21 +15,23 @@ Entity SFactory::CreatePlayer(Scene& scene, vec2 pos, float radius, Entity id)
     return id;
 }
 
-Entity SFactory::CreateButton(Scene& scene, vec2 pos, vec2 bounds,Entity id)
+Entity SFactory::CreateButton(Scene& scene, vec2 pos, vec2 bounds, CButton::ButtonTypes type, const char* string,Entity id)
 {
     if (id == NULL)
         id = scene.reg.CreateEntity();
-    scene.reg.AddComponent(id,CButton(CButton::ButtonTypes::START,{50,50}));
-    scene.reg.AddComponent(id,CTransform(pos));
+    CreateBox(scene,pos,bounds,id);
+    scene.reg.AddComponent(id,CLabel(string,{bounds/-2.0f}));
+    scene.reg.AddComponent(id,CButton(type,bounds));
     return id;
 }
 
-Entity SFactory::CreateEnemy(Scene& scene, vec2 pos, vec2 bounds, float hp, Entity id)
+Entity SFactory::CreateEnemy(Scene& scene, vec2 pos, vec2 bounds, float hp,float damage, Entity id)
 {
     if(id == NULL)
         id = scene.reg.CreateEntity();
     CreateBox(scene,pos,bounds,id);
     scene.reg.AddComponent(id, CEnemy());
+    scene.reg.AddComponent(id,CDamage(damage));
     scene.reg.AddComponent(id, CHealth(hp));
     scene.reg.AddComponent(id, CRigidbody());
     return id;
@@ -56,13 +58,14 @@ Entity SFactory::CreateCircle(Scene& scene, vec2 pos, float radius, Entity id)
 }
 
 
-Entity SFactory::CreateProjectile(Scene& scene, vec2 pos, float radius, float force, float angle, float health, Entity id)
+Entity SFactory::CreateProjectile(Scene& scene, vec2 pos, float radius, float force, float angle, float health, float damage, Entity id)
 {
     if(id==NULL)
         id = scene.reg.CreateEntity();
     vec2 dir = {cos(angle),sin(angle)};
     //the 50 is player radius
     CreateCircle(scene,pos+(dir*(radius+50.0f)),radius,id);
+    scene.reg.AddComponent(id, CDamage(damage));
     scene.reg.AddComponent(id, CHealth(health));
     scene.reg.AddComponent(id,CRigidbody(0));
     scene.reg.GetComponent<CRigidbody>(id)->acceleration+=dir*force;

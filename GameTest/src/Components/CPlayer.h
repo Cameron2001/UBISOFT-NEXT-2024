@@ -13,7 +13,7 @@ struct CPlayer
     float rot;
     float timer = 0.0f;
     float damageScale = 1.0f;
-    float aimLength = 50.0f;
+    float aimLength = 100.0f;
     float shootCooldown= 2.0f;
     CPlayer(int a,float speed=500, float rotation = 0):moveSpeed(speed),ammo(a),rot(rotation){}
 };

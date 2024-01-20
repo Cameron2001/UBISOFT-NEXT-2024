@@ -5,7 +5,8 @@ struct CButton
     {
         START,
         EXIT,
-        RETRY
+        RETRY,
+        TUTORIAL
     };
     ButtonTypes type;
     vec2 bounds;

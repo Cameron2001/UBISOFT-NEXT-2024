@@ -184,7 +184,6 @@
     <ClInclude Include="App\SimpleSprite.h" />
     <ClInclude Include="src\Components\CAudioEvent.h" />
     <ClInclude Include="src\Components\CButton.h" />
-    <ClInclude Include="src\Components\CButtonClickEvent.h" />
     <ClInclude Include="src\Components\CCircleCollider.h" />
     <ClInclude Include="src\Components\CDamage.h" />
     <ClInclude Include="src\Components\CDamageEvent.h" />

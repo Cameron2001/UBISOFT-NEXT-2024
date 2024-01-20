@@ -42,6 +42,9 @@ void SButton::ResolveClicks(Scene& scene)
             case CButton::ButtonTypes::RETRY:
                 RetryClick(scene);
                 break;
+            case CButton::ButtonTypes::TUTORIAL:
+                TutorialClick(scene);
+                break;
             }
         }
         
@@ -53,8 +56,14 @@ void SButton::StartClick(Scene& scene)
     
 }
 
+void SButton::TutorialClick(Scene& scene)
+{
+    
+}
+
 void SButton::ExitClick(Scene& scene)
 {
+    exit(0);
 }
 
 void SButton::RetryClick(Scene& scene)

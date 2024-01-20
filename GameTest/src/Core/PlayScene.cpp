@@ -35,14 +35,17 @@ void PlayScene::Init()
     
     //reg.GetSystem<SFactory>()->CreateBox(*this, {300,300}, {500,20});
     //reg.GetSystem<SFactory>()->CreateEnemy(*this,{100,500},{54,55},50);
-    reg.CreateEntity();
-    auto circle = factory->CreateCircle(*this, {300,300}, 30);
-    auto player = factory->CreatePlayer(*this,{300,500},50);
-    auto box = factory->CreateBox(*this, {900,300}, {20,500});
-    auto enemy = factory->CreateEnemy(*this, {800,500},{35,35},100);
-    auto button = factory->CreateButton(*this,{300,300},{100,100});
-    
-    reg.AddComponent(circle,CRigidbody());
+    Entity invalid = reg.CreateEntity();
+    factory->CreatePlayer(*this,{100,100},25);
+    factory->CreateBox(*this, {500,0},{550,20});
+    factory->CreateBox(*this, {500,768},{550,20});
+    factory->CreateCircle(*this, {500,75},30);
+    factory->CreateCircle(*this, {500,700},30);
+    factory->CreateCircle(*this, {700,75},30);
+    factory->CreateCircle(*this, {700,700},30);
+    factory->CreateEnemy(*this, {600,200},{20,10},100,25);
+    factory->CreateEnemy(*this, {300,200},{20,50},100,25);
+    factory->CreateEnemy(*this, {100,500},{90,50},100,25);
     //reg.GetSystem<SFactory>()->CreateButton(*this, {500,600},{30,30});
     reg.GetSystem<SRender>()->Init(*this);
     reg.GetSystem<SPlayer>()->Init(*this);
@@ -56,6 +59,7 @@ void PlayScene::Update(float dt)
     reg.GetSystem<SPlayer>()->Update(*this,dt);
     reg.GetSystem<SDamage>()->Update(*this,dt);
     reg.GetSystem<SButton>()->Update(*this,dt);
+    reg.GetSystem<SEnemy>()->Update(*this,dt);
 }
 
 void PlayScene::Render()

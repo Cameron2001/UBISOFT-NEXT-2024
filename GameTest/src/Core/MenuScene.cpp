@@ -8,14 +8,24 @@ void MenuScene::Init()
 {
     reg.CreateSystem<SRender>();
     reg.CreateSystem<SButton>();
+    reg.CreateSystem<SFactory>();
+    reg.CreateSystem<SLabel>();
 
-    const auto button = reg.CreateEntity();
-    reg.AddComponent(button,CTransform({500,500}));
-    reg.AddComponent(button,CBoxCollider({100,100}));
-    reg.AddComponent(button,CRender());
+    reg.CreateComponentArray<CTransform>();
+    reg.CreateComponentArray<CLabel>();
+    reg.CreateComponentArray<CRender>();
+    reg.CreateComponentArray<CButton>();
+    reg.CreateComponentArray<CLabel>();
+    reg.CreateComponentArray<CBoxCollider>();
+    reg.CreateComponentArray<CCircleCollider>();
+    reg.CreateComponentArray<CPlayer>();
 
-    const auto camera = reg.CreateEntity();
-    reg.AddComponent(camera,CTransform({0,0}));
+    SFactory* factory = reg.GetSystem<SFactory>();
+    Entity invalid = reg.CreateEntity();
+    factory->CreateButton(*this, {500,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
+    factory->CreateButton(*this, {500,300},{100,30},CButton::ButtonTypes::TUTORIAL, "Tutorial");
+    factory->CreateButton(*this, {500,500},{100,30},CButton::ButtonTypes::START, "Start");
+    
 
     reg.GetSystem<SRender>()->Init(*this);
 }
@@ -29,6 +39,7 @@ void MenuScene::Update(float dt)
 void MenuScene::Render()
 {
     reg.GetSystem<SRender>()->Update(*this);
+    reg.GetSystem<SLabel>()->Update(*this);
 }
 
 void MenuScene::Shutdown()
