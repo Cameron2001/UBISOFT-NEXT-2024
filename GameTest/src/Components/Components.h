@@ -11,6 +11,8 @@
 #include "CRigidbody.h"
 #include "CDamage.h"
 #include "CEnemyTank.h"
+#include "CEnemyHoming.h"
+#include "CTimer.h"
 
 #include "CCollisionEvent.h"
 #include "CDamageEvent.h"

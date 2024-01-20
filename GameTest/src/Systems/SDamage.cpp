@@ -10,14 +10,14 @@ void SDamage::Update(Scene& scene, float dt)
     {
         CDamageEvent* event = scene.reg.GetComponent<CDamageEvent>(damage_event);
         CHealth* health = scene.reg.GetComponent<CHealth>(event->target);
-        health->health-= event->damage;
+        health->hp-= event->damage;
         
     }
     
     for (const auto health_id : scene.reg.GetEntities<CHealth>())
     {
         const CHealth* health = scene.reg.GetComponent<CHealth>(health_id);
-        if(health->health<=0)
+        if(health->hp<=0)
         {
             if(scene.reg.HasComponent<CPlayer>(health_id))
             {
@@ -31,13 +31,15 @@ void SDamage::Update(Scene& scene, float dt)
         if(scene.reg.HasComponent<CRender>(health_id))
         {
             CRender* render = scene.reg.GetComponent<CRender>(health_id);
-            if (health->health<75)
+            float healthPercentage = health->hp/health->maxHp;
+            
+            if (healthPercentage<0.66f)
             {
-                render->OutlineColor={1.0f,0.0f,0.0f};
+                render->OutlineColor={0.9f,0.1f,0.1f};
             }
-            else if(health->health<100)
+            else if(healthPercentage<0.33f)
             {
-                render->OutlineColor= {1.0f,1.0f,0.0f};
+                render->OutlineColor= {0.8f,0.8f,0.0f};
             }
         }
         

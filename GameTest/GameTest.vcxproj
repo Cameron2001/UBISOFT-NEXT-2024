@@ -187,6 +187,7 @@
     <ClInclude Include="src\Components\CCircleCollider.h" />
     <ClInclude Include="src\Components\CDamage.h" />
     <ClInclude Include="src\Components\CDamageEvent.h" />
+    <ClInclude Include="src\Components\CEnemyHoming.h" />
     <ClInclude Include="src\Components\CEnemyTank.h" />
     <ClInclude Include="src\Components\CHealth.h" />
     <ClInclude Include="src\Components\CLabel.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="src\Components\CPlayer.h" />
     <ClInclude Include="src\Components\CRender.h" />
     <ClInclude Include="src\Components\CRigidbody.h" />
+    <ClInclude Include="src\Components\CTimer.h" />
     <ClInclude Include="src\Components\CTransform.h" />
     <ClInclude Include="src\Components\CWall.h" />
     <ClInclude Include="src\Core\ComponentArray.h" />
@@ -212,6 +214,7 @@
     <ClInclude Include="src\Systems\SPhysics.h" />
     <ClInclude Include="src\Systems\SPlayer.h" />
     <ClInclude Include="src\Systems\SRender.h" />
+    <ClInclude Include="src\Systems\STimer.h" />
     <ClInclude Include="src\Systems\Systems.h" />
     <ClInclude Include="src\Util\Utils.h" />
     <ClInclude Include="src\Util\Vectors.h" />
@@ -239,6 +242,7 @@
     <ClCompile Include="src\Systems\SPhysics.cpp" />
     <ClCompile Include="src\Systems\SPlayer.cpp" />
     <ClCompile Include="src\Systems\SRender.cpp" />
+    <ClCompile Include="src\Systems\STimer.cpp" />
     <ClCompile Include="src\Util\Utils.cpp" />
     <ClCompile Include="src\Util\Vectors.cpp" />
     <ClCompile Include="stb_image\stb_image.cpp" />

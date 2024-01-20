@@ -18,15 +18,16 @@ void SRender::Update(Scene& scene)
         if(scene.reg.HasComponent<CBoxCollider>(entityID))
         {
             CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(entityID);
-            DrawSquare(transform->pos,box->extents,render->OutlineColor,render->InsideColor);
+            DrawSquare(transform->pos+box->offset,box->extents,render->OutlineColor,render->InsideColor);
         }
         if(scene.reg.HasComponent<CCircleCollider>(entityID))
         {
             CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(entityID);
-            DrawCircle(transform->pos,circle->radius,16, render->OutlineColor,render->InsideColor);
+            DrawCircle(transform->pos+circle->offset,circle->radius,16, render->OutlineColor,render->InsideColor);
         }
     }
     DrawPlayer(scene);
+    DrawTank(scene);
 }
 
 void SRender::DrawPlayer(Scene& scene)
@@ -52,6 +53,27 @@ void SRender::DrawPlayer(Scene& scene)
     
 }
 
+void SRender::DrawTank(Scene& scene)
+{
+    for(auto element : scene.reg.GetEntities<CEnemyTank,CTransform,CCircleCollider,CBoxCollider>())
+    {
+        CEnemyTank* tank = scene.reg.GetComponent<CEnemyTank>(element);
+        CTransform* transform = scene.reg.GetComponent<CTransform>(element);
+        CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(element);
+        CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(element);
+        vec2 armStart  = {cosf(tank->rot),sinf(tank->rot)};
+        vec2 armEnd = armStart;
+        armEnd*=tank->armLength;
+        vec3 color = {1.0f,1.0f,1.0f};
+        auto tankState = tank->state;
+        if (tankState==CEnemyTank::TankState::SHOOTING)
+            color = {1.0f,0.0f,0.0f};
+        if (tankState==CEnemyTank::TankState::RELOADING)
+            color = {1.0f,1.0f,0.0f};
+        App::DrawLine(transform->pos.x+armStart.x+circle->offset.x,transform->pos.y+armStart.y, transform->pos.x+armEnd.x+circle->offset.x,transform->pos.y+armEnd.y,color.x,color.y,color.z);
+    }
+}
+
 void SRender::DrawSquare(vec2 pos, vec2 extents, vec3 OutLinecolor,vec3 InsideColor)
 {
     vec2 bottomLeft = {pos.x-extents.x,pos.y-extents.y};
@@ -74,6 +96,7 @@ void SRender::DrawCircle(vec2 centre, float radius, int segments, vec3 Outsideco
     {
         float angle = Utils::Deg2Rad*360/segments;
         App::DrawLine(cosf(angle*i)*radius + centre.x, sinf(angle*i)*radius+centre.y,cosf(angle*(i+1))*radius + centre.x, sinf(angle*(i+1))*radius+centre.y,Outsidecolor.x,Outsidecolor.y,Outsidecolor.z);
+        App::DrawLine(centre.x,centre.y,cosf(angle*i)*radius+centre.x,sinf(angle*i)*radius+centre.y,Insidecolor.x,Insidecolor.y,Insidecolor.z);
     }
 }
 

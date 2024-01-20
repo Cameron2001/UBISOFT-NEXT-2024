@@ -4,6 +4,7 @@
 #include "../Components/Components.h"
 #include "../Systems/SDamage.h"
 #include "../Systems/SLabel.h"
+#include "../Systems/STimer.h"
 #include "../Systems/Systems.h"
 
 void PlayScene::Init()
@@ -15,6 +16,7 @@ void PlayScene::Init()
     reg.CreateSystem<SFactory>();
     reg.CreateSystem<SDamage>();
     reg.CreateSystem<SButton>();
+    reg.CreateSystem<STimer>();
     
     reg.CreateComponentArray<CTransform>();
     reg.CreateComponentArray<CRigidbody>();
@@ -27,6 +29,9 @@ void PlayScene::Init()
     reg.CreateComponentArray<CHealth>();
     reg.CreateComponentArray<CDamage>();
     reg.CreateComponentArray<CButton>();
+    reg.CreateComponentArray<CEnemyTank>();
+    reg.CreateComponentArray<CEnemyHoming>();
+    reg.CreateComponentArray<CTimer>();
     
     
     auto factory = reg.GetSystem<SFactory>();
@@ -36,18 +41,13 @@ void PlayScene::Init()
     //reg.GetSystem<SFactory>()->CreateEnemy(*this,{100,500},{54,55},50);
     Entity invalid = reg.CreateEntity();
     factory->CreatePlayer(*this,{100,100},25);
-    factory->CreateWall(*this,{500,0},{550,20},1000);
-    factory->CreateWall(*this,{500,768},{550,20},1000);
-    //factory->CreateBox(*this, {500,0},{550,20});
-    //factory->CreateBox(*this, {500,768},{550,20});
-    auto enemyCircle = factory->CreateCircle(*this, {500,75},30);
+    factory->CreateWall(*this,{500,20},{550,20},1000);
+    factory->CreateWall(*this,{500,748},{550,20},1000);;
     factory->CreateCircle(*this, {500,700},30);
     factory->CreateCircle(*this, {700,75},30);
     factory->CreateCircle(*this, {700,700},30);
-    factory->CreateEnemy(*this, {600,200},{20,10},100,25);
-    factory->CreateEnemy(*this, {300,200},{20,50},100,25);
-    factory->CreateEnemy(*this, {100,500},{90,50},100,25);
-    //reg.GetSystem<SFactory>()->CreateButton(*this, {500,600},{30,30});
+    factory->CreateEnemyTank(*this, {500,500},{60,25},25,200,50);
+    factory->CreateEnemyTank(*this, {600,200},{40,15},15,150,50);
     reg.GetSystem<SRender>()->Init(*this);
     reg.GetSystem<SPlayer>()->Init(*this);
    
@@ -56,6 +56,7 @@ void PlayScene::Init()
 void PlayScene::Update(float dt)
 {
     dt/=1000.0f;
+    reg.GetSystem<STimer>()->Update(*this,dt);
     reg.GetSystem<SPhysics>()->Update(*this,dt);
     reg.GetSystem<SPlayer>()->Update(*this,dt);
     reg.GetSystem<SDamage>()->Update(*this,dt);

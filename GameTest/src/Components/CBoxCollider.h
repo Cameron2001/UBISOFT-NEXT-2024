@@ -3,10 +3,7 @@
 struct CBoxCollider
 {
     vec2 extents;
-    bool isVisible = false;
+    vec2 offset;
     bool isTrigger = false;
-    CBoxCollider(vec2 boxExtents)
-    {
-        extents = boxExtents;
-    }
+    CBoxCollider(vec2 boxExtents,vec2 offset = {0.0f,0.0f}): extents(boxExtents), offset(offset){}
 };

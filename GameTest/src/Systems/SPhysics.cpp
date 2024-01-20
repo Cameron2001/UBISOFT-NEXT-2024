@@ -15,17 +15,11 @@ void SPhysics::Update(Scene& scene, float dt)
 bool SPhysics::BoxBox(Scene& scene, Entity aID, Entity bID)
 {
     //clean this up. all determine which side of the box was collided with
-    CTransform* tf1 = scene.reg.GetComponent<CTransform>(aID);
-    CTransform* tf2 = scene.reg.GetComponent<CTransform>(bID);
     CBoxCollider* box1 = scene.reg.GetComponent<CBoxCollider>(aID);
     CBoxCollider* box2 = scene.reg.GetComponent<CBoxCollider>(bID);
-    /*vec2 min1 = {tf1->pos.x - box1->extents.x,tf1->pos.y - box1->extents.y};
-    vec2 min2 = { tf2->pos.x - box2->extents.x,tf2->pos.y - box2->extents.y};
-    vec2 max1 = {tf1->pos.x + box1->extents.x, tf1->pos.y + box1->extents.y};
-    vec2 max2 = {tf2->pos.x + box2->extents.x, tf2->pos.y + box2->extents.y};
-    if(max1.x < min2.x || min1.x > max2.x) return false;
-    if(max1.y < min2.y || min1.y > max2.y) return false;*/
-    vec2 diff = {tf2->pos-tf1->pos};
+    vec2 pos1 = scene.reg.GetComponent<CTransform>(aID)->pos+box1->offset;
+    vec2 pos2 = scene.reg.GetComponent<CTransform>(bID)->pos+box2->offset;
+    vec2 diff = {pos2-pos1};
     vec2 normal;
     vec2 mtv;
     auto x = (box1->extents.x+box2->extents.x) - abs(diff.x);
@@ -54,18 +48,18 @@ bool SPhysics::BoxBox(Scene& scene, Entity aID, Entity bID)
 
 bool SPhysics::BoxCircle(Scene& scene, Entity boxID, Entity circleID)
 {
-    CTransform* tf1 = scene.reg.GetComponent<CTransform>(boxID);
-    CTransform* tf2 = scene.reg.GetComponent<CTransform>(circleID);
     CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(boxID);
     CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(circleID);
-    float x = Utils::Clamp(tf2->pos.x,tf1->pos.x-box->extents.x,tf1->pos.x+box->extents.x);
-    float y = Utils::Clamp(tf2->pos.y,tf1->pos.y-box->extents.y,tf1->pos.y+box->extents.y);
+    vec2 pos1 = scene.reg.GetComponent<CTransform>(boxID)->pos+box->offset;
+    vec2 pos2 = scene.reg.GetComponent<CTransform>(circleID)->pos+circle->offset;
+    float x = Utils::Clamp(pos2.x,pos1.x-box->extents.x,pos1.x+box->extents.x);
+    float y = Utils::Clamp(pos2.y,pos1.y-box->extents.y,pos1.y+box->extents.y);
     vec2 closest = {x,y};
-    float distance = Utils::Distance(closest,tf2->pos);
+    float distance = Utils::Distance(closest,pos2);
     if(distance<circle->radius)
     {
         float minDist = distance-circle->radius;
-        vec2 diff = tf2->pos-closest;
+        vec2 diff = pos2-closest;
         vec2 normal = Utils::Normalize(diff);
         vec2 mtv = Utils::Normalize(diff)*minDist;
         scene.reg.GetSystem<SFactory>()->CreateCollisionEvent(scene,boxID,circleID,mtv,normal);
@@ -78,16 +72,17 @@ bool SPhysics::BoxCircle(Scene& scene, Entity boxID, Entity circleID)
 
 bool SPhysics::CircleCircle(Scene& scene, Entity aID, Entity bID)
 {
-    CTransform* tf1 = scene.reg.GetComponent<CTransform>(aID);
-    CTransform* tf2 = scene.reg.GetComponent<CTransform>(bID);
+    
     CCircleCollider* circle1 = scene.reg.GetComponent<CCircleCollider>(aID);
     CCircleCollider* circle2 = scene.reg.GetComponent<CCircleCollider>(bID);
-    float distance = Utils::Distance(tf1->pos,tf2->pos);
+    vec2 pos1 = scene.reg.GetComponent<CTransform>(aID)->pos+circle1->offset;
+    vec2 pos2 =scene.reg.GetComponent<CTransform>(bID)->pos+circle2->offset;
+    float distance = Utils::Distance(pos1,pos2);
     float radiiSum = circle1->radius + circle2->radius;
     if( distance <= radiiSum)
     {
         float minDist = distance-radiiSum;
-        vec2 diff = tf2->pos-tf1->pos;
+        vec2 diff = pos2-pos1;
         //diff = {abs(diff.x),abs(diff.y)};
         vec2 normal = Utils::Normalize(diff);
         vec2 mtv = Utils::Normalize(diff)*minDist;
