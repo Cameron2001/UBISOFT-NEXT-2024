@@ -1,7 +1,4 @@
 ﻿#pragma once
-#include <deque>
-#include <unordered_map>
-
 #include "ComponentArray.h"
 #include "IComponentArray.h"
 #include "../Systems/ISystem.h"
@@ -30,7 +27,7 @@ public:
     void CreateComponentArray();
 
     template<typename T>
-    ComponentArray<T>* GetComponentArray();
+    std::shared_ptr<ComponentArray<T>> GetComponentArray();
 
     template<typename T>
     bool HasComponentArray() const;
@@ -39,7 +36,7 @@ public:
     void CreateSystem();
 
     template<typename T>
-    T* GetSystem();
+    std::shared_ptr<T> GetSystem();
 
     template<typename T>
     bool HasSystem() const;
@@ -56,8 +53,8 @@ public:
     void ClearAllEntities();
     
     std::vector<Entity> m_entityArray; //just a vector of uint32_t. Hold all entity ids
-    std::unordered_map<const char*, IComponentArray*> m_componentMap;
-    std::unordered_map<const char*, ISystem*> m_systemMap;
+    std::unordered_map<const char*, std::shared_ptr<IComponentArray>> m_componentMap;
+    std::unordered_map<const char*, std::shared_ptr<ISystem>> m_systemMap;
     std::deque<Entity> freeList;
     
     
@@ -133,15 +130,15 @@ template <typename T>
 void Registry::CreateComponentArray()
 {
     //assert("Create array, Array found" && !HasComponentArray<T>());
-    m_componentMap.insert({typeid(T).name(),new ComponentArray<T>()});
+    m_componentMap.insert({typeid(T).name(),std::make_shared<ComponentArray<T>>()});
 }
 
 template <typename T>
-ComponentArray<T>* Registry::GetComponentArray()
+std::shared_ptr<ComponentArray<T>> Registry::GetComponentArray()
 {
     //assert("Get Component Array, Array not found" && HasComponentArray<T>());
     
-    return static_cast<ComponentArray<T>*>(m_componentMap.at(typeid(T).name()));
+    return std::static_pointer_cast<ComponentArray<T>>(m_componentMap.at(typeid(T).name()));
 }
 
 template <typename T>
@@ -153,13 +150,13 @@ bool Registry::HasComponentArray() const
 template <typename T>
 void Registry::CreateSystem()
 {
-    m_systemMap.insert({typeid(T).name(),new T});
+    m_systemMap.insert({typeid(T).name(),std::make_shared<T>()});
 }
 
 template <typename T>
-T* Registry::GetSystem()
+std::shared_ptr<T> Registry::GetSystem()
 {
-    return static_cast<T*>(m_systemMap.at(typeid(T).name()));
+    return std::static_pointer_cast<T>(m_systemMap.at(typeid(T).name()));
 }
 
 template <typename T>

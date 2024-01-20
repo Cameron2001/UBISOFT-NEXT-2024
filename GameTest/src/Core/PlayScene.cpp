@@ -30,7 +30,7 @@ void PlayScene::Init()
     reg.CreateComponentArray<CButton>();
     
     
-   SFactory* factory = reg.GetSystem<SFactory>();
+   auto factory = reg.GetSystem<SFactory>();
     
     
     //reg.GetSystem<SFactory>()->CreateBox(*this, {300,300}, {500,20});

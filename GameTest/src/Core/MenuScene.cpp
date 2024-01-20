@@ -20,7 +20,7 @@ void MenuScene::Init()
     reg.CreateComponentArray<CCircleCollider>();
     reg.CreateComponentArray<CPlayer>();
 
-    SFactory* factory = reg.GetSystem<SFactory>();
+    auto factory = reg.GetSystem<SFactory>();
     Entity invalid = reg.CreateEntity();
     factory->CreateButton(*this, {500,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
     factory->CreateButton(*this, {500,300},{100,30},CButton::ButtonTypes::TUTORIAL, "Tutorial");
