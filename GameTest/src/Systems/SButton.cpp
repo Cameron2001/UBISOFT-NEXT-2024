@@ -13,6 +13,7 @@ void SButton::Update(Scene& scene, float dt)
 
 void SButton::CheckClicks(Scene& scene)
 {
+    
     for (auto entityID : scene.reg.GetEntities<CButton>())
     {
         CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);

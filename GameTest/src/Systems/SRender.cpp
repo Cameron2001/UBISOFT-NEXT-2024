@@ -10,11 +10,11 @@ void SRender::Init(Scene& scene)
 
 void SRender::Update(Scene& scene)
 {
-    for(auto entityID : scene.reg.GetEntities<CRender>())
+    for(auto entityID : scene.reg.GetEntities<CRender,CTransform>())
     {
         CRender* render = scene.reg.GetComponent<CRender>(entityID);
         CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
-
+        
         if(scene.reg.HasComponent<CBoxCollider>(entityID))
         {
             CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(entityID);

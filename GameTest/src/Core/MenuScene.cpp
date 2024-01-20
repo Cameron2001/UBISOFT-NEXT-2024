@@ -33,13 +33,13 @@ void MenuScene::Init()
 void MenuScene::Update(float dt)
 {
     dt/=1000.0f;
-    reg.GetSystem<SButton>()->Update(*this,dt);
+    //reg.GetSystem<SButton>()->Update(*this,dt);
 }
 
 void MenuScene::Render()
 {
     reg.GetSystem<SRender>()->Update(*this);
-    reg.GetSystem<SLabel>()->Update(*this);
+    //reg.GetSystem<SLabel>()->Update(*this);
 }
 
 void MenuScene::Shutdown()

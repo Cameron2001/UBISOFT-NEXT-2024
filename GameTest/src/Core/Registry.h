@@ -41,7 +41,7 @@ public:
     template<typename T>
     bool HasSystem() const;
 
-    template<typename T>
+    template<typename... Ts>
     std::vector<Entity> GetEntities();
 
     template<typename T>
@@ -165,18 +165,26 @@ bool Registry::HasSystem() const
     return m_systemMap.count(typeid(T).name());
 }
 
-template <typename T>
+template <typename... Ts>
 std::vector<Entity> Registry::GetEntities()
 {
-    //very important to optimize this
     std::vector<Entity> entities;
+    
+    if (sizeof...(Ts) == 0)
+        return m_entityArray;
+    
     for (auto entityID : m_entityArray)
     {
-       if(HasComponent<T>(entityID))
-       {
-           entities.push_back(entityID);
-       } 
-    }
+        bool match = true;
+        int arr[] = { 1, (HasComponent<Ts>(entityID))... };
+        for (auto auto_ : arr)
+        {
+            if(auto_!=true) match = false;
+        }
+        if (match) entities.push_back(entityID);
+    } 
+    
+    
     return entities;
 }
 
