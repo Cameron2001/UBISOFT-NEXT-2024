@@ -33,11 +33,11 @@ void SDamage::Update(Scene& scene, float dt)
             CRender* render = scene.reg.GetComponent<CRender>(health_id);
             if (health->health<75)
             {
-                render->Color={1.0f,0.0f,0.0f};
+                render->OutlineColor={1.0f,0.0f,0.0f};
             }
             else if(health->health<100)
             {
-                render->Color= {1.0f,1.0f,0.0f};
+                render->OutlineColor= {1.0f,1.0f,0.0f};
             }
         }
         

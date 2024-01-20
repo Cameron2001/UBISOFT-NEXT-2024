@@ -14,7 +14,7 @@ void SButton::Update(Scene& scene, float dt)
 void SButton::CheckClicks(Scene& scene)
 {
     
-    for (auto entityID : scene.reg.GetEntities<CButton>())
+    for (auto entityID : scene.reg.GetEntities<CButton,CTransform>())
     {
         CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
         CButton* button = scene.reg.GetComponent<CButton>(entityID);
@@ -26,7 +26,7 @@ void SButton::CheckClicks(Scene& scene)
 
 void SButton::ResolveClicks(Scene& scene)
 {
-    for (auto entityID : scene.reg.GetEntities<CButton>())
+    for (auto entityID : scene.reg.GetEntities<CButton,CTransform>())
     {
         CButton* button = scene.reg.GetComponent<CButton>(entityID);
         if(button->isClicked)

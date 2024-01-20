@@ -176,7 +176,7 @@ std::vector<Entity> Registry::GetEntities()
     for (auto entityID : m_entityArray)
     {
         bool match = true;
-        int arr[] = { 1, (HasComponent<Ts>(entityID))... };
+        int arr[] = {(HasComponent<Ts>(entityID))... };
         for (auto auto_ : arr)
         {
             if(auto_!=true) match = false;

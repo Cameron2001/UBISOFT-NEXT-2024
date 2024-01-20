@@ -187,7 +187,7 @@
     <ClInclude Include="src\Components\CCircleCollider.h" />
     <ClInclude Include="src\Components\CDamage.h" />
     <ClInclude Include="src\Components\CDamageEvent.h" />
-    <ClInclude Include="src\Components\CEnemy.h" />
+    <ClInclude Include="src\Components\CEnemyTank.h" />
     <ClInclude Include="src\Components\CHealth.h" />
     <ClInclude Include="src\Components\CLabel.h" />
     <ClInclude Include="src\Components\Components.h" />
@@ -195,6 +195,7 @@
     <ClInclude Include="src\Components\CRender.h" />
     <ClInclude Include="src\Components\CRigidbody.h" />
     <ClInclude Include="src\Components\CTransform.h" />
+    <ClInclude Include="src\Components\CWall.h" />
     <ClInclude Include="src\Core\ComponentArray.h" />
     <ClInclude Include="src\Core\ECSTestScene.h" />
     <ClInclude Include="src\Core\IComponentArray.h" />

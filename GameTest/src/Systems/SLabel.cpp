@@ -8,7 +8,7 @@
 
 void SLabel::Update(Scene& scene)
 {
-    auto labels = scene.reg.GetEntities<CLabel>();
+    auto labels = scene.reg.GetEntities<CLabel,CTransform>();
     
     for (const auto current : labels)
     {

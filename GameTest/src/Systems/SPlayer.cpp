@@ -21,9 +21,7 @@ void SPlayer::Update(Scene& scene, float dt)
         bool down = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_DOWN, false) || App::IsKeyPressed('S');
         bool left = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_LEFT, false) || App::IsKeyPressed('A');
         bool right = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_RIGHT, false) || App::IsKeyPressed('D');
-        bool shoot  = App::IsKeyPressed(VK_SPACE);
-        bool turnLeft = App::IsKeyPressed('Q');
-        bool turnRight = App::IsKeyPressed('E');
+        bool shoot  = App::IsKeyPressed(VK_SPACE)|| App::IsKeyPressed(VK_LBUTTON);
         if (up)
         {
             rigidbody->acceleration  = rigidbody->acceleration+ vec2{0,player->moveSpeed};
@@ -40,10 +38,6 @@ void SPlayer::Update(Scene& scene, float dt)
         {
             rigidbody->acceleration = rigidbody->acceleration - vec2{player->moveSpeed,0};
         }
-        if(turnLeft)
-            player->rot+=5*dt;
-        if(turnRight)
-            player->rot-=5*dt;
         if(shoot && player->state==CPlayer::States::IDLE&&player->ammo>0)
         {
             player->state=CPlayer::States::SHOOTING;
@@ -67,7 +61,9 @@ void SPlayer::Update(Scene& scene, float dt)
                 player->state = CPlayer::States::IDLE;
             }
         }
-        
+        vec2 mousePos;
+        App::GetMousePos(mousePos.x,mousePos.y);
+        player->rot = atan2(mousePos.y-transform->pos.y,mousePos.x-transform->pos.x);
     }
 }
 

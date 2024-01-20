@@ -9,8 +9,8 @@
 #include "CRender.h"
 #include "CTransform.h"
 #include "CRigidbody.h"
-#include "CEnemy.h"
 #include "CDamage.h"
+#include "CEnemyTank.h"
 
 #include "CCollisionEvent.h"
 #include "CDamageEvent.h"

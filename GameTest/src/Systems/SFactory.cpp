@@ -30,10 +30,18 @@ Entity SFactory::CreateEnemy(Scene& scene, vec2 pos, vec2 bounds, float hp,float
     if(id == NULL)
         id = scene.reg.CreateEntity();
     CreateBox(scene,pos,bounds,id);
-    scene.reg.AddComponent(id, CEnemy());
     scene.reg.AddComponent(id,CDamage(damage));
     scene.reg.AddComponent(id, CHealth(hp));
     scene.reg.AddComponent(id, CRigidbody());
+    return id;
+}
+
+Entity SFactory::CreateEnemyTank(Scene& scene, vec2 pos, vec2 bounds, float hp, float damage, Entity id)
+{
+    if(id == NULL)
+        id = scene.reg.CreateEntity();
+    CreateEnemy(scene,pos,bounds,id,hp,damage);
+    scene.reg.AddComponent(id,CEnemyTank());
     return id;
 }
 
@@ -71,6 +79,15 @@ Entity SFactory::CreateProjectile(Scene& scene, vec2 pos, float radius, float fo
     scene.reg.GetComponent<CRigidbody>(id)->acceleration+=dir*force;
     return id;
     
+}
+
+Entity SFactory::CreateWall(Scene& scene, vec2 pos, vec2 bounds, float hp, Entity id)
+{
+    if(id=NULL)
+        id = scene.reg.CreateEntity();
+    CreateBox(scene,pos,bounds,id);
+    scene.reg.AddComponent(id, CHealth(hp));
+    return id;
 }
 
 Entity SFactory::CreateDamageEvent(Scene& scene, Entity target, float damage, Entity id)

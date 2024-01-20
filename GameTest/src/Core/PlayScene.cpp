@@ -24,22 +24,23 @@ void PlayScene::Init()
     reg.CreateComponentArray<CCircleCollider>();
     reg.CreateComponentArray<CRender>();
     reg.CreateComponentArray<CPlayer>();
-    reg.CreateComponentArray<CEnemy>();
     reg.CreateComponentArray<CHealth>();
     reg.CreateComponentArray<CDamage>();
     reg.CreateComponentArray<CButton>();
     
     
-   auto factory = reg.GetSystem<SFactory>();
+    auto factory = reg.GetSystem<SFactory>();
     
     
     //reg.GetSystem<SFactory>()->CreateBox(*this, {300,300}, {500,20});
     //reg.GetSystem<SFactory>()->CreateEnemy(*this,{100,500},{54,55},50);
     Entity invalid = reg.CreateEntity();
     factory->CreatePlayer(*this,{100,100},25);
-    factory->CreateBox(*this, {500,0},{550,20});
-    factory->CreateBox(*this, {500,768},{550,20});
-    factory->CreateCircle(*this, {500,75},30);
+    factory->CreateWall(*this,{500,0},{550,20},1000);
+    factory->CreateWall(*this,{500,768},{550,20},1000);
+    //factory->CreateBox(*this, {500,0},{550,20});
+    //factory->CreateBox(*this, {500,768},{550,20});
+    auto enemyCircle = factory->CreateCircle(*this, {500,75},30);
     factory->CreateCircle(*this, {500,700},30);
     factory->CreateCircle(*this, {700,75},30);
     factory->CreateCircle(*this, {700,700},30);
