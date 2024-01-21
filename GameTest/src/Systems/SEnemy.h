@@ -1,13 +1,13 @@
 ﻿#pragma once
 #include "ISystem.h"
-#include "../Core/Scene.h"
+#include "../Core/Registry.h"
 
 class SEnemy : public ISystem
 {
 public:
-    void Update(Scene& scene, float dt);
+    void Update(Registry& Registry, float dt);
 private:
-    void UpdateTanks(Scene& scene, float dt);
-    void UpdateHoming(Scene& scene, float dt);
-    void SpawnWave(Scene& scene, float difficultyMultiplier);
+    void UpdateTanks(Registry& Registry, float dt);
+    void UpdateHoming(Registry& Registry, float dt);
+    void SpawnWave(Registry& Registry, float difficultyMultiplier);
 };

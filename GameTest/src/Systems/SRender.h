@@ -2,19 +2,19 @@
 #include "ISystem.h"
 
 #include "../Components/Components.h"
-#include "../Core/Scene.h"
+#include "../Core/Registry.h"
 
 class SRender: public ISystem
 {
 public:
-    void Update(Scene& scene);
+    void Update(Registry& Registry);
 private:
-    void DrawPlayer(Scene& scene);
-    void DrawTank(Scene& scene);
-    void DrawShapes(Scene& scene);
+    void DrawPlayer(Registry& Registry);
+    void DrawTank(Registry& Registry);
+    void DrawShapes(Registry& Registry);
     void DrawSquare(vec2 pos, vec2 extents, vec3 Outcolor={1.0,1.0,1.0});
     void DrawCircle(vec2 centre, float radius, int segments = 12,  vec3 Outcolor={1.0,1.0,1.0});
-    void DrawLabels(Scene& scene);
-    void DrawArms(Scene& scene);
-    void DrawUI(Scene& scene);
+    void DrawLabels(Registry& Registry);
+    void DrawArms(Registry& Registry);
+    void DrawUI(Registry& scene);
 };

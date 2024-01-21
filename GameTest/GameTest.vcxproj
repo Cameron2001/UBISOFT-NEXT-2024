@@ -203,6 +203,7 @@
     <ClInclude Include="src\Components\CWall.h" />
     <ClInclude Include="src\Components\CWave.h" />
     <ClInclude Include="src\Core\ComponentArray.h" />
+    <ClInclude Include="src\Core\Factory.h" />
     <ClInclude Include="src\Core\IComponentArray.h" />
     <ClInclude Include="src\Core\MenuScene.h" />
     <ClInclude Include="src\Core\PlayScene.h" />
@@ -213,7 +214,6 @@
     <ClInclude Include="src\Systems\SButton.h" />
     <ClInclude Include="src\Systems\SDamage.h" />
     <ClInclude Include="src\Systems\SEnemy.h" />
-    <ClInclude Include="src\Systems\SFactory.h" />
     <ClInclude Include="src\Systems\SPhysics.h" />
     <ClInclude Include="src\Systems\SPlayer.h" />
     <ClInclude Include="src\Systems\SRender.h" />
@@ -232,6 +232,7 @@
     <ClCompile Include="App\SimpleSound.cpp" />
     <ClCompile Include="App\SimpleSprite.cpp" />
     <ClCompile Include="GameTest.cpp" />
+    <ClCompile Include="src\Core\Factory.cpp" />
     <ClCompile Include="src\Core\MenuScene.cpp" />
     <ClCompile Include="src\Core\PlayScene.cpp" />
     <ClCompile Include="src\Core\SceneManager.cpp" />
@@ -239,7 +240,6 @@
     <ClCompile Include="src\Systems\SButton.cpp" />
     <ClCompile Include="src\Systems\SDamage.cpp" />
     <ClCompile Include="src\Systems\SEnemy.cpp" />
-    <ClCompile Include="src\Systems\SFactory.cpp" />
     <ClCompile Include="src\Systems\SPhysics.cpp" />
     <ClCompile Include="src\Systems\SPlayer.cpp" />
     <ClCompile Include="src\Systems\SRender.cpp" />

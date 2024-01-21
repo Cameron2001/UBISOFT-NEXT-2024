@@ -1,13 +1,13 @@
 ﻿#pragma once
 #include "ISystem.h"
-#include "../Core/Scene.h"
+#include "../Core/Registry.h"
 class SDamage : public ISystem
 {
 public:
-    void Update(Scene& scene, float dt);
+    void Update(Registry& Registry, float dt);
 private:
-    void ResolveDamageEvents(Scene& scene);
-    void UpdateHealth(Scene& scene, float dt);
+    void ResolveDamageEvents(Registry& Registry);
+    void UpdateHealth(Registry& Registry, float dt);
     
     
 };

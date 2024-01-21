@@ -4,22 +4,22 @@
 #include "../../App/app.h"
 #include "../Util/Utils.h"
 
-void SRender::Update(Scene& scene)
+void SRender::Update(Registry& Registry)
 {
-    DrawShapes(scene);
-    DrawPlayer(scene);
-    DrawTank(scene);
-    DrawLabels(scene);
+    DrawShapes(Registry);
+    DrawPlayer(Registry);
+    DrawTank(Registry);
+    DrawLabels(Registry);
 }
 
-void SRender::DrawPlayer(Scene& scene)
+void SRender::DrawPlayer(Registry& Registry)
 {
-    for (auto element : scene.reg.GetEntities<CPlayer>())
+    for (auto element : Registry.GetEntities<CPlayer>())
     {
-        const CTransform* playerTransform = scene.reg.GetComponent<CTransform>(element);
-        const CPlayer* playerComponent = scene.reg.GetComponent<CPlayer>(element);
-        const CCircleCollider* playerCircle = scene.reg.GetComponent<CCircleCollider>(element);
-        CArm* arm = scene.reg.GetComponent<CArm>(element);
+        const CTransform* playerTransform = Registry.GetComponent<CTransform>(element);
+        const CPlayer* playerComponent = Registry.GetComponent<CPlayer>(element);
+        const CCircleCollider* playerCircle = Registry.GetComponent<CCircleCollider>(element);
+        CArm* arm = Registry.GetComponent<CArm>(element);
         vec2 armStart = {cosf(arm->rotation),sinf(arm->rotation)};
         const vec2 armEnd = armStart*arm->length;
         armStart*=playerCircle->radius;
@@ -34,14 +34,14 @@ void SRender::DrawPlayer(Scene& scene)
     
 }
 
-void SRender::DrawTank(Scene& scene)
+void SRender::DrawTank(Registry& Registry)
 {
-    for(auto element : scene.reg.GetEntities<CEnemyTank>())
+    for(auto element : Registry.GetEntities<CEnemyTank>())
     {
-        const CEnemyTank* tank = scene.reg.GetComponent<CEnemyTank>(element);
-        const CTransform* transform = scene.reg.GetComponent<CTransform>(element);
-        const CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(element);
-        CArm* arm = scene.reg.GetComponent<CArm>(element);
+        const CEnemyTank* tank = Registry.GetComponent<CEnemyTank>(element);
+        const CTransform* transform = Registry.GetComponent<CTransform>(element);
+        const CCircleCollider* circle = Registry.GetComponent<CCircleCollider>(element);
+        CArm* arm = Registry.GetComponent<CArm>(element);
         vec2 armStart  = {cosf(arm->rotation),sinf(arm->rotation)};
         vec2 armEnd = armStart*arm->length;
         //armStart*circle->radius;
@@ -55,21 +55,21 @@ void SRender::DrawTank(Scene& scene)
     }
 }
 
-void SRender::DrawShapes(Scene& scene)
+void SRender::DrawShapes(Registry& Registry)
 {
-    for(auto entityID : scene.reg.GetEntities<CRender>())
+    for(auto entityID : Registry.GetEntities<CRender>())
     {
-        const CRender* render = scene.reg.GetComponent<CRender>(entityID);
-        const CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
+        const CRender* render = Registry.GetComponent<CRender>(entityID);
+        const CTransform* transform = Registry.GetComponent<CTransform>(entityID);
         
-        if(scene.reg.HasComponent<CBoxCollider>(entityID))
+        if(Registry.HasComponent<CBoxCollider>(entityID))
         {
-            const CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(entityID);
+            const CBoxCollider* box = Registry.GetComponent<CBoxCollider>(entityID);
             DrawSquare(transform->pos+box->offset,box->extents,render->OutlineColor);
         }
-        if(scene.reg.HasComponent<CCircleCollider>(entityID))
+        if(Registry.HasComponent<CCircleCollider>(entityID))
         {
-            const CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(entityID);
+            const CCircleCollider* circle = Registry.GetComponent<CCircleCollider>(entityID);
             DrawCircle(transform->pos+circle->offset,circle->radius,10, render->OutlineColor);
         }
     }
@@ -98,21 +98,21 @@ void SRender::DrawCircle(vec2 centre, float radius, int segments, vec3 Outsideco
     }
 }
 
-void SRender::DrawLabels(Scene& scene)
+void SRender::DrawLabels(Registry& Registry)
 {
-    for (const auto current : scene.reg.GetEntities<CLabel>())
+    for (const auto current : Registry.GetEntities<CLabel>())
     {
-        const CLabel* label = scene.reg.GetComponent<CLabel>(current);
-        const CTransform* transform = scene.reg.GetComponent<CTransform>(current);
+        const CLabel* label = Registry.GetComponent<CLabel>(current);
+        const CTransform* transform = Registry.GetComponent<CTransform>(current);
         App::Print(transform->pos.x+label->labelOffset.x,transform->pos.y+label->labelOffset.y,label->labelText.c_str(),25,25,25);
     }
 }
 
-void SRender::DrawArms(Scene& scene)
+void SRender::DrawArms(Registry& Registry)
 {
-    for (auto element : scene.reg.GetEntities<CArm>())
+    for (auto element : Registry.GetEntities<CArm>())
     {
-        CArm* arm = scene.reg.GetComponent<CArm>(element);
+        CArm* arm = Registry.GetComponent<CArm>(element);
     }
 }
 

@@ -1,5 +1,7 @@
 ﻿#include "stdafx.h"
 #include "MenuScene.h"
+
+#include "Factory.h"
 #include "../Components/Components.h"
 #include "../Systems/Systems.h"
 
@@ -8,7 +10,6 @@ void MenuScene::Init()
 {
     reg.CreateSystem<SRender>();
     reg.CreateSystem<SButton>();
-    reg.CreateSystem<SFactory>();
 
     reg.CreateComponentArray<CTransform>();
     reg.CreateComponentArray<CRigidbody>();
@@ -31,11 +32,10 @@ void MenuScene::Init()
     reg.CreateComponentArray<CArm>();
     
     Entity invalid = reg.CreateEntity();
-    auto factory = reg.GetSystem<SFactory>();
     
-    factory->CreateButton(*this, {500,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
-    factory->CreateButton(*this, {500,300},{100,30},CButton::ButtonTypes::TUTORIAL, "Tutorial");
-    factory->CreateButton(*this, {500,500},{100,30},CButton::ButtonTypes::START, "Start");
+    Factory::CreateButton(reg, {500,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
+    Factory::CreateButton(reg, {500,300},{100,30},CButton::ButtonTypes::TUTORIAL, "Tutorial");
+    Factory::CreateButton(reg, {500,500},{100,30},CButton::ButtonTypes::START, "Start");
     
     
 }
@@ -43,12 +43,12 @@ void MenuScene::Init()
 void MenuScene::Update(float dt)
 {
     dt/=1000.0f;
-    reg.GetSystem<SButton>()->Update(*this);
+    reg.GetSystem<SButton>()->Update(reg);
 }
 
 void MenuScene::Render()
 {
-    reg.GetSystem<SRender>()->Update(*this);
+    reg.GetSystem<SRender>()->Update(reg);
 }
 
 void MenuScene::Shutdown()

@@ -7,46 +7,46 @@
 #include "../Core/SceneManager.h"
 
 
-void SButton::Update(Scene& scene)
+void SButton::Update(Registry& Registry)
 {
-   CheckClicks(scene);
-   ResolveClicks(scene); 
+   CheckClicks(Registry);
+   ResolveClicks(Registry); 
 }
 
-void SButton::CheckClicks(Scene& scene)
+void SButton::CheckClicks(Registry& Registry)
 {
     
-    for (auto entityID : scene.reg.GetEntities<CButton>())
+    for (auto entityID : Registry.GetEntities<CButton>())
     {
-        const CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
-        CButton* button = scene.reg.GetComponent<CButton>(entityID);
+        const CTransform* transform = Registry.GetComponent<CTransform>(entityID);
+        CButton* button = Registry.GetComponent<CButton>(entityID);
         vec2 mousePos;
         App::GetMousePos(mousePos.x,mousePos.y);
         button->isClicked=Clicked(mousePos, transform->pos,button->bounds);
     }
 }
 
-void SButton::ResolveClicks(Scene& scene)
+void SButton::ResolveClicks(Registry& Registry)
 {
-    for (const auto entityID : scene.reg.GetEntities<CButton>())
+    for (const auto entityID : Registry.GetEntities<CButton>())
     {
-        const CButton* button = scene.reg.GetComponent<CButton>(entityID);
+        const CButton* button = Registry.GetComponent<CButton>(entityID);
         if(button->isClicked)
         {
             
             switch (button->type)
             {
             case CButton::ButtonTypes::START:
-                StartClick(scene);
+                StartClick(Registry);
                 break;
             case CButton::ButtonTypes::EXIT:
-                ExitClick(scene);
+                ExitClick(Registry);
                 break;
             case CButton::ButtonTypes::RETRY:
-                RetryClick(scene);
+                RetryClick(Registry);
                 break;
             case CButton::ButtonTypes::TUTORIAL:
-                TutorialClick(scene);
+                TutorialClick(Registry);
                 break;
             }
         }
@@ -54,22 +54,22 @@ void SButton::ResolveClicks(Scene& scene)
     }
 }
 
-void SButton::StartClick(Scene& scene)
+void SButton::StartClick(Registry& Registry)
 {
     SceneManager::GetInstance()->LoadScene<PlayScene>();
 }
 
-void SButton::TutorialClick(Scene& scene)
+void SButton::TutorialClick(Registry& Registry)
 {
     
 }
 
-void SButton::ExitClick(Scene& scene)
+void SButton::ExitClick(Registry& Registry)
 {
     exit(0);
 }
 
-void SButton::RetryClick(Scene& scene)
+void SButton::RetryClick(Registry& Registry)
 {
 }
 

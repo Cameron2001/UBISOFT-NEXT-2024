@@ -6,6 +6,5 @@
 #include "SPhysics.h"
 #include "SPlayer.h"
 #include "SRender.h"
-#include "SFactory.h"
 #include "SDamage.h"
 #include "STimer.h"

@@ -5,6 +5,6 @@
 class SAudio : public ISystem
 {
 public:
-    void Update(Scene& scene);
+    void Update(Registry& Registry);
     
 };

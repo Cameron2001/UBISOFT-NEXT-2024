@@ -1,19 +1,19 @@
 ﻿#pragma once
 #include "ISystem.h"
-#include "../Core/Scene.h"
+#include "../Core/Registry.h"
 #include "../Util/Vectors.h"
 
 class SButton : public ISystem
 {
 public:
-    void Update(Scene& scene);
+    void Update(Registry& Registry);
 private:
-    void CheckClicks(Scene& scene);
-    void ResolveClicks(Scene& scene);
-    void StartClick(Scene& scene);
-    void TutorialClick(Scene& scene);
-    void ExitClick(Scene& scene);
-    void RetryClick(Scene& scene);
+    void CheckClicks(Registry& Registry);
+    void ResolveClicks(Registry& Registry);
+    void StartClick(Registry& Registry);
+    void TutorialClick(Registry& Registry);
+    void ExitClick(Registry& Registry);
+    void RetryClick(Registry& Registry);
     bool Clicked(vec2 mousePos,vec2 buttonPos,vec2 bounds);
     
 };

@@ -1,35 +1,35 @@
 ﻿#include "stdafx.h"
 #include "SEnemy.h"
 
-#include "SFactory.h"
 #include "../Components/Components.h"
+#include "../Core/Factory.h"
 #include "../Util/Utils.h"
 
-void SEnemy::Update(Scene& scene, float dt)
+void SEnemy::Update(Registry& Registry, float dt)
 {
-    const auto waveController = scene.reg.GetEntities<CWave>()[0];
-    CTimer* timer = scene.reg.GetComponent<CTimer>(waveController);
-    const CWave* wave = scene.reg.GetComponent<CWave>(waveController);
+    const auto waveController = Registry.GetEntities<CWave>()[0];
+    CTimer* timer = Registry.GetComponent<CTimer>(waveController);
+    const CWave* wave = Registry.GetComponent<CWave>(waveController);
     if(timer->timer>wave->waveCooldown)
     {
         timer->timer = 0.0f;
-        SpawnWave(scene, wave->difficultyMultiplier);
+        SpawnWave(Registry, wave->difficultyMultiplier);
     }
-    UpdateTanks(scene,dt);
-    UpdateHoming(scene,dt);
+    UpdateTanks(Registry,dt);
+    UpdateHoming(Registry,dt);
 }
 
-void SEnemy::UpdateTanks(Scene& scene, float dt)
+void SEnemy::UpdateTanks(Registry& Registry, float dt)
 {
-    for (const auto element : scene.reg.GetEntities<CEnemyTank>())
+    for (const auto element : Registry.GetEntities<CEnemyTank>())
     {
-        CEnemyTank* tank = scene.reg.GetComponent<CEnemyTank>(element);
-        CRigidbody* rb = scene.reg.GetComponent<CRigidbody>(element);
-        CTimer* timer = scene.reg.GetComponent<CTimer>(element);
-        CArm* arm = scene.reg.GetComponent<CArm>(element);
-        const CTransform* transform = scene.reg.GetComponent<CTransform>(element);
-        const CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(element);
-        const CTransform* playerTransform = scene.reg.GetComponent<CTransform>(scene.reg.GetEntities<CPlayer>()[0]);
+        CEnemyTank* tank = Registry.GetComponent<CEnemyTank>(element);
+        CRigidbody* rb = Registry.GetComponent<CRigidbody>(element);
+        CTimer* timer = Registry.GetComponent<CTimer>(element);
+        CArm* arm = Registry.GetComponent<CArm>(element);
+        const CTransform* transform = Registry.GetComponent<CTransform>(element);
+        const CCircleCollider* circle = Registry.GetComponent<CCircleCollider>(element);
+        const CTransform* playerTransform = Registry.GetComponent<CTransform>(Registry.GetEntities<CPlayer>()[0]);
         const vec2 armStart = transform->pos+circle->offset;
         
         arm->rotation =atan2f(playerTransform->pos.y-armStart.y,playerTransform->pos.x-armStart.x);
@@ -46,7 +46,7 @@ void SEnemy::UpdateTanks(Scene& scene, float dt)
             if(timer->timer > 1.0f)
             {
                 
-                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,armStart,16*timer->timer, tank->projectileForce*timer->timer,arm->rotation,tank->projectileHealth*timer->timer,tank->projectileDmg*timer->timer);
+                Factory::CreateProjectile(Registry,armStart,16*timer->timer, tank->projectileForce*timer->timer,arm->rotation,tank->projectileHealth*timer->timer,tank->projectileDmg*timer->timer);
                 timer->timer = 0.0f;
                 tank->state = CEnemyTank::TankState::RELOADING;
             }
@@ -65,25 +65,24 @@ void SEnemy::UpdateTanks(Scene& scene, float dt)
     }
 }
 
-void SEnemy::UpdateHoming(Scene& scene, float dt)
+void SEnemy::UpdateHoming(Registry& Registry, float dt)
 {
-    for (auto element : scene.reg.GetEntities<CEnemyHoming>())
+    for (auto element : Registry.GetEntities<CEnemyHoming>())
     {
-        CEnemyHoming* homingComp = scene.reg.GetComponent<CEnemyHoming>(element);
-        CRigidbody* rigidbody = scene.reg.GetComponent<CRigidbody>(element);
-        CTransform* transform = scene.reg.GetComponent<CTransform>(element);
-        const CTransform* playerTransform = scene.reg.GetComponent<CTransform>(scene.reg.GetEntities<CPlayer>()[0]);
+        CEnemyHoming* homingComp = Registry.GetComponent<CEnemyHoming>(element);
+        CRigidbody* rigidbody = Registry.GetComponent<CRigidbody>(element);
+        CTransform* transform = Registry.GetComponent<CTransform>(element);
+        const CTransform* playerTransform = Registry.GetComponent<CTransform>(Registry.GetEntities<CPlayer>()[0]);
         vec2 diff = {playerTransform->pos.x-transform->pos.x,playerTransform->pos.y-transform->pos.y};
         rigidbody->acceleration+= Utils::Normalize(diff)*homingComp->moveSpeed;
         
     }
 }
 
-void SEnemy::SpawnWave(Scene& scene, float difficultyMultiplier)
+void SEnemy::SpawnWave(Registry& Registry, float difficultyMultiplier)
 {
-    const auto factory = scene.reg.GetSystem<SFactory>();
-    factory->CreateEnemyTank(scene, {800*difficultyMultiplier,300}, {20,8},10,100*difficultyMultiplier, 15.0f*difficultyMultiplier, 200,25000*difficultyMultiplier, 25 *difficultyMultiplier, 20*difficultyMultiplier);
-    factory->CreateEnemyTank(scene, {900*difficultyMultiplier,500}, {30,10},15,150*difficultyMultiplier, 25.0f*difficultyMultiplier, 150,30000*difficultyMultiplier, 50 *difficultyMultiplier, 35*difficultyMultiplier);
-    factory->CreateEnemyHoming(scene, {1000*difficultyMultiplier,400},20*difficultyMultiplier,100*difficultyMultiplier, 20*difficultyMultiplier,600*difficultyMultiplier);
+    Factory::CreateEnemyTank(Registry, {800*difficultyMultiplier,300}, {20,8},10,100*difficultyMultiplier, 15.0f*difficultyMultiplier, 200,25000*difficultyMultiplier, 25 *difficultyMultiplier, 20*difficultyMultiplier);
+    Factory::CreateEnemyTank(Registry, {900*difficultyMultiplier,500}, {30,10},15,150*difficultyMultiplier, 25.0f*difficultyMultiplier, 150,30000*difficultyMultiplier, 50 *difficultyMultiplier, 35*difficultyMultiplier);
+    Factory::CreateEnemyHoming(Registry, {1000*difficultyMultiplier,400},20*difficultyMultiplier,100*difficultyMultiplier, 20*difficultyMultiplier,600*difficultyMultiplier);
 }
 

@@ -2,6 +2,7 @@
 #include "PlayScene.h"
 
 
+#include "Factory.h"
 #include "../Components/Components.h"
 #include "../Systems/Systems.h"
 
@@ -12,36 +13,30 @@ void PlayScene::Init()
     CreateComponentArrays();
     CreateMap();
     
-    auto factory = reg.GetSystem<SFactory>();
+    Factory::CreatePlayer(reg,{100,100},20);
+    Factory::CreatePlayerShield(reg, {100,100},20, 100);
+    Factory::CreateWaveController(reg,10.0f);
     
-    factory->CreatePlayer(*this,{100,100},20);
-    //factory->CreateEnemyHoming(*this,{500,400},30,150,30,800.0f);
-    factory->CreatePlayerShield(*this, {100,100},20, 100);
-    factory->CreateWaveController(*this,10.0f);
     
-
-    //central timer
-    factory->CreateGameTimer(*this, {300,300});
+    Factory::CreateGameTimer(reg,{300.0f,300.0f});
     
-    //factory->CreateEnemyTank(*this, {500,500},{60,25},25,200,50);
-    //factory->CreateEnemyTank(*this, {600,200},{40,15},15,150,50);
    
 }
 
 void PlayScene::Update(float dt)
 {
     dt/=1000.0f;
-    reg.GetSystem<STimer>()->Update(*this,dt);
-    reg.GetSystem<SPhysics>()->Update(*this,dt);
-    reg.GetSystem<SPlayer>()->Update(*this,dt);
-    reg.GetSystem<SEnemy>()->Update(*this,dt);
-    reg.GetSystem<SDamage>()->Update(*this,dt);
-    reg.GetSystem<SButton>()->Update(*this);
+    reg.GetSystem<STimer>()->Update(reg,dt);
+    reg.GetSystem<SPhysics>()->Update(reg,dt);
+    reg.GetSystem<SPlayer>()->Update(reg,dt);
+    reg.GetSystem<SEnemy>()->Update(reg,dt);
+    reg.GetSystem<SDamage>()->Update(reg,dt);
+    reg.GetSystem<SButton>()->Update(reg);
 }
 
 void PlayScene::Render()
 {
-    reg.GetSystem<SRender>()->Update(*this);
+    reg.GetSystem<SRender>()->Update(reg);
 }
 
 void PlayScene::Shutdown()
@@ -55,7 +50,6 @@ void PlayScene::CreateSystems()
     reg.CreateSystem<SPhysics>();
     reg.CreateSystem<SRender>();
     reg.CreateSystem<SEnemy>();
-    reg.CreateSystem<SFactory>();
     reg.CreateSystem<SDamage>();
     reg.CreateSystem<SButton>();
     reg.CreateSystem<STimer>();
@@ -87,14 +81,13 @@ void PlayScene::CreateComponentArrays()
 void PlayScene::CreateMap()
 {
     float bruh = 129;
-    auto factory = reg.GetSystem<SFactory>();
     for (int i = 0; i < 4; ++i)
     {
-        factory->CreateWall(*this,{bruh*(float)i*2+bruh,31},{bruh,30},200);
+        Factory::CreateWall(reg,{bruh*(float)i*2+bruh,31},{bruh,30},200);
     }
     for (int j = 0; j < 4; ++j)
     {
-        factory->CreateWall(*this,{bruh*(float)j*2+bruh,737},{bruh,30},200);
+        Factory::CreateWall(reg,{bruh*(float)j*2+bruh,737},{bruh,30},200);
     }
     
 }
