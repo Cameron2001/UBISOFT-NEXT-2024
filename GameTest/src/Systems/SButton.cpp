@@ -16,10 +16,10 @@ void SButton::update(Registry& registry)
 void SButton::checkClicks(Registry& registry)
 {
     
-    for (auto entityID : registry.getEntities<CButton>())
+    for (const Entity ID : registry.getEntities<CButton>())
     {
-        const CTransform& transform = registry.getComponent<CTransform>(entityID);
-        CButton& button = registry.getComponent<CButton>(entityID);
+        const CTransform& transform = registry.getComponent<CTransform>(ID);
+        CButton& button = registry.getComponent<CButton>(ID);
         vec2 mousePos;
         App::GetMousePos(mousePos.x,mousePos.y);
         button.isClicked=clicked(mousePos, transform.pos,button.bounds);
@@ -28,9 +28,9 @@ void SButton::checkClicks(Registry& registry)
 
 void SButton::resolveClicks(Registry& registry)
 {
-    for (const auto entityID : registry.getEntities<CButton>())
+    for (const Entity ID : registry.getEntities<CButton>())
     {
-        const CButton& button = registry.getComponent<CButton>(entityID);
+        const CButton& button = registry.getComponent<CButton>(ID);
         if(button.isClicked)
         {
             switch (button.type)
@@ -43,7 +43,6 @@ void SButton::resolveClicks(Registry& registry)
                 break;
             }
         }
-        
     }
 }
 

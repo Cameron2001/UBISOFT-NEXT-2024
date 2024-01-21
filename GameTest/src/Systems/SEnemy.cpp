@@ -7,7 +7,7 @@
 
 void SEnemy::update(Registry& registry, float dt)
 {
-    const auto waveController = registry.getEntities<CWave>()[0];
+    const Entity waveController = registry.getEntities<CWave>()[0];
     CTimer& timer = registry.getComponent<CTimer>(waveController);
     const CWave& wave = registry.getComponent<CWave>(waveController);
     if(timer.timer>wave.waveCooldown)
@@ -22,18 +22,18 @@ void SEnemy::update(Registry& registry, float dt)
 void SEnemy::updateTanks(Registry& registry, float dt)
 {
     auto playerPos = registry.getComponent<CTransform>(registry.getEntities<CPlayer>()[0]).pos;
-    for (const auto element : registry.getEntities<CEnemyTank>())
+    for (const Entity ID : registry.getEntities<CEnemyTank>())
     {
-        CRigidbody& rb = registry.getComponent<CRigidbody>(element);
-        CEnemyTank& tank = registry.getComponent<CEnemyTank>(element);
-        CTransform& transform = registry.getComponent<CTransform>(element);
-        CCircleCollider& circle = registry.getComponent<CCircleCollider>(element);
-        CArm& arm = registry.getComponent<CArm>(element);
+        CRigidbody& rb = registry.getComponent<CRigidbody>(ID);
+        CEnemyTank& tank = registry.getComponent<CEnemyTank>(ID);
+        CTransform& transform = registry.getComponent<CTransform>(ID);
+        CCircleCollider& circle = registry.getComponent<CCircleCollider>(ID);
+        CArm& arm = registry.getComponent<CArm>(ID);
 
         const vec2 armStart = transform.pos+circle.offset;
         arm.rotation =atan2f(playerPos.y-armStart.y,playerPos.x-armStart.x);
-        if(arm.rotation*Utils::Rad2Deg < 0) arm.rotation+=Utils::Deg2Rad*360;
-        arm.rotation = Utils::Clamp(arm.rotation,75*Utils::Deg2Rad, 255*Utils::Deg2Rad);
+        if(arm.rotation*Utils::rad2Deg < 0) arm.rotation+=Utils::deg2Rad*360;
+        arm.rotation = Utils::clamp(arm.rotation,75*Utils::deg2Rad, 255*Utils::deg2Rad);
         
         rb.acceleration.x-=tank.moveSpeed;
         
@@ -42,14 +42,14 @@ void SEnemy::updateTanks(Registry& registry, float dt)
 
 void SEnemy::updateHoming(Registry& registry, float dt)
 {
-    for (auto element : registry.getEntities<CEnemyHoming>())
+    for (const Entity ID : registry.getEntities<CEnemyHoming>())
     {
-        CEnemyHoming& homingComp = registry.getComponent<CEnemyHoming>(element);
-        CRigidbody& rigidbody = registry.getComponent<CRigidbody>(element);
-        CTransform& transform = registry.getComponent<CTransform>(element);
+        CEnemyHoming& homingComp = registry.getComponent<CEnemyHoming>(ID);
+        CRigidbody& rigidbody = registry.getComponent<CRigidbody>(ID);
+        CTransform& transform = registry.getComponent<CTransform>(ID);
         const CTransform& playerTransform = registry.getComponent<CTransform>(registry.getEntities<CPlayer>()[0]);
         vec2 diff = {playerTransform.pos.x-transform.pos.x,playerTransform.pos.y-transform.pos.y};
-        rigidbody.acceleration+= Utils::Normalize(diff)*homingComp.moveSpeed;
+        rigidbody.acceleration+= Utils::normalize(diff)*homingComp.moveSpeed;
         
     }
 }

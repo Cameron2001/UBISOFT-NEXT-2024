@@ -18,10 +18,9 @@ void SDamage::update(Registry& registry, float dt)
 
 void SDamage::resolveDamageEvents(Registry& registry)
 {
-    const auto damageEvents = registry.getEntities<CDamageEvent>();
-    for (const auto damage_event : damageEvents)
+    for (const Entity ID : registry.getEntities<CDamageEvent>())
     {
-        const CDamageEvent& event = registry.getComponent<CDamageEvent>(damage_event);
+        const CDamageEvent& event = registry.getComponent<CDamageEvent>(ID);
         CHealth& health = registry.getComponent<CHealth>(event.target);
         health.hp-= event.damage;
         App::PlaySound(".\\Audio\\hitHurt.wav");
@@ -31,39 +30,38 @@ void SDamage::resolveDamageEvents(Registry& registry)
 
 void SDamage::updateHealth(Registry& registry, float dt)
 {
-    for (const auto element : registry.getEntities<CHealth>())
+    for (const Entity ID : registry.getEntities<CHealth>())
     {
-        CHealth& health = registry.getComponent<CHealth>(element);
+        CHealth& health = registry.getComponent<CHealth>(ID);
         if(health.hp<=0)
         {
             health.bDead = true;
             App::PlaySound(".\\Audio\\death.wav");
         }
-        if(registry.hasComponent<CRender>(element))
+        if(registry.hasComponent<CRender>(ID))
         {
-            CRender& render = registry.getComponent<CRender>(element);
+            CRender& render = registry.getComponent<CRender>(ID);
             float healthPercentage = health.hp/health.maxHp;
             healthPercentage = 1-healthPercentage;
             render.color ={1.0f,1.0f-healthPercentage,1.0f-healthPercentage};
         }
-        health.hp = Utils::Clamp(health.hp+health.regenRate*dt,0.0f,health.maxHp);
+        health.hp = Utils::clamp(health.hp+health.regenRate*dt,0.0f,health.maxHp);
     }
 }
 
 void SDamage::deleteDead(Registry& registry)
 {
-    bool player = false;
-    for (const auto element: registry.getEntities<CHealth>())
+    bool playerDead = false;
+    for (const Entity ID: registry.getEntities<CHealth>())
     {
-        CHealth& health = registry.getComponent<CHealth>(element);
+        CHealth& health = registry.getComponent<CHealth>(ID);
         if(health.bDead)
         {
-            if(registry.hasComponent<CPlayer>(element)) player = true;
-            registry.deleteEntity(element);
+            if(registry.hasComponent<CPlayer>(ID)) playerDead = true;
+            registry.deleteEntity(ID);
         }
-        
     }
-    if(player) SceneManager::getInstance()->loadScene<DeathScene>();
+    if(playerDead) SceneManager::getInstance()->loadScene<DeathScene>();
 }
 
 

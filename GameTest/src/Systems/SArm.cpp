@@ -6,14 +6,14 @@
 
 void SArm::update(Registry& registry)
 {
-    for (auto element : registry.getEntities<CArm>())
+    for (const Entity ID : registry.getEntities<CArm>())
     {
-        CTimer& timer = registry.getComponent<CTimer>(element);
-        CArm& arm = registry.getComponent<CArm>(element);
-        const CTransform& transform = registry.getComponent<CTransform>(element);
-        const CCircleCollider& circle = registry.getComponent<CCircleCollider>(element);
+        CTimer& timer = registry.getComponent<CTimer>(ID);
+        CArm& arm = registry.getComponent<CArm>(ID);
+        const CTransform& transform = registry.getComponent<CTransform>(ID);
+        const CCircleCollider& circle = registry.getComponent<CCircleCollider>(ID);
         const vec2 armStart = transform.pos+circle.offset;
-        bool isPlayer = registry.hasComponent<CPlayer>(element);
+        const bool isPlayer = registry.hasComponent<CPlayer>(ID);
         if(!isPlayer && arm.state==CArm::ArmState::IDLE) arm.bShoot = true;
         if(!isPlayer && arm.state==CArm::ArmState::SHOOTING && timer.timer>arm.coolDown/4) arm.bShoot = false;
         
@@ -26,7 +26,7 @@ void SArm::update(Registry& registry)
         {
             if(arm.bShoot == false)
             {
-                float multipler = Utils::Clamp(timer.timer,0.5f,2.0f);
+                const float multipler = Utils::clamp(timer.timer,0.5f,2.0f);
                 Factory::createProjectile(registry,armStart,arm.projectileRadius*multipler, 10, arm.projectileForce*multipler,arm.rotation,arm.projectileHealth*multipler,arm.projectileDamage*multipler);
                 arm.state = CArm::ArmState::RELOADING;
                 timer.timer = 0.0f;
@@ -34,10 +34,8 @@ void SArm::update(Registry& registry)
         }
         if(arm.state == CArm::ArmState::RELOADING)
         {
-            
             if(timer.timer>arm.coolDown)
             {
-                
                 arm.state = CArm::ArmState::IDLE;
                 timer.timer = 0.0f;
             }
