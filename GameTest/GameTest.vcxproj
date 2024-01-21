@@ -196,9 +196,11 @@
     <ClInclude Include="src\Components\CRender.h" />
     <ClInclude Include="src\Components\CRigidbody.h" />
     <ClInclude Include="src\Components\CScoreKeeper.h" />
+    <ClInclude Include="src\Components\CShield.h" />
     <ClInclude Include="src\Components\CTimer.h" />
     <ClInclude Include="src\Components\CTransform.h" />
     <ClInclude Include="src\Components\CWall.h" />
+    <ClInclude Include="src\Components\CWave.h" />
     <ClInclude Include="src\Core\ComponentArray.h" />
     <ClInclude Include="src\Core\ECSTestScene.h" />
     <ClInclude Include="src\Core\IComponentArray.h" />
@@ -211,7 +213,6 @@
     <ClInclude Include="src\Systems\SDamage.h" />
     <ClInclude Include="src\Systems\SEnemy.h" />
     <ClInclude Include="src\Systems\SFactory.h" />
-    <ClInclude Include="src\Systems\SLabel.h" />
     <ClInclude Include="src\Systems\SPhysics.h" />
     <ClInclude Include="src\Systems\SPlayer.h" />
     <ClInclude Include="src\Systems\SRender.h" />
@@ -239,7 +240,6 @@
     <ClCompile Include="src\Systems\SDamage.cpp" />
     <ClCompile Include="src\Systems\SEnemy.cpp" />
     <ClCompile Include="src\Systems\SFactory.cpp" />
-    <ClCompile Include="src\Systems\SLabel.cpp" />
     <ClCompile Include="src\Systems\SPhysics.cpp" />
     <ClCompile Include="src\Systems\SPlayer.cpp" />
     <ClCompile Include="src\Systems\SRender.cpp" />

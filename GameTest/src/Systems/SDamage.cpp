@@ -2,9 +2,11 @@
 #include "SDamage.h"
 
 #include "../Components/Components.h"
+#include "../Util/Utils.h"
 
 void SDamage::Update(Scene& scene, float dt)
 {
+    RegenHealth(scene,dt);
     auto damageEvents = scene.reg.GetEntities<CDamageEvent>();
     for (auto damage_event : damageEvents)
     {
@@ -32,17 +34,33 @@ void SDamage::Update(Scene& scene, float dt)
         {
             CRender* render = scene.reg.GetComponent<CRender>(health_id);
             float healthPercentage = health->hp/health->maxHp;
-            
-            if (healthPercentage<0.66f)
+            healthPercentage = 1-healthPercentage;
+            render->OutlineColor ={1.0f,1.0f-healthPercentage,1.0f-healthPercentage};
+            /*if (healthPercentage>0.66f)
             {
-                render->OutlineColor={0.9f,0.1f,0.1f};
+                render->OutlineColor={1.0f,1.0f,1.0f};
+                
             }
-            else if(healthPercentage<0.33f)
+            else if (healthPercentage>0.33f)
             {
                 render->OutlineColor= {0.8f,0.8f,0.0f};
+                
             }
+            else
+            {
+                render->OutlineColor={0.9f,0.1f,0.1f};
+            }*/
         }
         
     }
     scene.reg.ClearEntities<CDamageEvent>();
+}
+
+void SDamage::RegenHealth(Scene& scene, float dt)
+{
+    for (auto element : scene.reg.GetEntities<CHealth>())
+    {
+        CHealth* health = scene.reg.GetComponent<CHealth>(element);
+        health->hp = Utils::Clamp(health->hp+health->regenRate*dt,0.0f,health->maxHp);
+    }
 }

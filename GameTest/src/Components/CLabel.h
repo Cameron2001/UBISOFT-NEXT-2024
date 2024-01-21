@@ -2,7 +2,7 @@
 #include "../Util/Vectors.h"
 struct CLabel
 {
-    const char* labelText;
+    std::string labelText;
     vec2 labelOffset;
-    CLabel(const char* myText = "Label",vec2 offset = {0,0}): labelText(myText),labelOffset(offset){}
+    CLabel(std::string myText = "Label",vec2 offset = {0,0}): labelText(myText),labelOffset(offset){}
 };

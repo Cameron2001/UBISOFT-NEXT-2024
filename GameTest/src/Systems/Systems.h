@@ -8,4 +8,3 @@
 #include "SRender.h"
 #include "SFactory.h"
 #include "SDamage.h"
-#include "SLabel.h"

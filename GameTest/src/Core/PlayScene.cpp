@@ -3,25 +3,28 @@
 
 #include "../Components/Components.h"
 #include "../Systems/SDamage.h"
-#include "../Systems/SLabel.h"
 #include "../Systems/STimer.h"
 #include "../Systems/Systems.h"
 
 void PlayScene::Init()
 {
-    
+    Entity invalid = reg.CreateEntity();
     CreateSystems();
     CreateComponentArrays();
+    CreateMap();
     
     auto factory = reg.GetSystem<SFactory>();
-    Entity invalid = reg.CreateEntity();
-    factory->CreatePlayer(*this,{100,100},25);
-    CreateMap();
-
-
     
-    factory->CreateEnemyTank(*this, {500,500},{60,25},25,200,50);
-    factory->CreateEnemyTank(*this, {600,200},{40,15},15,150,50);
+    factory->CreatePlayer(*this,{100,100},15);
+    factory->CreatePlayerShield(*this, {100,100},20, 100);
+    factory->CreateWaveController(*this,10.0f);
+    
+
+    //central timer
+    factory->CreateGameTimer(*this, {300,300});
+    
+    //factory->CreateEnemyTank(*this, {500,500},{60,25},25,200,50);
+    //factory->CreateEnemyTank(*this, {600,200},{40,15},15,150,50);
    
 }
 
@@ -31,9 +34,9 @@ void PlayScene::Update(float dt)
     reg.GetSystem<STimer>()->Update(*this,dt);
     reg.GetSystem<SPhysics>()->Update(*this,dt);
     reg.GetSystem<SPlayer>()->Update(*this,dt);
-    reg.GetSystem<SDamage>()->Update(*this,dt);
-    reg.GetSystem<SButton>()->Update(*this,dt);
     reg.GetSystem<SEnemy>()->Update(*this,dt);
+    reg.GetSystem<SDamage>()->Update(*this,dt);
+    reg.GetSystem<SButton>()->Update(*this);
 }
 
 void PlayScene::Render()
@@ -75,18 +78,22 @@ void PlayScene::CreateComponentArrays()
     reg.CreateComponentArray<CEnemyHoming>();
     reg.CreateComponentArray<CTimer>();
     reg.CreateComponentArray<CScoreKeeper>();
+    reg.CreateComponentArray<CLabel>();
+    reg.CreateComponentArray<CShield>();
+    reg.CreateComponentArray<CWave>();
 }
 
 void PlayScene::CreateMap()
 {
+    float bruh = 129;
     auto factory = reg.GetSystem<SFactory>();
-    for (int i = 0; i < 11; ++i)
+    for (int i = 0; i < 4; ++i)
     {
-        factory->CreateWall(*this,{51*(float)i*2,20},{50,20},200);
+        factory->CreateWall(*this,{bruh*(float)i*2+bruh,30},{bruh,30},200);
     }
-    for (int j = 0; j < 11; ++j)
+    for (int j = 0; j < 4; ++j)
     {
-        factory->CreateWall(*this,{51*(float)j*2,748},{50,20},200);
+        factory->CreateWall(*this,{bruh*(float)j*2+bruh,738},{bruh,30},200);
     }
     
 }

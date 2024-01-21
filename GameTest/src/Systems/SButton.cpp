@@ -5,7 +5,7 @@
 #include "../Components/Components.h"
 
 
-void SButton::Update(Scene& scene, float dt)
+void SButton::Update(Scene& scene)
 {
    CheckClicks(scene);
    ResolveClicks(scene); 

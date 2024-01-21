@@ -35,7 +35,7 @@ void SPlayer::Update(Scene& scene, float dt)
         {
             rigidbody->acceleration = rigidbody->acceleration - vec2{player->moveSpeed,0};
         }
-        if(shoot && player->state==CPlayer::States::IDLE&&player->ammo>0)
+        if(shoot && player->state==CPlayer::States::IDLE)
         {
             player->state=CPlayer::States::SHOOTING;
             timer->timer = 0;
@@ -44,8 +44,8 @@ void SPlayer::Update(Scene& scene, float dt)
         {
             if(shoot == false)
             {
-                float multi = Utils::Clamp(timer->timer,0.5f,2.0f);
-                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,transform->pos,30*multi,35000*multi,player->rot,100*multi,50*multi);
+                float multi = Utils::Clamp(timer->timer,0.5f,3.0f);
+                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,transform->pos,10*multi,50000*multi,player->rot,30*multi,35*multi);
                 player->state=CPlayer::States::RELOADING;
                 timer->timer = 0;
             }
@@ -60,6 +60,8 @@ void SPlayer::Update(Scene& scene, float dt)
         vec2 mousePos;
         App::GetMousePos(mousePos.x,mousePos.y);
         player->rot = atan2(mousePos.y-transform->pos.y,mousePos.x-transform->pos.x);
+        CLabel* label = scene.reg.GetComponent<CLabel>(entityID);
+        label->labelText = "Health: " + std::to_string(scene.reg.GetComponent<CHealth>(entityID)->hp);
     }
 }
 

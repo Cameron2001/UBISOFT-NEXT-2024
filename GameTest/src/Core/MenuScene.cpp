@@ -9,7 +9,6 @@ void MenuScene::Init()
     reg.CreateSystem<SRender>();
     reg.CreateSystem<SButton>();
     reg.CreateSystem<SFactory>();
-    reg.CreateSystem<SLabel>();
 
     reg.CreateComponentArray<CTransform>();
     reg.CreateComponentArray<CLabel>();
@@ -26,20 +25,18 @@ void MenuScene::Init()
     factory->CreateButton(*this, {500,300},{100,30},CButton::ButtonTypes::TUTORIAL, "Tutorial");
     factory->CreateButton(*this, {500,500},{100,30},CButton::ButtonTypes::START, "Start");
     
-
-    reg.GetSystem<SRender>()->Init(*this);
+    
 }
 
 void MenuScene::Update(float dt)
 {
     dt/=1000.0f;
-    reg.GetSystem<SButton>()->Update(*this,dt);
+    reg.GetSystem<SButton>()->Update(*this);
 }
 
 void MenuScene::Render()
 {
     reg.GetSystem<SRender>()->Update(*this);
-    reg.GetSystem<SLabel>()->Update(*this);
 }
 
 void MenuScene::Shutdown()

@@ -14,16 +14,17 @@ void SRender::Update(Scene& scene)
         if(scene.reg.HasComponent<CBoxCollider>(entityID))
         {
             CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(entityID);
-            DrawSquare(transform->pos+box->offset,box->extents,render->OutlineColor,render->InsideColor);
+            DrawSquare(transform->pos+box->offset,box->extents,render->OutlineColor);
         }
         if(scene.reg.HasComponent<CCircleCollider>(entityID))
         {
             CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(entityID);
-            DrawCircle(transform->pos+circle->offset,circle->radius,16, render->OutlineColor,render->InsideColor);
+            DrawCircle(transform->pos+circle->offset,circle->radius,10, render->OutlineColor);
         }
     }
     DrawPlayer(scene);
     DrawTank(scene);
+    DrawLabels(scene);
 }
 
 void SRender::DrawPlayer(Scene& scene)
@@ -70,7 +71,7 @@ void SRender::DrawTank(Scene& scene)
     }
 }
 
-void SRender::DrawSquare(vec2 pos, vec2 extents, vec3 OutLinecolor,vec3 InsideColor)
+void SRender::DrawSquare(vec2 pos, vec2 extents, vec3 OutLinecolor)
 {
     vec2 bottomLeft = {pos.x-extents.x,pos.y-extents.y};
     vec2 bottomRight = {pos.x+extents.x, pos.y-extents.y};
@@ -82,17 +83,26 @@ void SRender::DrawSquare(vec2 pos, vec2 extents, vec3 OutLinecolor,vec3 InsideCo
     App::DrawLine(topRight.x,topRight.y, bottomRight.x,bottomRight.y,OutLinecolor.x,OutLinecolor.y,OutLinecolor.z); //top right to bottom right
     App::DrawLine(bottomRight.x,bottomRight.y,bottomLeft.x,bottomLeft.y,OutLinecolor.x,OutLinecolor.y,OutLinecolor.z); //bottom right to bottom left
     
-    App::DrawLine(bottomLeft.x,bottomLeft.y,topRight.x,topRight.y,InsideColor.x,InsideColor.y,InsideColor.z);
-    App::DrawLine(bottomRight.x,bottomRight.y,topLeft.x,topLeft.y,InsideColor.x,InsideColor.y,InsideColor.z);
 }
 
-void SRender::DrawCircle(vec2 centre, float radius, int segments, vec3 Outsidecolor, vec3 Insidecolor)
+void SRender::DrawCircle(vec2 centre, float radius, int segments, vec3 Outsidecolor)
 {
     for (int i = 0; i < segments; i++)
     {
         float angle = Utils::Deg2Rad*360/segments;
         App::DrawLine(cosf(angle*i)*radius + centre.x, sinf(angle*i)*radius+centre.y,cosf(angle*(i+1))*radius + centre.x, sinf(angle*(i+1))*radius+centre.y,Outsidecolor.x,Outsidecolor.y,Outsidecolor.z);
-        App::DrawLine(centre.x,centre.y,cosf(angle*i)*radius+centre.x,sinf(angle*i)*radius+centre.y,Insidecolor.x,Insidecolor.y,Insidecolor.z);
     }
 }
+
+void SRender::DrawLabels(Scene& scene)
+{
+    for (const auto current : scene.reg.GetEntities<CLabel,CTransform>())
+    {
+        const CLabel* label = scene.reg.GetComponent<CLabel>(current);
+        const CTransform* transform = scene.reg.GetComponent<CTransform>(current);
+        App::Print(transform->pos.x+label->labelOffset.x,transform->pos.y+label->labelOffset.y,label->labelText.c_str(),25,25,25);
+    }
+}
+
+
 

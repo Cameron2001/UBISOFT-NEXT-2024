@@ -14,7 +14,14 @@
 
 void SEnemy::Update(Scene& scene, float dt)
 {
-    
+    auto waveController = scene.reg.GetEntities<CTimer,CWave>()[0];
+    CTimer* timer = scene.reg.GetComponent<CTimer>(waveController);
+    CWave* wave = scene.reg.GetComponent<CWave>(waveController);
+    if(timer->timer>wave->waveCooldown)
+    {
+        timer->timer = 0.0f;
+        SpawnWave(scene, wave->difficultyMultiplier);
+    }
     UpdateTanks(scene,dt);
 }
 
@@ -24,7 +31,6 @@ void SEnemy::UpdateTanks(Scene& scene, float dt)
     {
         CEnemyTank* tank = scene.reg.GetComponent<CEnemyTank>(element);
         CTransform* transform = scene.reg.GetComponent<CTransform>(element);
-        CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(element);
         CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(element);
         CRigidbody* rb = scene.reg.GetComponent<CRigidbody>(element);
         CTransform* playerTransform = scene.reg.GetComponent<CTransform>(scene.reg.GetEntities<CPlayer>()[0]);
@@ -45,7 +51,7 @@ void SEnemy::UpdateTanks(Scene& scene, float dt)
             if(timer->timer > 1.0f)
             {
                 
-                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,armStart,20*timer->timer, 20000 *timer->timer,tank->rot,100*timer->timer,50*timer->timer);
+                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,armStart,10*timer->timer, tank->projectileForce*timer->timer,tank->rot,tank->projectileHealth*timer->timer,tank->projectileDmg*timer->timer);
                 timer->timer = 0.0f;
                 tank->state = CEnemyTank::TankState::RELOADING;
             }
@@ -59,13 +65,15 @@ void SEnemy::UpdateTanks(Scene& scene, float dt)
                 tank->state = CEnemyTank::TankState::IDLE;
             }
         }
-        rb->acceleration.x-=50;
+        rb->acceleration.x-=tank->moveSpeed;
         
     }
 }
 
-void SEnemy::SpawnWave(Scene& scene, float dt)
+void SEnemy::SpawnWave(Scene& scene, float difficultyMultiplier)
 {
-    
+    auto factory = scene.reg.GetSystem<SFactory>();
+    factory->CreateEnemyTank(scene, {800*difficultyMultiplier,300}, {20,8},10,100*difficultyMultiplier, 15.0f*difficultyMultiplier, 200,20000*difficultyMultiplier, 25 *difficultyMultiplier, 20*difficultyMultiplier);
+    factory->CreateEnemyTank(scene, {900*difficultyMultiplier,500}, {30,10},15,150*difficultyMultiplier, 25.0f*difficultyMultiplier, 150,25000*difficultyMultiplier, 50 *difficultyMultiplier, 35*difficultyMultiplier);
 }
 

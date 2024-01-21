@@ -5,5 +5,7 @@ class STimer : public ISystem
 {
 public:
     void Update(Scene& scene, float dt);
+private:
+    void UpdateTimerLabels(Scene& scene);
     
 };

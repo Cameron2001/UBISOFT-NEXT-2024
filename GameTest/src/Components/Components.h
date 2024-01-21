@@ -14,6 +14,8 @@
 #include "CEnemyHoming.h"
 #include "CTimer.h"
 #include "CScoreKeeper.h"
+#include "CWave.h"
+#include "CShield.h"
 
 #include "CCollisionEvent.h"
 #include "CDamageEvent.h"

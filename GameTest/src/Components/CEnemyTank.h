@@ -8,8 +8,13 @@ struct CEnemyTank
         IDLE
     };
     TankState state = TankState::IDLE;
-    float projectileSpeed;
+    float projectileForce;
+    float projectileDmg;
+    float projectileHealth;
+    float moveSpeed;
     float rot;
     float armLength;
-    CEnemyTank(float speed = 50, float rotation = 0, float length=100):projectileSpeed(speed),rot(rotation),armLength(length){}
+    CEnemyTank(float projDmg, float projForce, float projHp = 100.0f, float moveSpeed = 50.0f): projectileForce(projForce), rot(0.0f), armLength(50.0f), projectileDmg(projDmg),moveSpeed(moveSpeed), projectileHealth(projHp)
+    {
+    }
 };

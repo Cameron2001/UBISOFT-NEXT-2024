@@ -6,7 +6,7 @@
 class SButton : public ISystem
 {
 public:
-    void Update(Scene& scene, float dt);
+    void Update(Scene& scene);
 private:
     void CheckClicks(Scene& scene);
     void ResolveClicks(Scene& scene);

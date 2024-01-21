@@ -23,6 +23,7 @@
 #include <memory>
 #include <deque>
 #include <unordered_map>
+#include <string>
 using Entity = std::uint32_t;
 static constexpr uint32_t MAX_IDS = 256;
 //max components 32

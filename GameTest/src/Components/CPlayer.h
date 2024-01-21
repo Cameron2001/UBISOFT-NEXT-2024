@@ -9,10 +9,9 @@ struct CPlayer
     };
     States state = States::IDLE;
     float moveSpeed;
-    int ammo;
     float rot;
     float damageScale = 1.0f;
     float aimLength = 100.0f;
-    float shootCooldown= 2.0f;
-    CPlayer(int a,float speed=300, float rotation = 0):moveSpeed(speed),ammo(a),rot(rotation){}
+    float shootCooldown= 1.0f;
+    CPlayer(float speed=300, float rotation = 0):moveSpeed(speed),rot(rotation){}
 };
