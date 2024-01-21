@@ -5,62 +5,61 @@
 #include "../Components/Components.h"
 #include "../Systems/Systems.h"
 
-void DeathScene::Init()
+void DeathScene::init()
 {
     //play death sound?
-    Entity invalid = Registry.CreateEntity();
-    CreateSystems();
-    CreateComponentArrays();
-    CreateMenu();
+    Entity invalid = Registry.createEntity();
+    createSystems();
+    createComponentArrays();
+    createMenu();
 }
 
-void DeathScene::Update(float dt)
+void DeathScene::update(float dt)
 {
-    Registry.GetSystem<SButton>()->Update(Registry);
+    Registry.getSystem<SButton>()->update(Registry);
 }
 
-void DeathScene::Render()
+void DeathScene::render()
 {
-    Registry.GetSystem<SRender>()->Update(Registry);
+    Registry.getSystem<SRender>()->update(Registry);
 }
 
-void DeathScene::Shutdown()
+void DeathScene::shutdown()
 {
-    Registry.ClearAllEntities();
+    Registry.clearAllEntities();
 }
 
-void DeathScene::CreateSystems()
+void DeathScene::createSystems()
 {
-    Registry.CreateSystem<SRender>();
-    Registry.CreateSystem<SButton>();
+    Registry.createSystem<SRender>();
+    Registry.createSystem<SButton>();
 }
 
-void DeathScene::CreateComponentArrays()
+void DeathScene::createComponentArrays()
 {
-    Registry.CreateComponentArray<CTransform>();
-    Registry.CreateComponentArray<CRigidbody>();
-    Registry.CreateComponentArray<CCollisionEvent>();
-    Registry.CreateComponentArray<CDamageEvent>();
-    Registry.CreateComponentArray<CBoxCollider>();
-    Registry.CreateComponentArray<CCircleCollider>();
-    Registry.CreateComponentArray<CRender>();
-    Registry.CreateComponentArray<CPlayer>();
-    Registry.CreateComponentArray<CHealth>();
-    Registry.CreateComponentArray<CDamage>();
-    Registry.CreateComponentArray<CButton>();
-    Registry.CreateComponentArray<CEnemyTank>();
-    Registry.CreateComponentArray<CEnemyHoming>();
-    Registry.CreateComponentArray<CTimer>();
-    Registry.CreateComponentArray<CScoreKeeper>();
-    Registry.CreateComponentArray<CLabel>();
-    Registry.CreateComponentArray<CShield>();
-    Registry.CreateComponentArray<CWave>();
-    Registry.CreateComponentArray<CArm>();
+    Registry.createComponentArray<CTransform>();
+    Registry.createComponentArray<CRigidbody>();
+    Registry.createComponentArray<CCollisionEvent>();
+    Registry.createComponentArray<CDamageEvent>();
+    Registry.createComponentArray<CBoxCollider>();
+    Registry.createComponentArray<CCircleCollider>();
+    Registry.createComponentArray<CRender>();
+    Registry.createComponentArray<CPlayer>();
+    Registry.createComponentArray<CHealth>();
+    Registry.createComponentArray<CDamage>();
+    Registry.createComponentArray<CButton>();
+    Registry.createComponentArray<CEnemyTank>();
+    Registry.createComponentArray<CEnemyHoming>();
+    Registry.createComponentArray<CTimer>();
+    Registry.createComponentArray<CLabel>();
+    Registry.createComponentArray<CShield>();
+    Registry.createComponentArray<CWave>();
+    Registry.createComponentArray<CArm>();
 }
 
-void DeathScene::CreateMenu()
+void DeathScene::createMenu()
 {
-    Factory::CreateLabel(Registry, "YOU DIED" , {500,600}, {0,0},{1.0f,0.0f,0.0f});
-    Factory::CreateButton(Registry, {512,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
-    Factory::CreateButton(Registry, {512,500},{100,30},CButton::ButtonTypes::START, "Restart");
+    Factory::createLabel(Registry, "YOU DIED" , {500,600}, {0,0},{1.0f,0.0f,0.0f});
+    Factory::createButton(Registry, {512,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
+    Factory::createButton(Registry, {512,500},{100,30},CButton::ButtonTypes::START, "Restart");
 }

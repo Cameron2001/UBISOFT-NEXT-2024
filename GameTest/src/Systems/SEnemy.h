@@ -5,9 +5,9 @@
 class SEnemy : public ISystem
 {
 public:
-    void Update(Registry& Registry, float dt);
+    void update(Registry& Registry, float dt);
 private:
-    void UpdateTanks(Registry& Registry, float dt);
-    void UpdateHoming(Registry& Registry, float dt);
-    void SpawnWave(Registry& Registry, float difficultyMultiplier);
+    void updateTanks(Registry& Registry, float dt);
+    void updateHoming(Registry& Registry, float dt);
+    void spawnWave(Registry& Registry, float difficultyMultiplier);
 };

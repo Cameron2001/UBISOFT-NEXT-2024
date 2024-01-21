@@ -4,10 +4,10 @@ class Scene
 {
 public:
     virtual ~Scene() = default;
-    virtual void Init(){};
-    virtual void Update(float dt){};
-    virtual void Render(){};
-    virtual void Shutdown(){};
+    virtual void init(){};
+    virtual void update(float dt){};
+    virtual void render(){};
+    virtual void shutdown(){};
     
     Registry Registry;
     

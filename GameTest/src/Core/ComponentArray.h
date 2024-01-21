@@ -8,10 +8,10 @@ class ComponentArray : public IComponentArray
 public:
     ComponentArray():sparse(std::vector<uint32_t>(MAX_IDS, 0)){}
     
-    void AddComponent(Entity entityID, T component); //insert new element
-    void RemoveComponent(Entity entityID) override; //remove element
-    bool HasComponent(Entity entityID) override;
-    T* GetComponent(Entity entityID);
+    void addComponent(Entity entityID, T component); //insert new element
+    void removeComponent(Entity entityID) override; //remove element
+    bool hasComponent(Entity entityID) override;
+    T* getComponent(Entity entityID);
 
 private:
     
@@ -24,7 +24,7 @@ private:
 
 
 template <typename T>
-void ComponentArray<T>::AddComponent(Entity entityID, T component)
+void ComponentArray<T>::addComponent(Entity entityID, T component)
 {
     //assert("Add component" && !HasComponent(entityID));
     const auto pos = dense.size();
@@ -34,7 +34,7 @@ void ComponentArray<T>::AddComponent(Entity entityID, T component)
 }
 
 template <typename T>
-void ComponentArray<T>::RemoveComponent(Entity entityID)
+void ComponentArray<T>::removeComponent(Entity entityID)
 {
     //assert("remove component" && HasComponent(entityID));
     const auto last = dense.back();
@@ -46,14 +46,14 @@ void ComponentArray<T>::RemoveComponent(Entity entityID)
 }
 
 template <class T>
-T* ComponentArray<T>::GetComponent(Entity entityID)
+T* ComponentArray<T>::getComponent(Entity entityID)
 {
     return &componentList[sparse[entityID]];
 }
 
 
 template <class T>
-bool ComponentArray<T>::HasComponent(Entity entityID)
+bool ComponentArray<T>::hasComponent(Entity entityID)
 {
     return entityID < sparse.size() && sparse[entityID] < dense.size() && dense[sparse[entityID]] == entityID;
 }

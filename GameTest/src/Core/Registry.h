@@ -7,51 +7,51 @@ class Registry
 {
 public:
     Registry();
-    Entity CreateEntity();
-    void DeleteEntity(Entity entityID);
-    void DeleteEntities();
+    Entity createEntity();
+    void deleteEntity(Entity entityID);
+    void deleteEntities();
 
     template<typename T>
-    bool HasComponent(Entity entityID);
+    bool hasComponent(Entity entityID);
 
     template<typename T>
-    T* GetComponent(Entity entityID);
+    T& getComponent(Entity entityID);
 
     template<typename T>
-    void AddComponent(Entity entityID, T component);
+    void addComponent(Entity entityID, T component);
 
     template<typename T>
-    void RemoveComponent(Entity entityID);
+    void removeComponent(Entity entityID);
 
     template<typename T>
-    void CreateComponentArray();
+    void createComponentArray();
 
     template<typename T>
-    std::shared_ptr<ComponentArray<T>> GetComponentArray();
+    std::shared_ptr<ComponentArray<T>> getComponentArray();
 
     template<typename T>
-    bool HasComponentArray() const;
+    bool hasComponentArray() const;
 
     template<typename T>
-    void CreateSystem();
+    void createSystem();
 
     template<typename T>
-    std::shared_ptr<T> GetSystem();
+    std::shared_ptr<T> getSystem();
 
     template<typename T>
-    bool HasSystem() const;
+    bool hasSystem() const;
 
     template<typename... Ts>
-    std::vector<Entity> GetEntities();
+    std::vector<Entity> getEntities();
     
 
     template<typename T>
-    void ClearComponents();
+    void clearComponents();
 
     template<typename T>
-    void ClearEntities();
+    void clearEntities();
 
-    void ClearAllEntities();
+    void clearAllEntities();
     
     std::vector<Entity> m_entityArray; //just a vector of uint32_t. Hold all entity ids
     std::unordered_map<const char*, std::shared_ptr<IComponentArray>> m_componentMap;
@@ -70,7 +70,7 @@ inline Registry::Registry()
     }
 }
 
-inline Entity Registry::CreateEntity()
+inline Entity Registry::createEntity()
 {
     Entity id = freeList.front();
     freeList.pop_front();
@@ -78,62 +78,62 @@ inline Entity Registry::CreateEntity()
     return id;
 }
 
-inline void Registry::DeleteEntity(Entity entityID)
+inline void Registry::deleteEntity(Entity entityID)
 {
     m_entityArray.erase(std::remove(m_entityArray.begin(), m_entityArray.end(), entityID), m_entityArray.end());
     for (auto element : m_componentMap)
     {
-        if (element.second->HasComponent(entityID))
-            element.second->RemoveComponent(entityID);
+        if (element.second->hasComponent(entityID))
+            element.second->removeComponent(entityID);
     }
     freeList.push_back(entityID);
 }
 
-inline void Registry::ClearAllEntities()
+inline void Registry::clearAllEntities()
 {
     for (const auto entity : m_entityArray)
     {
-        DeleteEntity(entity);
+        deleteEntity(entity);
     }
 }
 
 template <typename T>
-bool Registry::HasComponent(Entity entityID)
+bool Registry::hasComponent(Entity entityID)
 {
     //assert("Has Component, Array not found" && HasComponentArray<T>());
-    return GetComponentArray<T>()->HasComponent(entityID);
+    return getComponentArray<T>()->hasComponent(entityID);
 }
 
 template <typename T>
-T* Registry::GetComponent(Entity entityID)
+T& Registry::getComponent(Entity entityID)
 {
     //assert("Get Component, Array not found" && HasComponentArray<T>());
-    return GetComponentArray<T>()->GetComponent(entityID);
+    return *getComponentArray<T>()->getComponent(entityID);
 }
 
 template <typename T>
-void Registry::AddComponent(Entity entityID, T component)
+void Registry::addComponent(Entity entityID, T component)
 {
     //assert("Add Component, Array not found" && HasComponentArray<T>());
-    GetComponentArray<T>()->AddComponent(entityID,component);
+    getComponentArray<T>()->addComponent(entityID,component);
 }
 
 template <typename T>
-void Registry::RemoveComponent(Entity entityID)
+void Registry::removeComponent(Entity entityID)
 {
     //assert("Remove Component, Array not found" && HasComponentArray<T>());
-    GetComponentArray<T>()->RemoveComponent(entityID);
+    getComponentArray<T>()->removeComponent(entityID);
 }
 
 template <typename T>
-void Registry::CreateComponentArray()
+void Registry::createComponentArray()
 {
     //assert("Create array, Array found" && !HasComponentArray<T>());
     m_componentMap.insert({typeid(T).name(),std::make_shared<ComponentArray<T>>()});
 }
 
 template <typename T>
-std::shared_ptr<ComponentArray<T>> Registry::GetComponentArray()
+std::shared_ptr<ComponentArray<T>> Registry::getComponentArray()
 {
     //assert("Get Component Array, Array not found" && HasComponentArray<T>());
     
@@ -141,31 +141,31 @@ std::shared_ptr<ComponentArray<T>> Registry::GetComponentArray()
 }
 
 template <typename T>
-bool Registry::HasComponentArray() const
+bool Registry::hasComponentArray() const
 {
     return m_componentMap.count(typeid(T).name());
 }
 
 template <typename T>
-void Registry::CreateSystem()
+void Registry::createSystem()
 {
     m_systemMap.insert({typeid(T).name(),std::make_shared<T>()});
 }
 
 template <typename T>
-std::shared_ptr<T> Registry::GetSystem()
+std::shared_ptr<T> Registry::getSystem()
 {
     return std::static_pointer_cast<T>(m_systemMap.at(typeid(T).name()));
 }
 
 template <typename T>
-bool Registry::HasSystem() const
+bool Registry::hasSystem() const
 {
     return m_systemMap.count(typeid(T).name());
 }
 
 template <typename... Ts>
-std::vector<Entity> Registry::GetEntities()
+std::vector<Entity> Registry::getEntities()
 {
     std::vector<Entity> entities;
     
@@ -175,7 +175,7 @@ std::vector<Entity> Registry::GetEntities()
     for (auto entityID : m_entityArray)
     {
         bool match = true;
-        int arr[] = {HasComponent<Ts>(entityID)... };
+        int arr[] = {hasComponent<Ts>(entityID)... };
         for (auto auto_ : arr)
         {
             if(auto_!=true) match = false;
@@ -188,21 +188,21 @@ std::vector<Entity> Registry::GetEntities()
 
 
 template <typename T>
-void Registry::ClearComponents()
+void Registry::clearComponents()
 {
-    for (auto entity : GetEntities<T>())
+    for (auto entity : getEntities<T>())
     {
-        RemoveComponent<T>(entity);
+        removeComponent<T>(entity);
     }
     
 }
 
 template <typename T>
-void Registry::ClearEntities()
+void Registry::clearEntities()
 {
-    for (auto entity : GetEntities<T>())
+    for (auto entity : getEntities<T>())
     {
-        DeleteEntity(entity);
+        deleteEntity(entity);
     }
 }
 

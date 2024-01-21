@@ -1,135 +1,135 @@
 ﻿#include "stdafx.h"
 #include "Factory.h"
 
-Entity Factory::CreatePlayer(Registry& Registry, vec2 pos, float radius, int segments, float hp, float shieldHp, float speed, float projForce, float projHealth, float projDmg, float projRadius, float armLength, float coolDown,  Entity id)
+Entity Factory::createPlayer(Registry& Registry, vec2 pos, float radius, int segments, float hp, float shieldHp, float speed, float projForce, float projHealth, float projDmg, float projRadius, float armLength, float coolDown,  Entity id)
 {
-    if (id == NULL) id = Registry.CreateEntity();
-    CreateCircle(Registry,pos,radius, segments,id);
-    Registry.AddComponent(id, CPlayer(speed));
-    Registry.AddComponent(id,CRigidbody(0.65,0.9));
-    Registry.AddComponent(id,CHealth(hp));
-    Registry.AddComponent(id,CTimer());
-    Registry.AddComponent(id, CArm(armLength,projForce, projHealth,projDmg, projRadius, coolDown));
-    Registry.AddComponent(id, CShield(shieldHp));
+    if (id == NULL) id = Registry.createEntity();
+    createCircle(Registry,pos,radius, segments,id);
+    Registry.addComponent(id, CPlayer(speed));
+    Registry.addComponent(id,CRigidbody(0.65,0.9));
+    Registry.addComponent(id,CHealth(hp));
+    Registry.addComponent(id,CTimer());
+    Registry.addComponent(id, CArm(armLength,projForce, projHealth,projDmg, projRadius, coolDown));
+    Registry.addComponent(id, CShield(shieldHp));
     return id;
 }
 
-Entity Factory::CreateButton(Registry& Registry, vec2 pos, vec2 bounds, CButton::ButtonTypes type, const char* string,
+Entity Factory::createButton(Registry& Registry, vec2 pos, vec2 bounds, CButton::ButtonTypes type, const char* string,
     Entity id)
 {
-    if (id == NULL) id = Registry.CreateEntity();
-    CreateBox(Registry,pos,bounds,id);
-    Registry.AddComponent(id,CLabel(string,{bounds/-2.0f}));
-    Registry.AddComponent(id,CButton(type,bounds));
+    if (id == NULL) id = Registry.createEntity();
+    createBox(Registry,pos,bounds,id);
+    Registry.addComponent(id,CLabel(string,{bounds/-6.0f}));
+    Registry.addComponent(id,CButton(type,bounds));
     return id;
 }
 
-Entity Factory::CreateEnemyTank(Registry& Registry, vec2 pos, vec2 bounds, float radius, float hp, float damage,
+Entity Factory::createEnemyTank(Registry& Registry, vec2 pos, vec2 bounds, float radius, float hp, float damage,
     float moveSpeed, float projForce, float projHealth, float projDmg, float projRadius, float armLength, float coolDown, Entity id)
 {
-    if(id == NULL) id = Registry.CreateEntity();
-    CreateBox(Registry,pos,bounds,id);
-    Registry.AddComponent(id,CHealth(hp));
-    Registry.AddComponent(id,CDamage(damage));
-    Registry.AddComponent(id,CEnemyTank(moveSpeed));
-    Registry.AddComponent(id,CRigidbody(0.99,1.35));
-    Registry.AddComponent(id, CCircleCollider(radius,8,{-bounds.x-radius,0}));
-    Registry.AddComponent(id,CTimer());
-    Registry.AddComponent(id, CArm(armLength,projForce, projHealth,projDmg, projRadius, coolDown));
+    if(id == NULL) id = Registry.createEntity();
+    createBox(Registry,pos,bounds,id);
+    Registry.addComponent(id,CHealth(hp));
+    Registry.addComponent(id,CDamage(damage));
+    Registry.addComponent(id,CEnemyTank(moveSpeed));
+    Registry.addComponent(id,CRigidbody(0.99,1.35));
+    Registry.addComponent(id, CCircleCollider(radius,8,{-bounds.x-radius,0}));
+    Registry.addComponent(id,CTimer());
+    Registry.addComponent(id, CArm(armLength,projForce, projHealth,projDmg, projRadius, coolDown));
     return id;
 }
 
-Entity Factory::CreateEnemyHoming(Registry& Registry, vec2 pos, float radius, int segments, float hp, float damage, float moveSpeed,
+Entity Factory::createEnemyHoming(Registry& Registry, vec2 pos, float radius, int segments, float hp, float damage, float moveSpeed,
     Entity id)
 {
-    if(id == NULL) id = Registry.CreateEntity();
-    CreateCircle(Registry,pos,radius, segments, id);
-    Registry.AddComponent(id, CHealth(hp));
-    Registry.AddComponent(id,CDamage(damage));
-    Registry.AddComponent(id,CEnemyHoming(moveSpeed));
-    Registry.AddComponent(id,CRigidbody(0.99,1.2));
+    if(id == NULL) id = Registry.createEntity();
+    createCircle(Registry,pos,radius, segments, id);
+    Registry.addComponent(id, CHealth(hp));
+    Registry.addComponent(id,CDamage(damage));
+    Registry.addComponent(id,CEnemyHoming(moveSpeed));
+    Registry.addComponent(id,CRigidbody(0.99,1.2));
     return id;
 }
 
-Entity Factory::CreateBox(Registry& Registry, vec2 pos, vec2 bounds, Entity id)
+Entity Factory::createBox(Registry& Registry, vec2 pos, vec2 bounds, Entity id)
 {
-    if (id == NULL) id = Registry.CreateEntity();
-    Registry.AddComponent(id, CTransform(pos));
-    Registry.AddComponent(id, CRender());
-    Registry.AddComponent(id,CBoxCollider(bounds));
+    if (id == NULL) id = Registry.createEntity();
+    Registry.addComponent(id, CTransform(pos));
+    Registry.addComponent(id, CRender());
+    Registry.addComponent(id,CBoxCollider(bounds));
     return  id;
 }
 
-Entity Factory::CreateCircle(Registry& Registry, vec2 pos, float radius, int segments, Entity id)
+Entity Factory::createCircle(Registry& Registry, vec2 pos, float radius, int segments, Entity id)
 {
-    if (id == NULL) id = Registry.CreateEntity();
-    Registry.AddComponent(id, CTransform(pos));
-    Registry.AddComponent(id, CRender());
-    Registry.AddComponent(id,CCircleCollider(radius,segments));
+    if (id == NULL) id = Registry.createEntity();
+    Registry.addComponent(id, CTransform(pos));
+    Registry.addComponent(id, CRender());
+    Registry.addComponent(id,CCircleCollider(radius,segments));
     return id;
 }
 
-Entity Factory::CreateProjectile(Registry& Registry, vec2 pos, float radius, int segments, float force, float angle, float health,
+Entity Factory::createProjectile(Registry& Registry, vec2 pos, float radius, int segments, float force, float angle, float health,
     float damage, Entity id)
 {
-    if(id==NULL) id = Registry.CreateEntity();
+    if(id==NULL) id = Registry.createEntity();
     const vec2 dir = {cos(angle),sin(angle)};
     //the 50 is player radius
-    CreateCircle(Registry,pos+(dir*(radius+50.0f)),radius,segments,id);
-    Registry.AddComponent(id, CDamage(damage));
-    Registry.AddComponent(id, CHealth(health));
-    Registry.AddComponent(id,CRigidbody(0,1.7));
-    Registry.GetComponent<CRigidbody>(id)->acceleration+=dir*force;
+    createCircle(Registry,pos+(dir*(radius+50.0f)),radius,segments,id);
+    Registry.addComponent(id, CDamage(damage));
+    Registry.addComponent(id, CHealth(health));
+    Registry.addComponent(id,CRigidbody(0,1.7));
+    Registry.getComponent<CRigidbody>(id).acceleration+=dir*force;
     return id;
 }
 
-Entity Factory::CreateWall(Registry& Registry, vec2 pos, vec2 bounds, float hp, Entity id)
+Entity Factory::createWall(Registry& Registry, vec2 pos, vec2 bounds, float hp, Entity id)
 {
-    if(id==NULL) id = Registry.CreateEntity();
-    CreateBox(Registry,pos,bounds,id);
-    Registry.AddComponent(id, CHealth(hp));
+    if(id==NULL) id = Registry.createEntity();
+    createBox(Registry,pos,bounds,id);
+    Registry.addComponent(id, CHealth(hp));
     return id;
 }
 
-Entity Factory::CreateDamageEvent(Registry& Registry, Entity target, float damage, Entity id)
+Entity Factory::createDamageEvent(Registry& Registry, Entity target, float damage, Entity id)
 {
-    if(id==NULL) id = Registry.CreateEntity();
-    Registry.AddComponent(id,CDamageEvent(target,damage));
+    if(id==NULL) id = Registry.createEntity();
+    Registry.addComponent(id,CDamageEvent(target,damage));
     return id;
 }
 
-Entity Factory::CreateCollisionEvent(Registry& Registry, Entity entityA, Entity entityB, vec2 mtv, vec2 normal,
+Entity Factory::createCollisionEvent(Registry& Registry, Entity entityA, Entity entityB, vec2 mtv, vec2 normal,
     Entity id)
 {
-    if(id==NULL) id = Registry.CreateEntity();
-    Registry.AddComponent(id,CCollisionEvent(entityA,entityB,mtv, normal));
+    if(id==NULL) id = Registry.createEntity();
+    Registry.addComponent(id,CCollisionEvent(entityA,entityB,mtv, normal));
     return id;
 }
 
-Entity Factory::CreateGameTimer(Registry& Registry, vec2 pos, Entity id)
+Entity Factory::createGameTimer(Registry& Registry, vec2 pos, Entity id)
 {
-    if(id==NULL) id = Registry.CreateEntity();
-    Registry.AddComponent(id,CTimer());
-    Registry.AddComponent(id, CLabel());
-    Registry.AddComponent(id,CTransform(pos));
-    Registry.AddComponent(id, CRender());
+    if(id==NULL) id = Registry.createEntity();
+    Registry.addComponent(id,CTimer());
+    Registry.addComponent(id, CLabel());
+    Registry.addComponent(id,CTransform(pos));
+    Registry.addComponent(id, CRender());
     return id;
 }
 
-Entity Factory::CreateWaveController(Registry& Registry, float waveCooldown, Entity id)
+Entity Factory::createWaveController(Registry& Registry, float waveCooldown, Entity id)
 {
-    if(id ==NULL) id = Registry.CreateEntity();
-    Registry.AddComponent(id,CTimer());
-    Registry.AddComponent(id, CWave(waveCooldown));
+    if(id ==NULL) id = Registry.createEntity();
+    Registry.addComponent(id,CTimer());
+    Registry.addComponent(id, CWave(waveCooldown));
     return id;
 }
 
 
-Entity Factory::CreateLabel(Registry& Registry, std::string text, vec2 pos, vec2 offset, vec3 color, Entity id)
+Entity Factory::createLabel(Registry& Registry, std::string text, vec2 pos, vec2 offset, vec3 color, Entity id)
 {
-    if(id == NULL) id = Registry.CreateEntity();
-    Registry.AddComponent(id, CTransform(pos));
-    Registry.AddComponent(id,CRender(color));
-    Registry.AddComponent(id, CLabel(text,offset));
+    if(id == NULL) id = Registry.createEntity();
+    Registry.addComponent(id, CTransform(pos));
+    Registry.addComponent(id,CRender(color));
+    Registry.addComponent(id, CLabel(text,offset));
     return id;
 }

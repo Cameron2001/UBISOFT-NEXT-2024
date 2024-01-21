@@ -4,8 +4,8 @@
 class STimer : public ISystem
 {
 public:
-    void Update(Registry& Registry, float dt);
+    void update(Registry& Registry, float dt);
 private:
-    void UpdateTimerLabels(Registry& Registry);
+    void updateTimerLabels(Registry& Registry);
     
 };

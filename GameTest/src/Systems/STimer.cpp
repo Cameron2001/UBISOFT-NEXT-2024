@@ -4,25 +4,25 @@
 #include "../Components/CLabel.h"
 #include "../Components/CTimer.h"
 
-void STimer::Update(Registry& Registry, float dt)
+void STimer::update(Registry& Registry, float dt)
 {
-    for (const auto element : Registry.GetEntities<CTimer>())
+    for (const auto element : Registry.getEntities<CTimer>())
     {
-        CTimer* timer = Registry.GetComponent<CTimer>(element);
-        timer->timer+=dt;
+        CTimer& timer = Registry.getComponent<CTimer>(element);
+        timer.timer+=dt;
     }
-    UpdateTimerLabels(Registry);
+    updateTimerLabels(Registry);
 }
 
-void STimer::UpdateTimerLabels(Registry& Registry)
+void STimer::updateTimerLabels(Registry& Registry)
 {
-    for (const auto element : Registry.GetEntities<CTimer,CLabel>())
+    for (const auto element : Registry.getEntities<CTimer,CLabel>())
     {
-        CLabel* label = Registry.GetComponent<CLabel>(element);
-        CTimer* timer = Registry.GetComponent<CTimer>(element);
-        const auto test = "Timer: " + std::to_string(timer->timer);
+        CLabel& label = Registry.getComponent<CLabel>(element);
+        CTimer& timer = Registry.getComponent<CTimer>(element);
+        const auto test = "Timer: " + std::to_string(timer.timer);
         
-        label->labelText = test;
+        label.labelText = test;
         
     }
 }

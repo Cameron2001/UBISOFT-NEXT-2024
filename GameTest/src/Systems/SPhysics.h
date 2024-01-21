@@ -5,18 +5,18 @@
 class SPhysics : public ISystem
 {
 public:
-    void Update(Registry& Registry, float dt);
+    void update(Registry& Registry, float dt);
 
 private:
     //create an array of current collisions
-    bool BoxBox(Registry& Registry, Entity aID, Entity bID);
-    bool BoxCircle(Registry& Registry, Entity boxID, Entity circleID);
-    bool CircleCircle(Registry& Registry, Entity aID, Entity bID);
-    void ResolveCollisions(Registry& Registry);
-    void CheckCollisions(Registry& Registry);
-    bool CheckCollision(Registry& Registry, Entity a, Entity b);
-    void ApplyKinematics(Registry& Registry, float dt);
-    void DeleteOffscreen(Registry& Registry);
+    bool boxBox(Registry& Registry, Entity aID, Entity bID);
+    bool boxCircle(Registry& Registry, Entity boxID, Entity circleID);
+    bool circleCircle(Registry& Registry, Entity aID, Entity bID);
+    void resolveCollisions(Registry& Registry);
+    void checkCollisions(Registry& Registry);
+    bool checkCollision(Registry& Registry, Entity a, Entity b);
+    void applyKinematics(Registry& Registry, float dt);
+    void deleteOffscreen(Registry& Registry);
     
 };
 

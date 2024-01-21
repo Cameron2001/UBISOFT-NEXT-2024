@@ -12,24 +12,24 @@ SceneManager::SceneManager()
 
 SceneManager::~SceneManager()
 {
-    CleanUp();
+    cleanUp();
 }
 
-void SceneManager::Update(float dt) const
+void SceneManager::update(float dt) const
 {
-    currentScene->Update(dt);
+    currentScene->update(dt);
 }
 
-void SceneManager::Render() const
+void SceneManager::render() const
 {
-    currentScene->Render();
+    currentScene->render();
 }
 
-void SceneManager::CleanUp()
+void SceneManager::cleanUp()
 {
     if (currentScene)
     {
-        currentScene->Shutdown();
+        currentScene->shutdown();
         delete currentScene;
         currentScene = nullptr;
     }
@@ -43,7 +43,7 @@ void SceneManager::CleanUp()
 
 
 
-SceneManager* SceneManager::GetInstance()
+SceneManager* SceneManager::getInstance()
 {
     if (instance == nullptr)
         instance= new SceneManager();

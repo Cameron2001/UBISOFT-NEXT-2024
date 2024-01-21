@@ -15,17 +15,17 @@
 //ECSTestScene* scene;
 void Init()
 {
-	SceneManager::GetInstance()->LoadScene<MenuScene>();
+	SceneManager::getInstance()->loadScene<MenuScene>();
 }
 void Update(float deltaTime)
 {
-	SceneManager::GetInstance()->Update(deltaTime);
+	SceneManager::getInstance()->update(deltaTime);
 }
 void Render()
 {
-	SceneManager::GetInstance()->Render();
+	SceneManager::getInstance()->render();
 }
 void Shutdown()
 {
-	SceneManager::GetInstance()->CleanUp();
+	SceneManager::getInstance()->cleanUp();
 }

@@ -5,5 +5,5 @@
 class SPlayer : public ISystem
 {
 public:
-    void Update(Registry& Registry, float dt);
+    void update(Registry& Registry, float dt);
 };

@@ -5,7 +5,7 @@ class IComponentArray
 {
 public:
     virtual ~IComponentArray() = default;
-    virtual void RemoveComponent(Entity entityID)=0;
-    virtual bool HasComponent(Entity entityID)=0;
+    virtual void removeComponent(Entity entityID)=0;
+    virtual bool hasComponent(Entity entityID)=0;
 };
 

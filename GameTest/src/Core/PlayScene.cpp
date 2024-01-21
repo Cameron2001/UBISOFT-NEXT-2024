@@ -7,88 +7,87 @@
 #include "../Systems/Systems.h"
 
 
-void PlayScene::Init()
+void PlayScene::init()
 {
-    Entity invalid = Registry.CreateEntity();
-    CreateSystems();
-    CreateComponentArrays();
-    CreateMap();
+    Entity invalid = Registry.createEntity();
+    createSystems();
+    createComponentArrays();
+    createMap();
     
-    Factory::CreatePlayer(Registry,{100,100},24,10,150.0f, 100.0f, 1000.0f,50000.0f,30.0f,30.0f,20,35,1.0f);
-    Factory::CreateWaveController(Registry,7.5f);
-    Factory::CreateGameTimer(Registry,{50.0f,728.0f});
+    Factory::createPlayer(Registry,{100,100},24,10,150.0f, 100.0f, 1000.0f,50000.0f,30.0f,30.0f,20,35,1.0f);
+    Factory::createWaveController(Registry,7.5f);
+    Factory::createGameTimer(Registry,{50.0f,728.0f});
     
    
 }
 
-void PlayScene::Update(float dt)
+void PlayScene::update(float dt)
 {
     dt/=1000.0f;
-    Registry.GetSystem<STimer>()->Update(Registry,dt);
-    Registry.GetSystem<SPlayer>()->Update(Registry,dt);
-    Registry.GetSystem<SEnemy>()->Update(Registry,dt);
-    Registry.GetSystem<SButton>()->Update(Registry);
-    Registry.GetSystem<SArm>()->Update(Registry);
-    Registry.GetSystem<SPhysics>()->Update(Registry,dt);
-    Registry.GetSystem<SDamage>()->Update(Registry,dt);
+    Registry.getSystem<STimer>()->update(Registry,dt);
+    Registry.getSystem<SPlayer>()->update(Registry,dt);
+    Registry.getSystem<SEnemy>()->update(Registry,dt);
+    Registry.getSystem<SButton>()->update(Registry);
+    Registry.getSystem<SArm>()->update(Registry);
+    Registry.getSystem<SPhysics>()->update(Registry,dt);
+    Registry.getSystem<SDamage>()->update(Registry,dt);
     
 }
 
-void PlayScene::Render()
+void PlayScene::render()
 {
-    Registry.GetSystem<SRender>()->Update(Registry);
+    Registry.getSystem<SRender>()->update(Registry);
 }
 
-void PlayScene::Shutdown()
+void PlayScene::shutdown()
 {
-    Registry.ClearAllEntities();
+    Registry.clearAllEntities();
 }
 
-void PlayScene::CreateSystems()
+void PlayScene::createSystems()
 {
-    Registry.CreateSystem<SPlayer>();
-    Registry.CreateSystem<SPhysics>();
-    Registry.CreateSystem<SRender>();
-    Registry.CreateSystem<SEnemy>();
-    Registry.CreateSystem<SDamage>();
-    Registry.CreateSystem<SButton>();
-    Registry.CreateSystem<STimer>();
-    Registry.CreateSystem<SArm>();
+    Registry.createSystem<SPlayer>();
+    Registry.createSystem<SPhysics>();
+    Registry.createSystem<SRender>();
+    Registry.createSystem<SEnemy>();
+    Registry.createSystem<SDamage>();
+    Registry.createSystem<SButton>();
+    Registry.createSystem<STimer>();
+    Registry.createSystem<SArm>();
     
 }
-void PlayScene::CreateComponentArrays()
+void PlayScene::createComponentArrays()
 {
-    Registry.CreateComponentArray<CTransform>();
-    Registry.CreateComponentArray<CRigidbody>();
-    Registry.CreateComponentArray<CCollisionEvent>();
-    Registry.CreateComponentArray<CDamageEvent>();
-    Registry.CreateComponentArray<CBoxCollider>();
-    Registry.CreateComponentArray<CCircleCollider>();
-    Registry.CreateComponentArray<CRender>();
-    Registry.CreateComponentArray<CPlayer>();
-    Registry.CreateComponentArray<CHealth>();
-    Registry.CreateComponentArray<CDamage>();
-    Registry.CreateComponentArray<CButton>();
-    Registry.CreateComponentArray<CEnemyTank>();
-    Registry.CreateComponentArray<CEnemyHoming>();
-    Registry.CreateComponentArray<CTimer>();
-    Registry.CreateComponentArray<CScoreKeeper>();
-    Registry.CreateComponentArray<CLabel>();
-    Registry.CreateComponentArray<CShield>();
-    Registry.CreateComponentArray<CWave>();
-    Registry.CreateComponentArray<CArm>();
+    Registry.createComponentArray<CTransform>();
+    Registry.createComponentArray<CRigidbody>();
+    Registry.createComponentArray<CCollisionEvent>();
+    Registry.createComponentArray<CDamageEvent>();
+    Registry.createComponentArray<CBoxCollider>();
+    Registry.createComponentArray<CCircleCollider>();
+    Registry.createComponentArray<CRender>();
+    Registry.createComponentArray<CPlayer>();
+    Registry.createComponentArray<CHealth>();
+    Registry.createComponentArray<CDamage>();
+    Registry.createComponentArray<CButton>();
+    Registry.createComponentArray<CEnemyTank>();
+    Registry.createComponentArray<CEnemyHoming>();
+    Registry.createComponentArray<CTimer>();
+    Registry.createComponentArray<CLabel>();
+    Registry.createComponentArray<CShield>();
+    Registry.createComponentArray<CWave>();
+    Registry.createComponentArray<CArm>();
 }
 
-void PlayScene::CreateMap()
+void PlayScene::createMap()
 {
     float x= 129;
     for (int i = 0; i < 4; ++i)
     {
-        Factory::CreateWall(Registry,{x*(float)i*2+x,31},{x,30},200);
+        Factory::createWall(Registry,{x*(float)i*2+x,31},{x,30},200);
     }
     for (int j = 0; j < 4; ++j)
     {
-        Factory::CreateWall(Registry,{x*(float)j*2+x,737},{x,30},200);
+        Factory::createWall(Registry,{x*(float)j*2+x,737},{x,30},200);
     }
     
 }

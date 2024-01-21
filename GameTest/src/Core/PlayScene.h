@@ -4,12 +4,12 @@
 class PlayScene final : public Scene
 {
 public:
-    void Init() override;
-    void Update(float dt) override;
-    void Render() override;
-    void Shutdown() override;
+    void init() override;
+    void update(float dt) override;
+    void render() override;
+    void shutdown() override;
 private:
-    void CreateSystems();
-    void CreateComponentArrays();
-    void CreateMap();
+    void createSystems();
+    void createComponentArrays();
+    void createMap();
 };

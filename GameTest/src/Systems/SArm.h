@@ -6,6 +6,6 @@
 class SArm : public ISystem
 {
 public:
-    void Update(Registry& Registry);
+    void update(Registry& Registry);
     
 };

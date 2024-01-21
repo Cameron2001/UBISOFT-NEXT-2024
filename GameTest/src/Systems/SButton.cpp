@@ -7,39 +7,39 @@
 #include "../Core/SceneManager.h"
 
 
-void SButton::Update(Registry& Registry)
+void SButton::update(Registry& Registry)
 {
-   CheckClicks(Registry);
-   ResolveClicks(Registry); 
+   checkClicks(Registry);
+   resolveClicks(Registry); 
 }
 
-void SButton::CheckClicks(Registry& Registry)
+void SButton::checkClicks(Registry& Registry)
 {
     
-    for (auto entityID : Registry.GetEntities<CButton>())
+    for (auto entityID : Registry.getEntities<CButton>())
     {
-        const CTransform* transform = Registry.GetComponent<CTransform>(entityID);
-        CButton* button = Registry.GetComponent<CButton>(entityID);
+        const CTransform& transform = Registry.getComponent<CTransform>(entityID);
+        CButton& button = Registry.getComponent<CButton>(entityID);
         vec2 mousePos;
         App::GetMousePos(mousePos.x,mousePos.y);
-        button->isClicked=Clicked(mousePos, transform->pos,button->bounds);
+        button.isClicked=clicked(mousePos, transform.pos,button.bounds);
     }
 }
 
-void SButton::ResolveClicks(Registry& Registry)
+void SButton::resolveClicks(Registry& Registry)
 {
-    for (const auto entityID : Registry.GetEntities<CButton>())
+    for (const auto entityID : Registry.getEntities<CButton>())
     {
-        const CButton* button = Registry.GetComponent<CButton>(entityID);
-        if(button->isClicked)
+        const CButton& button = Registry.getComponent<CButton>(entityID);
+        if(button.isClicked)
         {
-            switch (button->type)
+            switch (button.type)
             {
             case CButton::ButtonTypes::START:
-                StartClick();
+                startClick();
                 break;
             case CButton::ButtonTypes::EXIT:
-                ExitClick();
+                exitClick();
                 break;
             }
         }
@@ -47,19 +47,19 @@ void SButton::ResolveClicks(Registry& Registry)
     }
 }
 
-void SButton::StartClick()
+void SButton::startClick()
 {
-    SceneManager::GetInstance()->LoadScene<PlayScene>();
+    SceneManager::getInstance()->loadScene<PlayScene>();
 }
 
 
-void SButton::ExitClick()
+void SButton::exitClick()
 {
     exit(0);
 }
 
 
-bool SButton::Clicked(vec2 mousePos, vec2 buttonPos, vec2 bounds)
+bool SButton::clicked(vec2 mousePos, vec2 buttonPos, vec2 bounds)
 {
     return(mousePos.x>buttonPos.x-bounds.x
         && mousePos.x<buttonPos.x+bounds.x

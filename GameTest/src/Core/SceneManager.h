@@ -10,18 +10,18 @@ public:
     ~SceneManager();
     
     
-    void Update(float dt) const;
-    void Render() const;
-    void CleanUp();
+    void update(float dt) const;
+    void render() const;
+    void cleanUp();
     
-    static SceneManager* GetInstance();
+    static SceneManager* getInstance();
     template<typename T>
-    void LoadScene()
+    void loadScene()
     {
-        CleanUp();
+        cleanUp();
 		
         currentScene = new T();
-        currentScene->Init();
+        currentScene->init();
     }
 
 private:
