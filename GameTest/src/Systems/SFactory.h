@@ -15,5 +15,5 @@ public:
     Entity CreateWall(Scene& scene, vec2 pos, vec2 bounds, float hp, Entity id = NULL);
     Entity CreateDamageEvent(Scene& scene, Entity target, float damage, Entity id = NULL);
     Entity CreateCollisionEvent(Scene& scene, Entity entityA, Entity entityB, vec2 mtv, vec2 normal, Entity id = NULL);
-    
+    Entity CreateScoreTimer(Scene& scene, Entity id = NULL);
 };

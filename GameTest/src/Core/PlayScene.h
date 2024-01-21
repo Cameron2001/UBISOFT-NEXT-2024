@@ -8,4 +8,8 @@ public:
     void Update(float dt) override;
     void Render() override;
     void Shutdown() override;
+private:
+    void CreateSystems();
+    void CreateComponentArrays();
+    void CreateMap();
 };

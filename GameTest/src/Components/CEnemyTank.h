@@ -8,7 +8,6 @@ struct CEnemyTank
         IDLE
     };
     TankState state = TankState::IDLE;
-    float timer = 0.0f;
     float projectileSpeed;
     float rot;
     float armLength;

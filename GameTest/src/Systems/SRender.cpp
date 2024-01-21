@@ -4,10 +4,6 @@
 #include "../../App/app.h"
 #include "../Util/Utils.h"
 
-void SRender::Init(Scene& scene)
-{
-}
-
 void SRender::Update(Scene& scene)
 {
     for(auto entityID : scene.reg.GetEntities<CRender,CTransform>())

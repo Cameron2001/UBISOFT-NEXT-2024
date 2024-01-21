@@ -6,21 +6,18 @@
 #include "../Util/Utils.h"
 
 
-void SPlayer::Init(Scene& scene)
-{
-}
-
 void SPlayer::Update(Scene& scene, float dt)
 {
-    for(auto entityID : scene.reg.GetEntities<CPlayer>())
+    for(auto entityID : scene.reg.GetEntities<CPlayer,CTransform,CRigidbody,CTimer>())
     {
         CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
         CPlayer* player = scene.reg.GetComponent<CPlayer>(entityID);
         CRigidbody* rigidbody = scene.reg.GetComponent<CRigidbody>(entityID);
-        bool up = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_UP, false) || App::IsKeyPressed('W');
-        bool down = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_DOWN, false) || App::IsKeyPressed('S');
-        bool left = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_LEFT, false) || App::IsKeyPressed('A');
-        bool right = App::GetController().CheckButton(XINPUT_GAMEPAD_DPAD_RIGHT, false) || App::IsKeyPressed('D');
+        CTimer* timer = scene.reg.GetComponent<CTimer>(entityID);
+        bool up = App::IsKeyPressed('W');
+        bool down = App::IsKeyPressed('S');
+        bool left = App::IsKeyPressed('A');
+        bool right = App::IsKeyPressed('D');
         bool shoot  = App::IsKeyPressed(VK_SPACE)|| App::IsKeyPressed(VK_LBUTTON);
         if (up)
         {
@@ -41,22 +38,21 @@ void SPlayer::Update(Scene& scene, float dt)
         if(shoot && player->state==CPlayer::States::IDLE&&player->ammo>0)
         {
             player->state=CPlayer::States::SHOOTING;
-            player->timer = 0;
+            timer->timer = 0;
         }
         if(player->state==CPlayer::States::SHOOTING)
         {
-            player->timer+=dt;
             if(shoot == false)
             {
-                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,transform->pos,30*player->timer,35000*player->timer,player->rot,100*player->timer,50*player->timer);
+                float multi = Utils::Clamp(timer->timer,0.5f,2.0f);
+                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,transform->pos,30*multi,35000*multi,player->rot,100*multi,50*multi);
                 player->state=CPlayer::States::RELOADING;
-                player->timer = 0;
+                timer->timer = 0;
             }
         }
         if(player->state==CPlayer::States::RELOADING)
         {
-            player->timer +=dt;
-            if(player->timer>player->shootCooldown)
+            if(timer->timer>player->shootCooldown)
             {
                 player->state = CPlayer::States::IDLE;
             }

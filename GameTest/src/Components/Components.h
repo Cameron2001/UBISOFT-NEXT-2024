@@ -13,6 +13,7 @@
 #include "CEnemyTank.h"
 #include "CEnemyHoming.h"
 #include "CTimer.h"
+#include "CScoreKeeper.h"
 
 #include "CCollisionEvent.h"
 #include "CDamageEvent.h"

@@ -7,7 +7,6 @@
 class SRender: public ISystem
 {
 public:
-    void Init(Scene& scene);
     void Update(Scene& scene);
 private:
     void DrawPlayer(Scene& scene);

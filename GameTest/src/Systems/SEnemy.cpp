@@ -20,7 +20,7 @@ void SEnemy::Update(Scene& scene, float dt)
 
 void SEnemy::UpdateTanks(Scene& scene, float dt)
 {
-    for (auto element : scene.reg.GetEntities<CEnemyTank,CTransform,CBoxCollider,CCircleCollider,CRigidbody>())
+    for (auto element : scene.reg.GetEntities<CEnemyTank,CTransform,CBoxCollider,CCircleCollider,CRigidbody,CTimer>())
     {
         CEnemyTank* tank = scene.reg.GetComponent<CEnemyTank>(element);
         CTransform* transform = scene.reg.GetComponent<CTransform>(element);
@@ -28,6 +28,7 @@ void SEnemy::UpdateTanks(Scene& scene, float dt)
         CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(element);
         CRigidbody* rb = scene.reg.GetComponent<CRigidbody>(element);
         CTransform* playerTransform = scene.reg.GetComponent<CTransform>(scene.reg.GetEntities<CPlayer>()[0]);
+        CTimer* timer = scene.reg.GetComponent<CTimer>(element);
         vec2 armStart = transform->pos+circle->offset;
         
         tank->rot =atan2f(playerTransform->pos.y-armStart.y,playerTransform->pos.x-armStart.x);
@@ -37,27 +38,27 @@ void SEnemy::UpdateTanks(Scene& scene, float dt)
         if(tank->state == CEnemyTank::TankState::IDLE)
         {
             tank->state = CEnemyTank::TankState::SHOOTING;
-            tank->timer = 0;
+            timer->timer = 0;
         }
         if(tank->state == CEnemyTank::TankState::SHOOTING)
         {
-            if(tank->timer > 1.0f)
+            if(timer->timer > 1.0f)
             {
-                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,armStart,20*tank->timer, 20000 *tank->timer,tank->rot,100*tank->timer,50*tank->timer);
-                tank->timer = 0.0f;
+                
+                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,armStart,20*timer->timer, 20000 *timer->timer,tank->rot,100*timer->timer,50*timer->timer);
+                timer->timer = 0.0f;
                 tank->state = CEnemyTank::TankState::RELOADING;
             }
         }
         if(tank->state == CEnemyTank::TankState::RELOADING)
         {
             
-            if(tank->timer>3.0f)
+            if(timer->timer>3.0f)
             {
-                tank->timer = 0.0f;
+                timer->timer = 0.0f;
                 tank->state = CEnemyTank::TankState::IDLE;
             }
         }
-        tank->timer+=dt;
         rb->acceleration.x-=50;
         
     }

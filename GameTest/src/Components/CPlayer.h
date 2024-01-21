@@ -11,7 +11,6 @@ struct CPlayer
     float moveSpeed;
     int ammo;
     float rot;
-    float timer = 0.0f;
     float damageScale = 1.0f;
     float aimLength = 100.0f;
     float shootCooldown= 2.0f;

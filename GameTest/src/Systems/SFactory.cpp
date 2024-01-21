@@ -12,6 +12,7 @@ Entity SFactory::CreatePlayer(Scene& scene, vec2 pos, float radius, Entity id)
     scene.reg.AddComponent(id, CPlayer(10,1000));
     scene.reg.AddComponent(id,CRigidbody());
     scene.reg.AddComponent(id,CHealth(100));
+    scene.reg.AddComponent(id,CTimer());
     return id;
 }
 
@@ -36,6 +37,7 @@ Entity SFactory::CreateEnemyTank(Scene& scene, vec2 pos, vec2 bounds, float radi
     scene.reg.AddComponent(id,CEnemyTank());
     scene.reg.AddComponent(id,CRigidbody(0.99));
     scene.reg.AddComponent(id, CCircleCollider(radius,{-bounds.x-radius,0}));
+    scene.reg.AddComponent(id,CTimer());
     return id;
 }
 
@@ -69,7 +71,7 @@ Entity SFactory::CreateProjectile(Scene& scene, vec2 pos, float radius, float fo
     CreateCircle(scene,pos+(dir*(radius+50.0f)),radius,{1.0,1.0,1.0},id);
     scene.reg.AddComponent(id, CDamage(damage));
     scene.reg.AddComponent(id, CHealth(health));
-    scene.reg.AddComponent(id,CRigidbody(0));
+    scene.reg.AddComponent(id,CRigidbody(0,1.75));
     scene.reg.GetComponent<CRigidbody>(id)->acceleration+=dir*force;
     return id;
     
@@ -77,7 +79,7 @@ Entity SFactory::CreateProjectile(Scene& scene, vec2 pos, float radius, float fo
 
 Entity SFactory::CreateWall(Scene& scene, vec2 pos, vec2 bounds, float hp, Entity id)
 {
-    if(id=NULL)
+    if(id==NULL)
         id = scene.reg.CreateEntity();
     CreateBox(scene,pos,bounds,{1.0,1.0,1.0},id);
     scene.reg.AddComponent(id, CHealth(hp));
@@ -99,6 +101,15 @@ Entity SFactory::CreateCollisionEvent(Scene& scene, Entity entityA, Entity entit
     if(id==NULL)
         id = scene.reg.CreateEntity();
     scene.reg.AddComponent(id,CCollisionEvent(entityA,entityB,mtv, normal));
+    return id;
+}
+
+Entity SFactory::CreateScoreTimer(Scene& scene, Entity id)
+{
+    if(id==NULL)
+        id = scene.reg.CreateEntity();
+    scene.reg.AddComponent(id,CTimer());
+    scene.reg.AddComponent(id,CScoreKeeper());
     return id;
 }
 
