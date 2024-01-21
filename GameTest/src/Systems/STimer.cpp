@@ -19,10 +19,7 @@ void STimer::updateTimerLabels(Registry& registry)
     for (const auto element : registry.getEntities<CTimer,CLabel>())
     {
         CLabel& label = registry.getComponent<CLabel>(element);
-        CTimer& timer = registry.getComponent<CTimer>(element);
-        const auto test = "Timer: " + std::to_string(timer.timer);
-        
-        label.labelText = test;
-        
+        const CTimer& timer = registry.getComponent<CTimer>(element);
+        label.labelText = "Timer: " + std::to_string(timer.timer);;
     }
 }

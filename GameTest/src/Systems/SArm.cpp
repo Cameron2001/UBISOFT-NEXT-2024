@@ -14,6 +14,7 @@ void SArm::update(Registry& registry)
         const CCircleCollider& circle = registry.getComponent<CCircleCollider>(ID);
         const vec2 armStart = transform.pos+circle.offset;
         const bool isPlayer = registry.hasComponent<CPlayer>(ID);
+        
         if(!isPlayer && arm.state==CArm::ArmState::IDLE) arm.bShoot = true;
         if(!isPlayer && arm.state==CArm::ArmState::SHOOTING && timer.timer>arm.coolDown/4) arm.bShoot = false;
         
@@ -22,23 +23,20 @@ void SArm::update(Registry& registry)
             arm.state = CArm::ArmState::SHOOTING;
             timer.timer = 0;
         }
-        if(arm.state == CArm::ArmState::SHOOTING)
+        
+        if(arm.state == CArm::ArmState::SHOOTING&&!arm.bShoot)
         {
-            if(arm.bShoot == false)
-            {
-                const float multipler = Utils::clamp(timer.timer,0.5f,2.0f);
-                Factory::createProjectile(registry,armStart,arm.projectileRadius*multipler, 10, arm.projectileForce*multipler,arm.rotation,arm.projectileHealth*multipler,arm.projectileDamage*multipler);
-                arm.state = CArm::ArmState::RELOADING;
-                timer.timer = 0.0f;
-            }
+            const float multipler = Utils::clamp(timer.timer,0.5f,2.0f);
+            Factory::createProjectile(registry,armStart,arm.projectileRadius*multipler, 10, arm.projectileForce*multipler,arm.rotation,arm.projectileHealth*multipler,arm.projectileDamage*multipler);
+            
+            arm.state = CArm::ArmState::RELOADING;
+            timer.timer = 0.0f;
         }
-        if(arm.state == CArm::ArmState::RELOADING)
+        
+        if(arm.state == CArm::ArmState::RELOADING && timer.timer>arm.coolDown)
         {
-            if(timer.timer>arm.coolDown)
-            {
-                arm.state = CArm::ArmState::IDLE;
-                timer.timer = 0.0f;
-            }
+            arm.state = CArm::ArmState::IDLE;
+            timer.timer = 0.0f;
         }
     }
 }

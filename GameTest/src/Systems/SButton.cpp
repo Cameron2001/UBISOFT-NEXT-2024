@@ -15,14 +15,13 @@ void SButton::update(Registry& registry)
 
 void SButton::checkClicks(Registry& registry)
 {
-    
     for (const Entity ID : registry.getEntities<CButton>())
     {
         const CTransform& transform = registry.getComponent<CTransform>(ID);
         CButton& button = registry.getComponent<CButton>(ID);
         vec2 mousePos;
         App::GetMousePos(mousePos.x,mousePos.y);
-        button.isClicked=clicked(mousePos, transform.pos,button.bounds);
+        button.bClicked=clicked(mousePos, transform.pos,button.bounds);
     }
 }
 
@@ -31,37 +30,24 @@ void SButton::resolveClicks(Registry& registry)
     for (const Entity ID : registry.getEntities<CButton>())
     {
         const CButton& button = registry.getComponent<CButton>(ID);
-        if(button.isClicked)
+        if(!button.bClicked) continue;
+        
+        switch (button.type)
         {
-            switch (button.type)
-            {
-            case CButton::ButtonTypes::START:
-                startClick();
-                break;
-            case CButton::ButtonTypes::EXIT:
-                exitClick();
-                break;
-            }
+        case CButton::ButtonTypes::START:
+            SceneManager::getInstance()->loadScene<PlayScene>();
+            break;
+        case CButton::ButtonTypes::EXIT:
+            exit(0);
         }
     }
 }
 
-void SButton::startClick()
-{
-    SceneManager::getInstance()->loadScene<PlayScene>();
-}
-
-
-void SButton::exitClick()
-{
-    exit(0);
-}
-
-
 bool SButton::clicked(vec2 mousePos, vec2 buttonPos, vec2 bounds)
 {
-    return(mousePos.x>buttonPos.x-bounds.x
+    return mousePos.x>buttonPos.x-bounds.x
         && mousePos.x<buttonPos.x+bounds.x
         && mousePos.y>buttonPos.y-bounds.y
-        && mousePos.y<buttonPos.y+bounds.y&&App::IsKeyPressed(VK_LBUTTON));
+        && mousePos.y<buttonPos.y+bounds.y
+        &&App::IsKeyPressed(VK_LBUTTON);
 }

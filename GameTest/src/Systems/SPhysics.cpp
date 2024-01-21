@@ -112,6 +112,7 @@ void SPhysics::resolveCollisions(Registry& registry)
         const CCollisionEvent& collision = registry.getComponent<CCollisionEvent>(ID);
         CTransform& tfA = registry.getComponent<CTransform>(collision.entityA);
         CTransform& tfB = registry.getComponent<CTransform>(collision.entityB);
+        
         if(registry.hasComponent<CRigidbody>(collision.entityA)&&registry.hasComponent<CRigidbody>(collision.entityB))
         {
             tfA.pos = tfA.pos+(collision.mtv/2);
@@ -123,7 +124,6 @@ void SPhysics::resolveCollisions(Registry& registry)
             vec2 projection = Utils::project(veloAlongNormal,collision.normal);
             float e = (bodyA.elasticity+bodyB.elasticity)/2;
             
-
             bodyA.velocity+=projection*e;
             bodyB.velocity-=projection*e;
         }
@@ -141,18 +141,17 @@ void SPhysics::resolveCollisions(Registry& registry)
             vec2 projection = Utils::project(body.velocity,collision.normal);
             tfB.pos = tfB.pos-collision.mtv;
             body.velocity-=projection*body.elasticity;
-            
         }
             
         if(registry.hasComponent<CDamage>(collision.entityA)&&registry.hasComponent<CHealth>(collision.entityB))
         {
-            const auto damge = registry.getComponent<CDamage>(collision.entityA);
-            Factory::createDamageEvent(registry,collision.entityB,damge.damage);
+            const CDamage& damage = registry.getComponent<CDamage>(collision.entityA);
+            Factory::createDamageEvent(registry,collision.entityB,damage.damage);
         }
         if(registry.hasComponent<CDamage>(collision.entityB)&&registry.hasComponent<CHealth>(collision.entityA))
         {
-            const auto damge = registry.getComponent<CDamage>(collision.entityB);
-            Factory::createDamageEvent(registry,collision.entityA,damge.damage);
+            const CDamage& damage = registry.getComponent<CDamage>(collision.entityB);
+            Factory::createDamageEvent(registry,collision.entityA,damage.damage);
         }
     }
     
@@ -169,20 +168,15 @@ void SPhysics::checkCollisions(Registry& registry)
     for (size_t i =0; i< boxes.size();++i)
     {
         for(size_t j = i+1; j<boxes.size(); ++j)
-        {
             boxBox(registry,boxes[i],boxes[j]);
-        }
+        
         for(size_t k = 0; k<circles.size(); ++k)
-        {
             boxCircle(registry,boxes[i],circles[k]);
-        }
     }
     for (size_t i =0; i< circles.size();++i)
     {
         for(size_t j = i+1; j<circles.size(); ++j)
-        {
             circleCircle(registry,circles[i],circles[j]);
-        }
     }
     
 }
@@ -191,25 +185,13 @@ bool SPhysics::checkCollision(Registry& registry, Entity a, Entity b)
 {
     if(registry.hasComponent<CBoxCollider>(a))
     {
-        if(registry.hasComponent<CBoxCollider>(b))
-        {
-            return boxBox(registry,a,b);
-        }
-        if(registry.hasComponent<CCircleCollider>(b))
-        {
-            return boxCircle(registry,a,b);
-        }
+        if(registry.hasComponent<CBoxCollider>(b)) return boxBox(registry,a,b);
+        if(registry.hasComponent<CCircleCollider>(b)) return boxCircle(registry,a,b);
     }
     if(registry.hasComponent<CCircleCollider>(a))
     {
-        if(registry.hasComponent<CBoxCollider>(b))
-        {
-            return boxCircle(registry,b,a);
-        }
-        if(registry.hasComponent<CCircleCollider>(b))
-        {
-            return circleCircle(registry,a,b);
-        }
+        if(registry.hasComponent<CBoxCollider>(b)) return boxCircle(registry,b,a);
+        if(registry.hasComponent<CCircleCollider>(b)) return circleCircle(registry,a,b);
     }
     return false;
 }
@@ -235,16 +217,14 @@ void SPhysics::deleteOffscreen(Registry& registry)
     const float buffer = 100.0f;
     for (const Entity ID : registry.getEntities<CTransform>())
     {
-        CTransform& transform = registry.getComponent<CTransform>(ID);
+        const CTransform& transform = registry.getComponent<CTransform>(ID);
         if(transform.pos.x<0-buffer||
             transform.pos.x>1024+buffer||
             transform.pos.y<0-buffer||
             transform.pos.y>768+buffer)
         {
-            if(registry.hasComponent<CHealth>(ID))
-                registry.getComponent<CHealth>(ID).bDead = true;
-            else
-                registry.deleteEntity(ID); 
+            if(registry.hasComponent<CHealth>(ID)) registry.getComponent<CHealth>(ID).bDead = true;
+            else registry.deleteEntity(ID); 
         }
     }
 }

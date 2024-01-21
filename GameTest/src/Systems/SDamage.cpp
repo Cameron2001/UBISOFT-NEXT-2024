@@ -40,6 +40,7 @@ void SDamage::updateHealth(Registry& registry, float dt)
         }
         if(registry.hasComponent<CRender>(ID))
         {
+            //clean this up
             CRender& render = registry.getComponent<CRender>(ID);
             float healthPercentage = health.hp/health.maxHp;
             healthPercentage = 1-healthPercentage;
@@ -54,7 +55,7 @@ void SDamage::deleteDead(Registry& registry)
     bool playerDead = false;
     for (const Entity ID: registry.getEntities<CHealth>())
     {
-        CHealth& health = registry.getComponent<CHealth>(ID);
+        const CHealth& health = registry.getComponent<CHealth>(ID);
         if(health.bDead)
         {
             if(registry.hasComponent<CPlayer>(ID)) playerDead = true;

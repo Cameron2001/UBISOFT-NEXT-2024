@@ -9,9 +9,7 @@ public:
     void update(Registry& registry);
 private:
     void checkClicks(Registry& registry);
-    void resolveClicks(Registry& registry);
-    void startClick();
-    void exitClick();
-    bool clicked(vec2 mousePos,vec2 buttonPos,vec2 bounds);
+    static void resolveClicks(Registry& registry);
+    static bool clicked(vec2 mousePos,vec2 buttonPos,vec2 bounds);
     
 };

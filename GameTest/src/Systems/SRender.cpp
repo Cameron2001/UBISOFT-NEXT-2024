@@ -23,6 +23,7 @@ void SRender::drawShapes(Registry& registry)
             const CBoxCollider& box = registry.getComponent<CBoxCollider>(ID);
             drawSquare(transform.pos+box.offset,box.extents,render.color);
         }
+        
         if(registry.hasComponent<CCircleCollider>(ID))
         {
             const CCircleCollider& circle = registry.getComponent<CCircleCollider>(ID);
@@ -61,6 +62,7 @@ void SRender::drawLabels(Registry& registry)
         const CRender& render = registry.getComponent<CRender>(ID);
         const CLabel& label = registry.getComponent<CLabel>(ID);
         const CTransform& transform = registry.getComponent<CTransform>(ID);
+        
         App::Print(transform.pos.x+label.labelOffset.x,transform.pos.y+label.labelOffset.y,label.labelText.c_str(),render.color.x,render.color.y,render.color.z);
     }
 }
@@ -69,11 +71,13 @@ void SRender::drawArms(Registry& registry)
 {
     for (const Entity ID : registry.getEntities<CArm>())
     {
-        CArm& arm = registry.getComponent<CArm>(ID);
-        CCircleCollider& circle = registry.getComponent<CCircleCollider>(ID);
-        CTransform& transform = registry.getComponent<CTransform>(ID);
-        vec2 armStart  = {cosf(arm.rotation),sinf(arm.rotation)};
-        vec2 armEnd = armStart*arm.length;
+        const CCircleCollider& circle = registry.getComponent<CCircleCollider>(ID);
+        const CTransform& transform = registry.getComponent<CTransform>(ID);
+        const CArm& arm = registry.getComponent<CArm>(ID);
+        
+        const vec2 armStart  = {cosf(arm.rotation),sinf(arm.rotation)};
+        const vec2 armEnd = armStart*arm.length;
+        
         vec3 color = {1.0f,1.0f,1.0f};
         if (arm.state==CArm::ArmState::SHOOTING)
             color = {1.0f,0.0f,0.0f};
