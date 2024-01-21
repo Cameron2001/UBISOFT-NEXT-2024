@@ -2,34 +2,33 @@
 #include "SEnemy.h"
 
 #include "../../app/AppSettings.h"
-#include "../Components/Components.h"
 #include "../Core/Factory.h"
 #include "../Util/Utils.h"
 
-void SEnemy::update(Registry& Registry, float dt)
+void SEnemy::update(Registry& registry, float dt)
 {
-    const auto waveController = Registry.getEntities<CWave>()[0];
-    CTimer& timer = Registry.getComponent<CTimer>(waveController);
-    const CWave& wave = Registry.getComponent<CWave>(waveController);
+    const auto waveController = registry.getEntities<CWave>()[0];
+    CTimer& timer = registry.getComponent<CTimer>(waveController);
+    const CWave& wave = registry.getComponent<CWave>(waveController);
     if(timer.timer>wave.waveCooldown)
     {
         timer.timer = 0.0f;
-        spawnWave(Registry, wave.difficultyMultiplier);
+        spawnWave(registry, wave.difficultyMultiplier);
     }
-    updateTanks(Registry,dt);
-    updateHoming(Registry,dt);
+    updateTanks(registry,dt);
+    updateHoming(registry,dt);
 }
 
-void SEnemy::updateTanks(Registry& Registry, float dt)
+void SEnemy::updateTanks(Registry& registry, float dt)
 {
-    auto playerPos = Registry.getComponent<CTransform>(Registry.getEntities<CPlayer>()[0]).pos;
-    for (const auto element : Registry.getEntities<CEnemyTank>())
+    auto playerPos = registry.getComponent<CTransform>(registry.getEntities<CPlayer>()[0]).pos;
+    for (const auto element : registry.getEntities<CEnemyTank>())
     {
-        CRigidbody& rb = Registry.getComponent<CRigidbody>(element);
-        CEnemyTank& tank = Registry.getComponent<CEnemyTank>(element);
-        CTransform& transform = Registry.getComponent<CTransform>(element);
-        CCircleCollider& circle = Registry.getComponent<CCircleCollider>(element);
-        CArm& arm = Registry.getComponent<CArm>(element);
+        CRigidbody& rb = registry.getComponent<CRigidbody>(element);
+        CEnemyTank& tank = registry.getComponent<CEnemyTank>(element);
+        CTransform& transform = registry.getComponent<CTransform>(element);
+        CCircleCollider& circle = registry.getComponent<CCircleCollider>(element);
+        CArm& arm = registry.getComponent<CArm>(element);
 
         const vec2 armStart = transform.pos+circle.offset;
         arm.rotation =atan2f(playerPos.y-armStart.y,playerPos.x-armStart.x);
@@ -41,25 +40,25 @@ void SEnemy::updateTanks(Registry& Registry, float dt)
     }
 }
 
-void SEnemy::updateHoming(Registry& Registry, float dt)
+void SEnemy::updateHoming(Registry& registry, float dt)
 {
-    for (auto element : Registry.getEntities<CEnemyHoming>())
+    for (auto element : registry.getEntities<CEnemyHoming>())
     {
-        CEnemyHoming& homingComp = Registry.getComponent<CEnemyHoming>(element);
-        CRigidbody& rigidbody = Registry.getComponent<CRigidbody>(element);
-        CTransform& transform = Registry.getComponent<CTransform>(element);
-        const CTransform& playerTransform = Registry.getComponent<CTransform>(Registry.getEntities<CPlayer>()[0]);
+        CEnemyHoming& homingComp = registry.getComponent<CEnemyHoming>(element);
+        CRigidbody& rigidbody = registry.getComponent<CRigidbody>(element);
+        CTransform& transform = registry.getComponent<CTransform>(element);
+        const CTransform& playerTransform = registry.getComponent<CTransform>(registry.getEntities<CPlayer>()[0]);
         vec2 diff = {playerTransform.pos.x-transform.pos.x,playerTransform.pos.y-transform.pos.y};
         rigidbody.acceleration+= Utils::Normalize(diff)*homingComp.moveSpeed;
         
     }
 }
 
-void SEnemy::spawnWave(Registry& Registry, float difficultyMultiplier)
+void SEnemy::spawnWave(Registry& registry, float difficultyMultiplier)
 {
     float multiplier = FRAND_RANGE(1.0f, 1.5f)*difficultyMultiplier;
-    Factory::createEnemyTank(Registry, {800*difficultyMultiplier,300}, {20,8},10,50*multiplier, 10.0f*multiplier, 200,15000*multiplier, 25 *multiplier, 20*multiplier, 10.0f*multiplier,30.0f,5.0f*multiplier);
-    Factory::createEnemyTank(Registry, {900*difficultyMultiplier,500}, {30,10},15,75*multiplier, 10.0f*multiplier, 150,20000*multiplier, 30 *multiplier, 30*multiplier, 10.0f*multiplier,40.0f, 6.0*multiplier);
-    Factory::createEnemyHoming(Registry, {1000*difficultyMultiplier,400},20*multiplier, 6,20*multiplier, 10*multiplier,600*multiplier);
+    Factory::createEnemyTank(registry, {800*difficultyMultiplier,300}, {20,8},10,50*multiplier, 10.0f*multiplier, 200,15000*multiplier, 25 *multiplier, 20*multiplier, 10.0f*multiplier,30.0f,5.0f*multiplier);
+    Factory::createEnemyTank(registry, {900*difficultyMultiplier,500}, {30,10},15,75*multiplier, 10.0f*multiplier, 150,20000*multiplier, 30 *multiplier, 30*multiplier, 10.0f*multiplier,40.0f, 6.0*multiplier);
+    Factory::createEnemyHoming(registry, {1000*difficultyMultiplier,400},20*multiplier, 6,20*multiplier, 10*multiplier,600*multiplier);
 }
 

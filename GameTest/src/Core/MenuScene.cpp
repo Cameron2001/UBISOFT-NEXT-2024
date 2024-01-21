@@ -8,7 +8,7 @@
 
 void MenuScene::init()
 {
-    Entity invalid = Registry.createEntity();
+    Entity invalid = registry.createEntity();
     createSystems();
     createComponentArrays();
     createMenu();
@@ -25,12 +25,12 @@ void MenuScene::init()
 void MenuScene::update(float dt)
 {
     dt/=1000.0f;
-    Registry.getSystem<SButton>()->update(Registry);
+    registry.getSystem<SButton>()->update(registry);
 }
 
 void MenuScene::render()
 {
-    Registry.getSystem<SRender>()->update(Registry);
+    registry.getSystem<SRender>()->update(registry);
 }
 
 void MenuScene::shutdown()
@@ -39,35 +39,35 @@ void MenuScene::shutdown()
 
 void MenuScene::createSystems()
 {
-    Registry.createSystem<SRender>();
-    Registry.createSystem<SButton>();
+    registry.createSystem<SRender>();
+    registry.createSystem<SButton>();
 }
 
 void MenuScene::createComponentArrays()
 {
-    Registry.createComponentArray<CTransform>();
-    Registry.createComponentArray<CRigidbody>();
-    Registry.createComponentArray<CCollisionEvent>();
-    Registry.createComponentArray<CDamageEvent>();
-    Registry.createComponentArray<CBoxCollider>();
-    Registry.createComponentArray<CCircleCollider>();
-    Registry.createComponentArray<CRender>();
-    Registry.createComponentArray<CPlayer>();
-    Registry.createComponentArray<CHealth>();
-    Registry.createComponentArray<CDamage>();
-    Registry.createComponentArray<CButton>();
-    Registry.createComponentArray<CEnemyTank>();
-    Registry.createComponentArray<CEnemyHoming>();
-    Registry.createComponentArray<CTimer>();
-    Registry.createComponentArray<CLabel>();
-    Registry.createComponentArray<CShield>();
-    Registry.createComponentArray<CWave>();
-    Registry.createComponentArray<CArm>();
+    registry.createComponentArray<CTransform>();
+    registry.createComponentArray<CRigidbody>();
+    registry.createComponentArray<CCollisionEvent>();
+    registry.createComponentArray<CDamageEvent>();
+    registry.createComponentArray<CBoxCollider>();
+    registry.createComponentArray<CCircleCollider>();
+    registry.createComponentArray<CRender>();
+    registry.createComponentArray<CPlayer>();
+    registry.createComponentArray<CHealth>();
+    registry.createComponentArray<CDamage>();
+    registry.createComponentArray<CButton>();
+    registry.createComponentArray<CEnemyTank>();
+    registry.createComponentArray<CEnemyHoming>();
+    registry.createComponentArray<CTimer>();
+    registry.createComponentArray<CLabel>();
+    registry.createComponentArray<CShield>();
+    registry.createComponentArray<CWave>();
+    registry.createComponentArray<CArm>();
 }
 
 void MenuScene::createMenu()
 {
-    Factory::createButton(Registry, {512,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
-    Factory::createButton(Registry, {512,500},{100,30},CButton::ButtonTypes::START, "Start");
+    Factory::createButton(registry, {512,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
+    Factory::createButton(registry, {512,500},{100,30},CButton::ButtonTypes::START, "Start");
 }
 

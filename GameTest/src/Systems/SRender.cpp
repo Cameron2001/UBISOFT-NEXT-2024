@@ -2,30 +2,30 @@
 #include "SRender.h"
 
 #include "../../App/app.h"
-#include "../Util/Utils.h"
+#include "../Components/Components.h"
 
-void SRender::update(Registry& Registry)
+void SRender::update(Registry& registry)
 {
-    drawShapes(Registry);
-    drawLabels(Registry);
-    drawArms(Registry);
+    drawShapes(registry);
+    drawLabels(registry);
+    drawArms(registry);
 }
 
-void SRender::drawShapes(Registry& Registry)
+void SRender::drawShapes(Registry& registry)
 {
-    for(auto entityID : Registry.getEntities<CRender>())
+    for(auto entityID : registry.getEntities<CRender>())
     {
-        const CRender& render = Registry.getComponent<CRender>(entityID);
-        const CTransform& transform = Registry.getComponent<CTransform>(entityID);
+        const CRender& render = registry.getComponent<CRender>(entityID);
+        const CTransform& transform = registry.getComponent<CTransform>(entityID);
         
-        if(Registry.hasComponent<CBoxCollider>(entityID))
+        if(registry.hasComponent<CBoxCollider>(entityID))
         {
-            const CBoxCollider& box = Registry.getComponent<CBoxCollider>(entityID);
+            const CBoxCollider& box = registry.getComponent<CBoxCollider>(entityID);
             drawSquare(transform.pos+box.offset,box.extents,render.color);
         }
-        if(Registry.hasComponent<CCircleCollider>(entityID))
+        if(registry.hasComponent<CCircleCollider>(entityID))
         {
-            const CCircleCollider& circle = Registry.getComponent<CCircleCollider>(entityID);
+            const CCircleCollider& circle = registry.getComponent<CCircleCollider>(entityID);
             drawCircle(transform.pos+circle.offset,circle.radius,circle.segments, render.color);
         }
     }
@@ -54,24 +54,24 @@ void SRender::drawCircle(vec2 centre, float radius, int segments, vec3 Outsideco
     }
 }
 
-void SRender::drawLabels(Registry& Registry)
+void SRender::drawLabels(Registry& registry)
 {
-    for (const auto current : Registry.getEntities<CLabel>())
+    for (const auto current : registry.getEntities<CLabel>())
     {
-        const CRender& render = Registry.getComponent<CRender>(current);
-        const CLabel& label = Registry.getComponent<CLabel>(current);
-        const CTransform& transform = Registry.getComponent<CTransform>(current);
+        const CRender& render = registry.getComponent<CRender>(current);
+        const CLabel& label = registry.getComponent<CLabel>(current);
+        const CTransform& transform = registry.getComponent<CTransform>(current);
         App::Print(transform.pos.x+label.labelOffset.x,transform.pos.y+label.labelOffset.y,label.labelText.c_str(),render.color.x,render.color.y,render.color.z);
     }
 }
 
-void SRender::drawArms(Registry& Registry)
+void SRender::drawArms(Registry& registry)
 {
-    for (auto element : Registry.getEntities<CArm>())
+    for (auto element : registry.getEntities<CArm>())
     {
-        CArm& arm = Registry.getComponent<CArm>(element);
-        CCircleCollider& circle = Registry.getComponent<CCircleCollider>(element);
-        CTransform& transform = Registry.getComponent<CTransform>(element);
+        CArm& arm = registry.getComponent<CArm>(element);
+        CCircleCollider& circle = registry.getComponent<CCircleCollider>(element);
+        CTransform& transform = registry.getComponent<CTransform>(element);
         vec2 armStart  = {cosf(arm.rotation),sinf(arm.rotation)};
         vec2 armEnd = armStart*arm.length;
         vec3 color = {1.0f,1.0f,1.0f};

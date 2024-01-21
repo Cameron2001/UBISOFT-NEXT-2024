@@ -7,24 +7,24 @@
 #include "../Core/Factory.h"
 #include "../Core/SceneManager.h"
 
-void SPhysics::update(Registry& Registry, float dt)
+void SPhysics::update(Registry& registry, float dt)
 {
-    deleteOffscreen(Registry);
-    checkCollisions(Registry);
-    resolveCollisions(Registry);
-    applyKinematics(Registry,dt);
+    deleteOffscreen(registry);
+    checkCollisions(registry);
+    resolveCollisions(registry);
+    applyKinematics(registry,dt);
 }
 
-bool SPhysics::boxBox(Registry& Registry, Entity aID, Entity bID)
+bool SPhysics::boxBox(Registry& registry, Entity aID, Entity bID)
 {
     //clean this up. all determine which side of the box was collided with
     if(aID == bID) return false;
-    if(!Registry.hasComponent<CRigidbody>(aID) && !Registry.hasComponent<CRigidbody>(bID)) return false;
+    if(!registry.hasComponent<CRigidbody>(aID) && !registry.hasComponent<CRigidbody>(bID)) return false;
     
-    CBoxCollider& box1 = Registry.getComponent<CBoxCollider>(aID);
-    CBoxCollider& box2 = Registry.getComponent<CBoxCollider>(bID);
-    vec2 pos1 = Registry.getComponent<CTransform>(aID).pos+box1.offset;
-    vec2 pos2 = Registry.getComponent<CTransform>(bID).pos+box2.offset;
+    CBoxCollider& box1 = registry.getComponent<CBoxCollider>(aID);
+    CBoxCollider& box2 = registry.getComponent<CBoxCollider>(bID);
+    vec2 pos1 = registry.getComponent<CTransform>(aID).pos+box1.offset;
+    vec2 pos2 = registry.getComponent<CTransform>(bID).pos+box2.offset;
     vec2 diff = {pos2-pos1};
     
     auto x = (box1.extents.x+box2.extents.x) - abs(diff.x);
@@ -35,14 +35,14 @@ bool SPhysics::boxBox(Registry& Registry, Entity aID, Entity bID)
         auto sx = Utils::Sign(diff.x);
         vec2 normal = {-sx,0};
         vec2 mtv = {-x * sx,0};
-        Factory::createCollisionEvent(Registry,aID,bID,mtv,normal);
+        Factory::createCollisionEvent(registry,aID,bID,mtv,normal);
     }
     else if (x>y)
     {
         auto sy = Utils::Sign(diff.y);
         vec2 normal = {0,-sy};
         vec2 mtv = {0,y * -sy};
-        Factory::createCollisionEvent(Registry,aID,bID,mtv,normal);
+        Factory::createCollisionEvent(registry,aID,bID,mtv,normal);
     }
     
     
@@ -53,15 +53,15 @@ bool SPhysics::boxBox(Registry& Registry, Entity aID, Entity bID)
 
 
 
-bool SPhysics::boxCircle(Registry& Registry, Entity boxID, Entity circleID)
+bool SPhysics::boxCircle(Registry& registry, Entity boxID, Entity circleID)
 {
     if(boxID == circleID) return false;
-    if(!Registry.hasComponent<CRigidbody>(boxID) && !Registry.hasComponent<CRigidbody>(circleID)) return false;
+    if(!registry.hasComponent<CRigidbody>(boxID) && !registry.hasComponent<CRigidbody>(circleID)) return false;
     
-    const CBoxCollider& box = Registry.getComponent<CBoxCollider>(boxID);
-    const CCircleCollider& circle = Registry.getComponent<CCircleCollider>(circleID);
-    const vec2 pos1 = Registry.getComponent<CTransform>(boxID).pos+box.offset;
-    const vec2 pos2 = Registry.getComponent<CTransform>(circleID).pos+circle.offset;
+    const CBoxCollider& box = registry.getComponent<CBoxCollider>(boxID);
+    const CCircleCollider& circle = registry.getComponent<CCircleCollider>(circleID);
+    const vec2 pos1 = registry.getComponent<CTransform>(boxID).pos+box.offset;
+    const vec2 pos2 = registry.getComponent<CTransform>(circleID).pos+circle.offset;
     const float x = Utils::Clamp(pos2.x,pos1.x-box.extents.x,pos1.x+box.extents.x);
     const float y = Utils::Clamp(pos2.y,pos1.y-box.extents.y,pos1.y+box.extents.y);
     const vec2 closest = {x,y};
@@ -72,7 +72,7 @@ bool SPhysics::boxCircle(Registry& Registry, Entity boxID, Entity circleID)
         const vec2 diff = pos2-closest;
         const vec2 normal = Utils::Normalize(diff);
         const vec2 mtv = Utils::Normalize(diff)*minDist;
-        Factory::createCollisionEvent(Registry,boxID,circleID,mtv,normal);
+        Factory::createCollisionEvent(registry,boxID,circleID,mtv,normal);
         return true;
     }
     return false;
@@ -80,15 +80,15 @@ bool SPhysics::boxCircle(Registry& Registry, Entity boxID, Entity circleID)
 }
 
 
-bool SPhysics::circleCircle(Registry& Registry, Entity aID, Entity bID)
+bool SPhysics::circleCircle(Registry& registry, Entity aID, Entity bID)
 {
     if(aID == bID) return false;
-    if(!Registry.hasComponent<CRigidbody>(aID) && !Registry.hasComponent<CRigidbody>(bID)) return false;
+    if(!registry.hasComponent<CRigidbody>(aID) && !registry.hasComponent<CRigidbody>(bID)) return false;
     
-    const CCircleCollider& circle1 = Registry.getComponent<CCircleCollider>(aID);
-    const CCircleCollider& circle2 = Registry.getComponent<CCircleCollider>(bID);
-    const vec2 pos1 = Registry.getComponent<CTransform>(aID).pos+circle1.offset;
-    const vec2 pos2 =Registry.getComponent<CTransform>(bID).pos+circle2.offset;
+    const CCircleCollider& circle1 = registry.getComponent<CCircleCollider>(aID);
+    const CCircleCollider& circle2 = registry.getComponent<CCircleCollider>(bID);
+    const vec2 pos1 = registry.getComponent<CTransform>(aID).pos+circle1.offset;
+    const vec2 pos2 =registry.getComponent<CTransform>(bID).pos+circle2.offset;
     const float distance = Utils::Distance(pos1,pos2);
     const float radiiSum = circle1.radius + circle2.radius;
     if( distance <= radiiSum)
@@ -98,27 +98,27 @@ bool SPhysics::circleCircle(Registry& Registry, Entity aID, Entity bID)
         //diff = {abs(diff.x),abs(diff.y)};
         const vec2 normal = Utils::Normalize(diff);
         const vec2 mtv = Utils::Normalize(diff)*minDist;
-        Factory::createCollisionEvent(Registry,aID,bID,mtv,normal);
+        Factory::createCollisionEvent(registry,aID,bID,mtv,normal);
         return true;
     }
     return false;
 }
 
 
-void SPhysics::resolveCollisions(Registry& Registry)
+void SPhysics::resolveCollisions(Registry& registry)
 {
-    for (auto current : Registry.getEntities<CCollisionEvent>())
+    for (auto current : registry.getEntities<CCollisionEvent>())
     {
-        const CCollisionEvent& collision = Registry.getComponent<CCollisionEvent>(current);
-        CTransform& tfA = Registry.getComponent<CTransform>(collision.entityA);
-        CTransform& tfB = Registry.getComponent<CTransform>(collision.entityB);
-        if(Registry.hasComponent<CRigidbody>(collision.entityA)&&Registry.hasComponent<CRigidbody>(collision.entityB))
+        const CCollisionEvent& collision = registry.getComponent<CCollisionEvent>(current);
+        CTransform& tfA = registry.getComponent<CTransform>(collision.entityA);
+        CTransform& tfB = registry.getComponent<CTransform>(collision.entityB);
+        if(registry.hasComponent<CRigidbody>(collision.entityA)&&registry.hasComponent<CRigidbody>(collision.entityB))
         {
             tfA.pos = tfA.pos+(collision.mtv/2);
             tfB.pos = tfB.pos-(collision.mtv/2);
             
-            CRigidbody& bodyA = Registry.getComponent<CRigidbody>(collision.entityA);
-            CRigidbody& bodyB = Registry.getComponent<CRigidbody>(collision.entityB);
+            CRigidbody& bodyA = registry.getComponent<CRigidbody>(collision.entityA);
+            CRigidbody& bodyB = registry.getComponent<CRigidbody>(collision.entityB);
             vec2 veloAlongNormal = bodyB.velocity-bodyA.velocity;
             vec2 projection = Utils::Project(veloAlongNormal,collision.normal);
             float e = (bodyA.elasticity+bodyB.elasticity)/2;
@@ -127,100 +127,100 @@ void SPhysics::resolveCollisions(Registry& Registry)
             bodyA.velocity+=projection*e;
             bodyB.velocity-=projection*e;
         }
-        else if(Registry.hasComponent<CRigidbody>(collision.entityA))
+        else if(registry.hasComponent<CRigidbody>(collision.entityA))
         {
-            CRigidbody& body = Registry.getComponent<CRigidbody>(collision.entityA);
+            CRigidbody& body = registry.getComponent<CRigidbody>(collision.entityA);
             vec2 projection = Utils::Project(body.velocity,collision.normal);
             tfA.pos = tfA.pos+collision.mtv;
             body.velocity-=projection*body.elasticity;
         }
         
-        else if (Registry.hasComponent<CRigidbody>(collision.entityB))
+        else if (registry.hasComponent<CRigidbody>(collision.entityB))
         {
-            CRigidbody& body = Registry.getComponent<CRigidbody>(collision.entityB);
+            CRigidbody& body = registry.getComponent<CRigidbody>(collision.entityB);
             vec2 projection = Utils::Project(body.velocity,collision.normal);
             tfB.pos = tfB.pos-collision.mtv;
             body.velocity-=projection*body.elasticity;
             
         }
             
-        if(Registry.hasComponent<CDamage>(collision.entityA)&&Registry.hasComponent<CHealth>(collision.entityB))
+        if(registry.hasComponent<CDamage>(collision.entityA)&&registry.hasComponent<CHealth>(collision.entityB))
         {
-            const auto damge = Registry.getComponent<CDamage>(collision.entityA);
-            Factory::createDamageEvent(Registry,collision.entityB,damge.damage);
+            const auto damge = registry.getComponent<CDamage>(collision.entityA);
+            Factory::createDamageEvent(registry,collision.entityB,damge.damage);
         }
-        if(Registry.hasComponent<CDamage>(collision.entityB)&&Registry.hasComponent<CHealth>(collision.entityA))
+        if(registry.hasComponent<CDamage>(collision.entityB)&&registry.hasComponent<CHealth>(collision.entityA))
         {
-            const auto damge = Registry.getComponent<CDamage>(collision.entityB);
-            Factory::createDamageEvent(Registry,collision.entityA,damge.damage);
+            const auto damge = registry.getComponent<CDamage>(collision.entityB);
+            Factory::createDamageEvent(registry,collision.entityA,damge.damage);
         }
     }
     
-    Registry.clearEntities<CCollisionEvent>();
+    registry.clearEntities<CCollisionEvent>();
 }
 
 
 
-void SPhysics::checkCollisions(Registry& Registry)
+void SPhysics::checkCollisions(Registry& registry)
 {
     
-    const std::vector<unsigned> boxes = Registry.getEntities<CBoxCollider>();
-    const std::vector<unsigned> circles = Registry.getEntities<CCircleCollider>();
+    const std::vector<unsigned> boxes = registry.getEntities<CBoxCollider>();
+    const std::vector<unsigned> circles = registry.getEntities<CCircleCollider>();
     for (size_t i =0; i< boxes.size();++i)
     {
         for(size_t j = i+1; j<boxes.size(); ++j)
         {
-            boxBox(Registry,boxes[i],boxes[j]);
+            boxBox(registry,boxes[i],boxes[j]);
         }
         for(size_t k = 0; k<circles.size(); ++k)
         {
-            boxCircle(Registry,boxes[i],circles[k]);
+            boxCircle(registry,boxes[i],circles[k]);
         }
     }
     for (size_t i =0; i< circles.size();++i)
     {
         for(size_t j = i+1; j<circles.size(); ++j)
         {
-            circleCircle(Registry,circles[i],circles[j]);
+            circleCircle(registry,circles[i],circles[j]);
         }
     }
     
 }
 
-bool SPhysics::checkCollision(Registry& Registry, Entity a, Entity b)
+bool SPhysics::checkCollision(Registry& registry, Entity a, Entity b)
 {
-    if(Registry.hasComponent<CBoxCollider>(a))
+    if(registry.hasComponent<CBoxCollider>(a))
     {
-        if(Registry.hasComponent<CBoxCollider>(b))
+        if(registry.hasComponent<CBoxCollider>(b))
         {
-            return boxBox(Registry,a,b);
+            return boxBox(registry,a,b);
         }
-        if(Registry.hasComponent<CCircleCollider>(b))
+        if(registry.hasComponent<CCircleCollider>(b))
         {
-            return boxCircle(Registry,a,b);
+            return boxCircle(registry,a,b);
         }
     }
-    if(Registry.hasComponent<CCircleCollider>(a))
+    if(registry.hasComponent<CCircleCollider>(a))
     {
-        if(Registry.hasComponent<CBoxCollider>(b))
+        if(registry.hasComponent<CBoxCollider>(b))
         {
-            return boxCircle(Registry,b,a);
+            return boxCircle(registry,b,a);
         }
-        if(Registry.hasComponent<CCircleCollider>(b))
+        if(registry.hasComponent<CCircleCollider>(b))
         {
-            return circleCircle(Registry,a,b);
+            return circleCircle(registry,a,b);
         }
     }
     return false;
 }
 
 
-void SPhysics::applyKinematics(Registry& Registry, float dt)
+void SPhysics::applyKinematics(Registry& registry, float dt)
 {
-    for(const auto entityID : Registry.getEntities<CRigidbody>())
+    for(const auto entityID : registry.getEntities<CRigidbody>())
     {
-        CTransform& transform = Registry.getComponent<CTransform>(entityID);
-        CRigidbody& rigidbody = Registry.getComponent<CRigidbody>(entityID);
+        CTransform& transform = registry.getComponent<CTransform>(entityID);
+        CRigidbody& rigidbody = registry.getComponent<CRigidbody>(entityID);
         
         rigidbody.velocity+= rigidbody.acceleration * dt;
         rigidbody.velocity*=pow((1-rigidbody.drag),dt);
@@ -230,25 +230,25 @@ void SPhysics::applyKinematics(Registry& Registry, float dt)
     }
 }
 
-void SPhysics::deleteOffscreen(Registry& Registry)
+void SPhysics::deleteOffscreen(Registry& registry)
 {
     float buffer = 100.0f;
     bool death = false;
-    for (auto element : Registry.getEntities<CTransform>())
+    for (auto element : registry.getEntities<CTransform>())
     {
-        CTransform& transform = Registry.getComponent<CTransform>(element);
+        CTransform& transform = registry.getComponent<CTransform>(element);
         if(transform.pos.x<0-buffer||
             transform.pos.x>1024+buffer||
             transform.pos.y<0-buffer||
             transform.pos.y>768+buffer)
         {
-            if(Registry.hasComponent<CHealth>(element))
+            if(registry.hasComponent<CHealth>(element))
             {
-                Registry.getComponent<CHealth>(element).isDead = true;
+                registry.getComponent<CHealth>(element).bDead = true;
             }
             else
             {
-                Registry.deleteEntity(element); 
+                registry.deleteEntity(element); 
             }
             
         }

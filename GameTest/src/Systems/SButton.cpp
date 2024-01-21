@@ -7,30 +7,30 @@
 #include "../Core/SceneManager.h"
 
 
-void SButton::update(Registry& Registry)
+void SButton::update(Registry& registry)
 {
-   checkClicks(Registry);
-   resolveClicks(Registry); 
+   checkClicks(registry);
+   resolveClicks(registry); 
 }
 
-void SButton::checkClicks(Registry& Registry)
+void SButton::checkClicks(Registry& registry)
 {
     
-    for (auto entityID : Registry.getEntities<CButton>())
+    for (auto entityID : registry.getEntities<CButton>())
     {
-        const CTransform& transform = Registry.getComponent<CTransform>(entityID);
-        CButton& button = Registry.getComponent<CButton>(entityID);
+        const CTransform& transform = registry.getComponent<CTransform>(entityID);
+        CButton& button = registry.getComponent<CButton>(entityID);
         vec2 mousePos;
         App::GetMousePos(mousePos.x,mousePos.y);
         button.isClicked=clicked(mousePos, transform.pos,button.bounds);
     }
 }
 
-void SButton::resolveClicks(Registry& Registry)
+void SButton::resolveClicks(Registry& registry)
 {
-    for (const auto entityID : Registry.getEntities<CButton>())
+    for (const auto entityID : registry.getEntities<CButton>())
     {
-        const CButton& button = Registry.getComponent<CButton>(entityID);
+        const CButton& button = registry.getComponent<CButton>(entityID);
         if(button.isClicked)
         {
             switch (button.type)

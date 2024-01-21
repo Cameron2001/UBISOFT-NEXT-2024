@@ -4,11 +4,11 @@
 class SDamage : public ISystem
 {
 public:
-    void update(Registry& Registry, float dt);
+    void update(Registry& registry, float dt);
 private:
-    void resolveDamageEvents(Registry& Registry);
-    void updateHealth(Registry& Registry, float dt);
-    void deleteDead(Registry& Registry);
+    void resolveDamageEvents(Registry& registry);
+    void updateHealth(Registry& registry, float dt);
+    void deleteDead(Registry& registry);
     
     
 };

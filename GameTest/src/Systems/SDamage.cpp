@@ -7,41 +7,41 @@
 #include "../Core/SceneManager.h"
 #include "../Util/Utils.h"
 
-void SDamage::update(Registry& Registry, float dt)
+void SDamage::update(Registry& registry, float dt)
 {
-    resolveDamageEvents(Registry);
-    updateHealth(Registry,dt);
-    deleteDead(Registry);
+    resolveDamageEvents(registry);
+    updateHealth(registry,dt);
+    deleteDead(registry);
     
     
 }
 
-void SDamage::resolveDamageEvents(Registry& Registry)
+void SDamage::resolveDamageEvents(Registry& registry)
 {
-    const auto damageEvents = Registry.getEntities<CDamageEvent>();
+    const auto damageEvents = registry.getEntities<CDamageEvent>();
     for (const auto damage_event : damageEvents)
     {
-        const CDamageEvent& event = Registry.getComponent<CDamageEvent>(damage_event);
-        CHealth& health = Registry.getComponent<CHealth>(event.target);
+        const CDamageEvent& event = registry.getComponent<CDamageEvent>(damage_event);
+        CHealth& health = registry.getComponent<CHealth>(event.target);
         health.hp-= event.damage;
         App::PlaySound(".\\Audio\\hitHurt.wav");
     }
-    Registry.clearEntities<CDamageEvent>();
+    registry.clearEntities<CDamageEvent>();
 }
 
-void SDamage::updateHealth(Registry& Registry, float dt)
+void SDamage::updateHealth(Registry& registry, float dt)
 {
-    for (const auto element : Registry.getEntities<CHealth>())
+    for (const auto element : registry.getEntities<CHealth>())
     {
-        CHealth& health = Registry.getComponent<CHealth>(element);
+        CHealth& health = registry.getComponent<CHealth>(element);
         if(health.hp<=0)
         {
-            health.isDead = true;
+            health.bDead = true;
             App::PlaySound(".\\Audio\\death.wav");
         }
-        if(Registry.hasComponent<CRender>(element))
+        if(registry.hasComponent<CRender>(element))
         {
-            CRender& render = Registry.getComponent<CRender>(element);
+            CRender& render = registry.getComponent<CRender>(element);
             float healthPercentage = health.hp/health.maxHp;
             healthPercentage = 1-healthPercentage;
             render.color ={1.0f,1.0f-healthPercentage,1.0f-healthPercentage};
@@ -50,16 +50,16 @@ void SDamage::updateHealth(Registry& Registry, float dt)
     }
 }
 
-void SDamage::deleteDead(Registry& Registry)
+void SDamage::deleteDead(Registry& registry)
 {
     bool player = false;
-    for (const auto element: Registry.getEntities<CHealth>())
+    for (const auto element: registry.getEntities<CHealth>())
     {
-        CHealth& health = Registry.getComponent<CHealth>(element);
-        if(health.isDead)
+        CHealth& health = registry.getComponent<CHealth>(element);
+        if(health.bDead)
         {
-            if(Registry.hasComponent<CPlayer>(element)) player = true;
-            Registry.deleteEntity(element);
+            if(registry.hasComponent<CPlayer>(element)) player = true;
+            registry.deleteEntity(element);
         }
         
     }
