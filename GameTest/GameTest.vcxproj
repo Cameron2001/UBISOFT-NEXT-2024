@@ -182,6 +182,7 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
+    <ClInclude Include="src\Components\CArm.h" />
     <ClInclude Include="src\Components\CAudioEvent.h" />
     <ClInclude Include="src\Components\CButton.h" />
     <ClInclude Include="src\Components\CCircleCollider.h" />
@@ -202,12 +203,12 @@
     <ClInclude Include="src\Components\CWall.h" />
     <ClInclude Include="src\Components\CWave.h" />
     <ClInclude Include="src\Core\ComponentArray.h" />
-    <ClInclude Include="src\Core\ECSTestScene.h" />
     <ClInclude Include="src\Core\IComponentArray.h" />
     <ClInclude Include="src\Core\MenuScene.h" />
     <ClInclude Include="src\Core\PlayScene.h" />
     <ClInclude Include="src\Core\Registry.h" />
     <ClInclude Include="src\Core\Scene.h" />
+    <ClInclude Include="src\Core\SceneManager.h" />
     <ClInclude Include="src\Systems\SAudio.h" />
     <ClInclude Include="src\Systems\SButton.h" />
     <ClInclude Include="src\Systems\SDamage.h" />
@@ -231,10 +232,9 @@
     <ClCompile Include="App\SimpleSound.cpp" />
     <ClCompile Include="App\SimpleSprite.cpp" />
     <ClCompile Include="GameTest.cpp" />
-    <ClCompile Include="src\Core\ECSTestScene.cpp" />
     <ClCompile Include="src\Core\MenuScene.cpp" />
     <ClCompile Include="src\Core\PlayScene.cpp" />
-    <ClCompile Include="src\Core\Scene.cpp" />
+    <ClCompile Include="src\Core\SceneManager.cpp" />
     <ClCompile Include="src\Systems\SAudio.cpp" />
     <ClCompile Include="src\Systems\SButton.cpp" />
     <ClCompile Include="src\Systems\SDamage.cpp" />

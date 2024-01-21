@@ -8,12 +8,13 @@
 
 void SPlayer::Update(Scene& scene, float dt)
 {
-    for(auto entityID : scene.reg.GetEntities<CPlayer,CTransform,CRigidbody,CTimer>())
+    for(const auto entityID : scene.reg.GetEntities<CPlayer>())
     {
-        CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
+        const CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
         CPlayer* player = scene.reg.GetComponent<CPlayer>(entityID);
         CRigidbody* rigidbody = scene.reg.GetComponent<CRigidbody>(entityID);
         CTimer* timer = scene.reg.GetComponent<CTimer>(entityID);
+        CArm* arm = scene.reg.GetComponent<CArm>(entityID);
         bool up = App::IsKeyPressed('W');
         bool down = App::IsKeyPressed('S');
         bool left = App::IsKeyPressed('A');
@@ -44,8 +45,8 @@ void SPlayer::Update(Scene& scene, float dt)
         {
             if(shoot == false)
             {
-                float multi = Utils::Clamp(timer->timer,0.5f,3.0f);
-                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,transform->pos,10*multi,50000*multi,player->rot,30*multi,35*multi);
+                float multi = Utils::Clamp(timer->timer,0.5f,2.5f);
+                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,transform->pos,24*multi,50000*multi,arm->rotation,50*multi,50*multi);
                 player->state=CPlayer::States::RELOADING;
                 timer->timer = 0;
             }
@@ -59,7 +60,7 @@ void SPlayer::Update(Scene& scene, float dt)
         }
         vec2 mousePos;
         App::GetMousePos(mousePos.x,mousePos.y);
-        player->rot = atan2(mousePos.y-transform->pos.y,mousePos.x-transform->pos.x);
+        arm->rotation= atan2(mousePos.y-transform->pos.y,mousePos.x-transform->pos.x);
         CLabel* label = scene.reg.GetComponent<CLabel>(entityID);
         label->labelText = "Health: " + std::to_string(scene.reg.GetComponent<CHealth>(entityID)->hp);
     }

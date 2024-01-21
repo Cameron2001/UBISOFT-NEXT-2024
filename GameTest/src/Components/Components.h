@@ -16,6 +16,7 @@
 #include "CScoreKeeper.h"
 #include "CWave.h"
 #include "CShield.h"
+#include "CArm.h"
 
 #include "CCollisionEvent.h"
 #include "CDamageEvent.h"

@@ -2,44 +2,39 @@
 #include "SEnemy.h"
 
 #include "SFactory.h"
-#include "../Components/CBoxCollider.h"
-#include "../Components/CCircleCollider.h"
-#include "../Components/CDamageEvent.h"
-#include "../Components/CEnemyTank.h"
-#include "../Components/CHealth.h"
-#include "../Components/CPlayer.h"
-#include "../Components/CRender.h"
-#include "../Components/CTransform.h"
+#include "../Components/Components.h"
 #include "../Util/Utils.h"
 
 void SEnemy::Update(Scene& scene, float dt)
 {
-    auto waveController = scene.reg.GetEntities<CTimer,CWave>()[0];
+    const auto waveController = scene.reg.GetEntities<CWave>()[0];
     CTimer* timer = scene.reg.GetComponent<CTimer>(waveController);
-    CWave* wave = scene.reg.GetComponent<CWave>(waveController);
+    const CWave* wave = scene.reg.GetComponent<CWave>(waveController);
     if(timer->timer>wave->waveCooldown)
     {
         timer->timer = 0.0f;
         SpawnWave(scene, wave->difficultyMultiplier);
     }
     UpdateTanks(scene,dt);
+    UpdateHoming(scene,dt);
 }
 
 void SEnemy::UpdateTanks(Scene& scene, float dt)
 {
-    for (auto element : scene.reg.GetEntities<CEnemyTank,CTransform,CBoxCollider,CCircleCollider,CRigidbody,CTimer>())
+    for (const auto element : scene.reg.GetEntities<CEnemyTank>())
     {
         CEnemyTank* tank = scene.reg.GetComponent<CEnemyTank>(element);
-        CTransform* transform = scene.reg.GetComponent<CTransform>(element);
-        CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(element);
         CRigidbody* rb = scene.reg.GetComponent<CRigidbody>(element);
-        CTransform* playerTransform = scene.reg.GetComponent<CTransform>(scene.reg.GetEntities<CPlayer>()[0]);
         CTimer* timer = scene.reg.GetComponent<CTimer>(element);
-        vec2 armStart = transform->pos+circle->offset;
+        CArm* arm = scene.reg.GetComponent<CArm>(element);
+        const CTransform* transform = scene.reg.GetComponent<CTransform>(element);
+        const CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(element);
+        const CTransform* playerTransform = scene.reg.GetComponent<CTransform>(scene.reg.GetEntities<CPlayer>()[0]);
+        const vec2 armStart = transform->pos+circle->offset;
         
-        tank->rot =atan2f(playerTransform->pos.y-armStart.y,playerTransform->pos.x-armStart.x);
-        if(tank->rot*Utils::Rad2Deg < 0) tank->rot+=Utils::Deg2Rad*360;
-        tank->rot = Utils::Clamp(tank->rot,75*Utils::Deg2Rad, 255*Utils::Deg2Rad);
+        arm->rotation =atan2f(playerTransform->pos.y-armStart.y,playerTransform->pos.x-armStart.x);
+        if(arm->rotation*Utils::Rad2Deg < 0) arm->rotation+=Utils::Deg2Rad*360;
+        arm->rotation = Utils::Clamp(arm->rotation,75*Utils::Deg2Rad, 255*Utils::Deg2Rad);
         
         if(tank->state == CEnemyTank::TankState::IDLE)
         {
@@ -51,7 +46,7 @@ void SEnemy::UpdateTanks(Scene& scene, float dt)
             if(timer->timer > 1.0f)
             {
                 
-                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,armStart,10*timer->timer, tank->projectileForce*timer->timer,tank->rot,tank->projectileHealth*timer->timer,tank->projectileDmg*timer->timer);
+                scene.reg.GetSystem<SFactory>()->CreateProjectile(scene,armStart,16*timer->timer, tank->projectileForce*timer->timer,arm->rotation,tank->projectileHealth*timer->timer,tank->projectileDmg*timer->timer);
                 timer->timer = 0.0f;
                 tank->state = CEnemyTank::TankState::RELOADING;
             }
@@ -70,10 +65,25 @@ void SEnemy::UpdateTanks(Scene& scene, float dt)
     }
 }
 
+void SEnemy::UpdateHoming(Scene& scene, float dt)
+{
+    for (auto element : scene.reg.GetEntities<CEnemyHoming>())
+    {
+        CEnemyHoming* homingComp = scene.reg.GetComponent<CEnemyHoming>(element);
+        CRigidbody* rigidbody = scene.reg.GetComponent<CRigidbody>(element);
+        CTransform* transform = scene.reg.GetComponent<CTransform>(element);
+        const CTransform* playerTransform = scene.reg.GetComponent<CTransform>(scene.reg.GetEntities<CPlayer>()[0]);
+        vec2 diff = {playerTransform->pos.x-transform->pos.x,playerTransform->pos.y-transform->pos.y};
+        rigidbody->acceleration+= Utils::Normalize(diff)*homingComp->moveSpeed;
+        
+    }
+}
+
 void SEnemy::SpawnWave(Scene& scene, float difficultyMultiplier)
 {
-    auto factory = scene.reg.GetSystem<SFactory>();
-    factory->CreateEnemyTank(scene, {800*difficultyMultiplier,300}, {20,8},10,100*difficultyMultiplier, 15.0f*difficultyMultiplier, 200,20000*difficultyMultiplier, 25 *difficultyMultiplier, 20*difficultyMultiplier);
-    factory->CreateEnemyTank(scene, {900*difficultyMultiplier,500}, {30,10},15,150*difficultyMultiplier, 25.0f*difficultyMultiplier, 150,25000*difficultyMultiplier, 50 *difficultyMultiplier, 35*difficultyMultiplier);
+    const auto factory = scene.reg.GetSystem<SFactory>();
+    factory->CreateEnemyTank(scene, {800*difficultyMultiplier,300}, {20,8},10,100*difficultyMultiplier, 15.0f*difficultyMultiplier, 200,25000*difficultyMultiplier, 25 *difficultyMultiplier, 20*difficultyMultiplier);
+    factory->CreateEnemyTank(scene, {900*difficultyMultiplier,500}, {30,10},15,150*difficultyMultiplier, 25.0f*difficultyMultiplier, 150,30000*difficultyMultiplier, 50 *difficultyMultiplier, 35*difficultyMultiplier);
+    factory->CreateEnemyHoming(scene, {1000*difficultyMultiplier,400},20*difficultyMultiplier,100*difficultyMultiplier, 20*difficultyMultiplier,600*difficultyMultiplier);
 }
 

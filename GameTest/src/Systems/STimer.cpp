@@ -6,7 +6,7 @@
 
 void STimer::Update(Scene& scene, float dt)
 {
-    for (auto element : scene.reg.GetEntities<CTimer>())
+    for (const auto element : scene.reg.GetEntities<CTimer>())
     {
         CTimer* timer = scene.reg.GetComponent<CTimer>(element);
         timer->timer+=dt;
@@ -16,11 +16,11 @@ void STimer::Update(Scene& scene, float dt)
 
 void STimer::UpdateTimerLabels(Scene& scene)
 {
-    for (auto element : scene.reg.GetEntities<CTimer,CLabel>())
+    for (const auto element : scene.reg.GetEntities<CTimer,CLabel>())
     {
         CLabel* label = scene.reg.GetComponent<CLabel>(element);
         CTimer* timer = scene.reg.GetComponent<CTimer>(element);
-        auto test = "Timer: " + std::to_string(timer->timer);
+        const auto test = "Timer: " + std::to_string(timer->timer);
         
         label->labelText = test;
         

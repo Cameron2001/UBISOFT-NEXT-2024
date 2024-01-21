@@ -9,8 +9,9 @@ public:
     Entity CreatePlayer(Scene& scene, vec2 pos, float radius, Entity id = NULL);
     Entity CreateButton(Scene& scene, vec2 pos, vec2 bounds, CButton::ButtonTypes type, const char* string = "Button Label", Entity id = NULL);
     Entity CreateEnemyTank(Scene& scene, vec2 pos, vec2 bounds, float radius, float hp, float damage, float moveSpeed = 50.0f, float projForce = 20000, float projHealth = 100.0f, float projDmg = 50.0f, Entity id = NULL);
-    Entity CreateBox(Scene& scene, vec2 pos, vec2 bounds,  vec3 InColor = {1.0,1.0,1.0}, Entity id = NULL);
-    Entity CreateCircle(Scene& scene, vec2 pos, float radius,  vec3 InColor = {1.0,1.0,1.0}, Entity id = NULL);
+    Entity CreateEnemyHoming(Scene& scene, vec2 pos, float radius, float hp, float damage, float moveSpeed, Entity id = NULL);
+    Entity CreateBox(Scene& scene, vec2 pos, vec2 bounds, Entity id = NULL);
+    Entity CreateCircle(Scene& scene, vec2 pos, float radius, Entity id = NULL);
     Entity CreateProjectile(Scene& scene,vec2 pos, float radius, float force, float angle, float health=1, float damage=50, Entity id = NULL);
     Entity CreateWall(Scene& scene, vec2 pos, vec2 bounds, float hp, Entity id = NULL);
     Entity CreateDamageEvent(Scene& scene, Entity target, float damage, Entity id = NULL);

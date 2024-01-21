@@ -3,6 +3,8 @@
 
 #include "../../App/app.h"
 #include "../Components/Components.h"
+#include "../Core/PlayScene.h"
+#include "../Core/SceneManager.h"
 
 
 void SButton::Update(Scene& scene)
@@ -14,9 +16,9 @@ void SButton::Update(Scene& scene)
 void SButton::CheckClicks(Scene& scene)
 {
     
-    for (auto entityID : scene.reg.GetEntities<CButton,CTransform>())
+    for (auto entityID : scene.reg.GetEntities<CButton>())
     {
-        CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
+        const CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
         CButton* button = scene.reg.GetComponent<CButton>(entityID);
         vec2 mousePos;
         App::GetMousePos(mousePos.x,mousePos.y);
@@ -26,9 +28,9 @@ void SButton::CheckClicks(Scene& scene)
 
 void SButton::ResolveClicks(Scene& scene)
 {
-    for (auto entityID : scene.reg.GetEntities<CButton,CTransform>())
+    for (const auto entityID : scene.reg.GetEntities<CButton>())
     {
-        CButton* button = scene.reg.GetComponent<CButton>(entityID);
+        const CButton* button = scene.reg.GetComponent<CButton>(entityID);
         if(button->isClicked)
         {
             
@@ -54,7 +56,7 @@ void SButton::ResolveClicks(Scene& scene)
 
 void SButton::StartClick(Scene& scene)
 {
-    
+    SceneManager::GetInstance()->LoadScene<PlayScene>();
 }
 
 void SButton::TutorialClick(Scene& scene)

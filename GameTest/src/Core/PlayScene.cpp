@@ -1,9 +1,8 @@
 ﻿#include "stdafx.h"
 #include "PlayScene.h"
 
+
 #include "../Components/Components.h"
-#include "../Systems/SDamage.h"
-#include "../Systems/STimer.h"
 #include "../Systems/Systems.h"
 
 void PlayScene::Init()
@@ -15,7 +14,8 @@ void PlayScene::Init()
     
     auto factory = reg.GetSystem<SFactory>();
     
-    factory->CreatePlayer(*this,{100,100},15);
+    factory->CreatePlayer(*this,{100,100},20);
+    //factory->CreateEnemyHoming(*this,{500,400},30,150,30,800.0f);
     factory->CreatePlayerShield(*this, {100,100},20, 100);
     factory->CreateWaveController(*this,10.0f);
     
@@ -46,7 +46,7 @@ void PlayScene::Render()
 
 void PlayScene::Shutdown()
 {
-    
+    reg.ClearAllEntities();
 }
 
 void PlayScene::CreateSystems()
@@ -59,8 +59,8 @@ void PlayScene::CreateSystems()
     reg.CreateSystem<SDamage>();
     reg.CreateSystem<SButton>();
     reg.CreateSystem<STimer>();
+    
 }
-
 void PlayScene::CreateComponentArrays()
 {
     reg.CreateComponentArray<CTransform>();
@@ -81,6 +81,7 @@ void PlayScene::CreateComponentArrays()
     reg.CreateComponentArray<CLabel>();
     reg.CreateComponentArray<CShield>();
     reg.CreateComponentArray<CWave>();
+    reg.CreateComponentArray<CArm>();
 }
 
 void PlayScene::CreateMap()
@@ -89,11 +90,11 @@ void PlayScene::CreateMap()
     auto factory = reg.GetSystem<SFactory>();
     for (int i = 0; i < 4; ++i)
     {
-        factory->CreateWall(*this,{bruh*(float)i*2+bruh,30},{bruh,30},200);
+        factory->CreateWall(*this,{bruh*(float)i*2+bruh,31},{bruh,30},200);
     }
     for (int j = 0; j < 4; ++j)
     {
-        factory->CreateWall(*this,{bruh*(float)j*2+bruh,738},{bruh,30},200);
+        factory->CreateWall(*this,{bruh*(float)j*2+bruh,737},{bruh,30},200);
     }
     
 }

@@ -7,28 +7,25 @@
 #include <math.h>  
 //------------------------------------------------------------------------
 #include "app\app.h"
-#include "src/Core/ECSTestScene.h"
 #include "src/Core/MenuScene.h"
 #include "src/Core/PlayScene.h"
-PlayScene* scene;
+#include "src/Core/SceneManager.h"
+
 //MenuScene* scene;
 //ECSTestScene* scene;
 void Init()
 {
-	scene = new PlayScene;
-	//scene = new MenuScene;
-	scene->Init();
+	SceneManager::GetInstance()->LoadScene<MenuScene>();
 }
 void Update(float deltaTime)
 {
-	scene->Update(deltaTime);
+	SceneManager::GetInstance()->Update(deltaTime);
 }
 void Render()
 {
-	scene->Render();
+	SceneManager::GetInstance()->Render();
 }
 void Shutdown()
 {
-	scene->Shutdown();
-	delete scene;
+	SceneManager::GetInstance()->Shutdown();
 }

@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 struct CPlayer
 {
     enum class States
@@ -9,9 +10,7 @@ struct CPlayer
     };
     States state = States::IDLE;
     float moveSpeed;
-    float rot;
     float damageScale = 1.0f;
-    float aimLength = 100.0f;
     float shootCooldown= 1.0f;
-    CPlayer(float speed=300, float rotation = 0):moveSpeed(speed),rot(rotation){}
+    CPlayer(float speed=300, float rotation = 0):moveSpeed(speed){}
 };

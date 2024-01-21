@@ -43,6 +43,7 @@ public:
 
     template<typename... Ts>
     std::vector<Entity> GetEntities();
+    
 
     template<typename T>
     void ClearComponents();
@@ -176,7 +177,7 @@ std::vector<Entity> Registry::GetEntities()
     for (auto entityID : m_entityArray)
     {
         bool match = true;
-        int arr[] = {(HasComponent<Ts>(entityID))... };
+        int arr[] = {HasComponent<Ts>(entityID)... };
         for (auto auto_ : arr)
         {
             if(auto_!=true) match = false;
@@ -184,9 +185,9 @@ std::vector<Entity> Registry::GetEntities()
         if (match) entities.push_back(entityID);
     } 
     
-    
     return entities;
 }
+
 
 template <typename T>
 void Registry::ClearComponents()

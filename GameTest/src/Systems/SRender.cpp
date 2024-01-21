@@ -6,22 +6,7 @@
 
 void SRender::Update(Scene& scene)
 {
-    for(auto entityID : scene.reg.GetEntities<CRender,CTransform>())
-    {
-        CRender* render = scene.reg.GetComponent<CRender>(entityID);
-        CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
-        
-        if(scene.reg.HasComponent<CBoxCollider>(entityID))
-        {
-            CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(entityID);
-            DrawSquare(transform->pos+box->offset,box->extents,render->OutlineColor);
-        }
-        if(scene.reg.HasComponent<CCircleCollider>(entityID))
-        {
-            CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(entityID);
-            DrawCircle(transform->pos+circle->offset,circle->radius,10, render->OutlineColor);
-        }
-    }
+    DrawShapes(scene);
     DrawPlayer(scene);
     DrawTank(scene);
     DrawLabels(scene);
@@ -29,18 +14,17 @@ void SRender::Update(Scene& scene)
 
 void SRender::DrawPlayer(Scene& scene)
 {
-    for (auto element : scene.reg.GetEntities<CPlayer,CTransform,CCircleCollider>())
+    for (auto element : scene.reg.GetEntities<CPlayer>())
     {
-        CTransform* playerTransform = scene.reg.GetComponent<CTransform>(element);
-        CPlayer* playerComponent = scene.reg.GetComponent<CPlayer>(element);
-        CCircleCollider* playerCircle = scene.reg.GetComponent<CCircleCollider>(element);
-        vec2 armStart = {cosf(playerComponent->rot),sinf(playerComponent->rot)};
-        vec2 armEnd = armStart;
+        const CTransform* playerTransform = scene.reg.GetComponent<CTransform>(element);
+        const CPlayer* playerComponent = scene.reg.GetComponent<CPlayer>(element);
+        const CCircleCollider* playerCircle = scene.reg.GetComponent<CCircleCollider>(element);
+        CArm* arm = scene.reg.GetComponent<CArm>(element);
+        vec2 armStart = {cosf(arm->rotation),sinf(arm->rotation)};
+        const vec2 armEnd = armStart*arm->length;
         armStart*=playerCircle->radius;
-        armEnd*=playerComponent->aimLength;
         vec3 color = {1.0f,1.0f,1.0f};
-        
-        auto playerState = playerComponent->state;
+        const auto playerState = playerComponent->state;
         if (playerState == CPlayer::States::SHOOTING)
             color = {1.0f,0.0f,0.0f};
         if (playerState==CPlayer::States::RELOADING)
@@ -52,17 +36,17 @@ void SRender::DrawPlayer(Scene& scene)
 
 void SRender::DrawTank(Scene& scene)
 {
-    for(auto element : scene.reg.GetEntities<CEnemyTank,CTransform,CCircleCollider,CBoxCollider>())
+    for(auto element : scene.reg.GetEntities<CEnemyTank>())
     {
-        CEnemyTank* tank = scene.reg.GetComponent<CEnemyTank>(element);
-        CTransform* transform = scene.reg.GetComponent<CTransform>(element);
-        CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(element);
-        CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(element);
-        vec2 armStart  = {cosf(tank->rot),sinf(tank->rot)};
-        vec2 armEnd = armStart;
-        armEnd*=tank->armLength;
+        const CEnemyTank* tank = scene.reg.GetComponent<CEnemyTank>(element);
+        const CTransform* transform = scene.reg.GetComponent<CTransform>(element);
+        const CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(element);
+        CArm* arm = scene.reg.GetComponent<CArm>(element);
+        vec2 armStart  = {cosf(arm->rotation),sinf(arm->rotation)};
+        vec2 armEnd = armStart*arm->length;
+        //armStart*circle->radius;
         vec3 color = {1.0f,1.0f,1.0f};
-        auto tankState = tank->state;
+        const auto tankState = tank->state;
         if (tankState==CEnemyTank::TankState::SHOOTING)
             color = {1.0f,0.0f,0.0f};
         if (tankState==CEnemyTank::TankState::RELOADING)
@@ -71,12 +55,32 @@ void SRender::DrawTank(Scene& scene)
     }
 }
 
+void SRender::DrawShapes(Scene& scene)
+{
+    for(auto entityID : scene.reg.GetEntities<CRender>())
+    {
+        const CRender* render = scene.reg.GetComponent<CRender>(entityID);
+        const CTransform* transform = scene.reg.GetComponent<CTransform>(entityID);
+        
+        if(scene.reg.HasComponent<CBoxCollider>(entityID))
+        {
+            const CBoxCollider* box = scene.reg.GetComponent<CBoxCollider>(entityID);
+            DrawSquare(transform->pos+box->offset,box->extents,render->OutlineColor);
+        }
+        if(scene.reg.HasComponent<CCircleCollider>(entityID))
+        {
+            const CCircleCollider* circle = scene.reg.GetComponent<CCircleCollider>(entityID);
+            DrawCircle(transform->pos+circle->offset,circle->radius,10, render->OutlineColor);
+        }
+    }
+}
+
 void SRender::DrawSquare(vec2 pos, vec2 extents, vec3 OutLinecolor)
 {
-    vec2 bottomLeft = {pos.x-extents.x,pos.y-extents.y};
-    vec2 bottomRight = {pos.x+extents.x, pos.y-extents.y};
-    vec2 topLeft = {pos.x-extents.x,pos.y+extents.y};
-    vec2 topRight = {pos.x+extents.x, pos.y+extents.y};
+    const vec2 bottomLeft = {pos.x-extents.x,pos.y-extents.y};
+    const vec2 bottomRight = {pos.x+extents.x, pos.y-extents.y};
+    const vec2 topLeft = {pos.x-extents.x,pos.y+extents.y};
+    const vec2 topRight = {pos.x+extents.x, pos.y+extents.y};
     
     App::DrawLine(bottomLeft.x,bottomLeft.y, topLeft.x,topLeft.y,OutLinecolor.x,OutLinecolor.y,OutLinecolor.z); //bottom left to top left
     App::DrawLine(topLeft.x,topLeft.y,topRight.x,topRight.y,OutLinecolor.x,OutLinecolor.y,OutLinecolor.z); //top left to top right
@@ -89,18 +93,26 @@ void SRender::DrawCircle(vec2 centre, float radius, int segments, vec3 Outsideco
 {
     for (int i = 0; i < segments; i++)
     {
-        float angle = Utils::Deg2Rad*360/segments;
+        const float angle = Utils::Deg2Rad*360/segments;
         App::DrawLine(cosf(angle*i)*radius + centre.x, sinf(angle*i)*radius+centre.y,cosf(angle*(i+1))*radius + centre.x, sinf(angle*(i+1))*radius+centre.y,Outsidecolor.x,Outsidecolor.y,Outsidecolor.z);
     }
 }
 
 void SRender::DrawLabels(Scene& scene)
 {
-    for (const auto current : scene.reg.GetEntities<CLabel,CTransform>())
+    for (const auto current : scene.reg.GetEntities<CLabel>())
     {
         const CLabel* label = scene.reg.GetComponent<CLabel>(current);
         const CTransform* transform = scene.reg.GetComponent<CTransform>(current);
         App::Print(transform->pos.x+label->labelOffset.x,transform->pos.y+label->labelOffset.y,label->labelText.c_str(),25,25,25);
+    }
+}
+
+void SRender::DrawArms(Scene& scene)
+{
+    for (auto element : scene.reg.GetEntities<CArm>())
+    {
+        CArm* arm = scene.reg.GetComponent<CArm>(element);
     }
 }
 

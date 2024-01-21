@@ -11,16 +11,28 @@ void MenuScene::Init()
     reg.CreateSystem<SFactory>();
 
     reg.CreateComponentArray<CTransform>();
-    reg.CreateComponentArray<CLabel>();
-    reg.CreateComponentArray<CRender>();
-    reg.CreateComponentArray<CButton>();
-    reg.CreateComponentArray<CLabel>();
+    reg.CreateComponentArray<CRigidbody>();
+    reg.CreateComponentArray<CCollisionEvent>();
+    reg.CreateComponentArray<CDamageEvent>();
     reg.CreateComponentArray<CBoxCollider>();
     reg.CreateComponentArray<CCircleCollider>();
+    reg.CreateComponentArray<CRender>();
     reg.CreateComponentArray<CPlayer>();
-
-    auto factory = reg.GetSystem<SFactory>();
+    reg.CreateComponentArray<CHealth>();
+    reg.CreateComponentArray<CDamage>();
+    reg.CreateComponentArray<CButton>();
+    reg.CreateComponentArray<CEnemyTank>();
+    reg.CreateComponentArray<CEnemyHoming>();
+    reg.CreateComponentArray<CTimer>();
+    reg.CreateComponentArray<CScoreKeeper>();
+    reg.CreateComponentArray<CLabel>();
+    reg.CreateComponentArray<CShield>();
+    reg.CreateComponentArray<CWave>();
+    reg.CreateComponentArray<CArm>();
+    
     Entity invalid = reg.CreateEntity();
+    auto factory = reg.GetSystem<SFactory>();
+    
     factory->CreateButton(*this, {500,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
     factory->CreateButton(*this, {500,300},{100,30},CButton::ButtonTypes::TUTORIAL, "Tutorial");
     factory->CreateButton(*this, {500,500},{100,30},CButton::ButtonTypes::START, "Start");
