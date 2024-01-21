@@ -1,4 +1,7 @@
-﻿#pragma once
+﻿//------------------------------------------------------------------------
+// CButton.h
+//------------------------------------------------------------------------
+#pragma once
 struct CButton
 {
     enum class ButtonTypes
@@ -9,5 +12,5 @@ struct CButton
     ButtonTypes type;
     vec2 bounds;
     bool bClicked = false;
-    CButton(ButtonTypes buttonType , vec2 buttonBounds):bounds(buttonBounds),type(buttonType){} 
+    CButton(ButtonTypes type , vec2 bounds):bounds(bounds),type(type){} 
 };

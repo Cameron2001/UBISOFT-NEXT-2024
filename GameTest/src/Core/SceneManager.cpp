@@ -1,4 +1,7 @@
-﻿#include "stdafx.h"
+﻿//------------------------------------------------------------------------
+// SceneManager.cpp
+//------------------------------------------------------------------------
+#include "stdafx.h"
 #include "SceneManager.h"
 
 SceneManager* SceneManager::instance = nullptr;

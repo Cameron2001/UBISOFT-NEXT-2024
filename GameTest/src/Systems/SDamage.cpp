@@ -1,4 +1,7 @@
-﻿#include "stdafx.h"
+﻿//------------------------------------------------------------------------
+// SDamage.cpp
+//------------------------------------------------------------------------
+#include "stdafx.h"
 #include "SDamage.h"
 
 #include "../../app/app.h"
@@ -22,7 +25,7 @@ void SDamage::resolveDamageEvents(Registry& registry)
     {
         const CDamageEvent& event = registry.getComponent<CDamageEvent>(ID);
         CHealth& health = registry.getComponent<CHealth>(event.target);
-        health.hp-= event.damage;
+        health.health-= event.damage;
         App::PlaySound(".\\Audio\\hitHurt.wav");
     }
     registry.clearEntities<CDamageEvent>();
@@ -33,7 +36,7 @@ void SDamage::updateHealth(Registry& registry, float dt)
     for (const Entity ID : registry.getEntities<CHealth>())
     {
         CHealth& health = registry.getComponent<CHealth>(ID);
-        if(health.hp<=0)
+        if(health.health<=0)
         {
             health.bDead = true;
             App::PlaySound(".\\Audio\\death.wav");
@@ -42,11 +45,11 @@ void SDamage::updateHealth(Registry& registry, float dt)
         {
             //clean this up
             CRender& render = registry.getComponent<CRender>(ID);
-            float healthPercentage = health.hp/health.maxHp;
+            float healthPercentage = health.health/health.maxHealth;
             healthPercentage = 1-healthPercentage;
             render.color ={1.0f,1.0f-healthPercentage,1.0f-healthPercentage};
         }
-        health.hp = Utils::clamp(health.hp+health.regenRate*dt,0.0f,health.maxHp);
+        health.health = utils::clamp(health.health+health.regenRate*dt,0.0f,health.maxHealth);
     }
 }
 

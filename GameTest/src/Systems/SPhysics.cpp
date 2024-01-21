@@ -1,11 +1,11 @@
-﻿#include "stdafx.h"
+﻿//------------------------------------------------------------------------
+// SPhysics.cpp
+//------------------------------------------------------------------------
+#include "stdafx.h"
 #include "SPhysics.h"
 
 #include "../Util/Utils.h"
-#include "../Components/Components.h"
-#include "../Core/DeathScene.h"
 #include "../Core/Factory.h"
-#include "../Core/SceneManager.h"
 
 void SPhysics::update(Registry& registry, float dt)
 {
@@ -32,17 +32,17 @@ bool SPhysics::boxBox(Registry& registry, Entity aID, Entity bID)
     if(x<=0 || y<=0)    return false;
     if (x<y)
     {
-        auto sx = Utils::sign(diff.x);
+        auto sx = utils::sign(diff.x);
         vec2 normal = {-sx,0};
         vec2 mtv = {-x * sx,0};
-        Factory::createCollisionEvent(registry,aID,bID,mtv,normal);
+        factory::createCollisionEvent(registry,aID,bID,mtv,normal);
     }
     else if (x>y)
     {
-        auto sy = Utils::sign(diff.y);
+        auto sy = utils::sign(diff.y);
         vec2 normal = {0,-sy};
         vec2 mtv = {0,y * -sy};
-        Factory::createCollisionEvent(registry,aID,bID,mtv,normal);
+        factory::createCollisionEvent(registry,aID,bID,mtv,normal);
     }
     
     
@@ -62,17 +62,17 @@ bool SPhysics::boxCircle(Registry& registry, Entity boxID, Entity circleID)
     const CCircleCollider& circle = registry.getComponent<CCircleCollider>(circleID);
     const vec2 pos1 = registry.getComponent<CTransform>(boxID).pos+box.offset;
     const vec2 pos2 = registry.getComponent<CTransform>(circleID).pos+circle.offset;
-    const float x = Utils::clamp(pos2.x,pos1.x-box.extents.x,pos1.x+box.extents.x);
-    const float y = Utils::clamp(pos2.y,pos1.y-box.extents.y,pos1.y+box.extents.y);
+    const float x = utils::clamp(pos2.x,pos1.x-box.extents.x,pos1.x+box.extents.x);
+    const float y = utils::clamp(pos2.y,pos1.y-box.extents.y,pos1.y+box.extents.y);
     const vec2 closest = {x,y};
-    const float distance = Utils::distance(closest,pos2);
+    const float distance = utils::distance(closest,pos2);
     if(distance<circle.radius)
     {
         const float minDist = distance-circle.radius;
         const vec2 diff = pos2-closest;
-        const vec2 normal = Utils::normalize(diff);
-        const vec2 mtv = Utils::normalize(diff)*minDist;
-        Factory::createCollisionEvent(registry,boxID,circleID,mtv,normal);
+        const vec2 normal = utils::normalize(diff);
+        const vec2 mtv = utils::normalize(diff)*minDist;
+        factory::createCollisionEvent(registry,boxID,circleID,mtv,normal);
         return true;
     }
     return false;
@@ -89,16 +89,16 @@ bool SPhysics::circleCircle(Registry& registry, Entity aID, Entity bID)
     const CCircleCollider& circle2 = registry.getComponent<CCircleCollider>(bID);
     const vec2 pos1 = registry.getComponent<CTransform>(aID).pos+circle1.offset;
     const vec2 pos2 =registry.getComponent<CTransform>(bID).pos+circle2.offset;
-    const float distance = Utils::distance(pos1,pos2);
+    const float distance = utils::distance(pos1,pos2);
     const float radiiSum = circle1.radius + circle2.radius;
     if( distance <= radiiSum)
     {
         const float minDist = distance-radiiSum;
         const vec2 diff = pos2-pos1;
         //diff = {abs(diff.x),abs(diff.y)};
-        const vec2 normal = Utils::normalize(diff);
-        const vec2 mtv = Utils::normalize(diff)*minDist;
-        Factory::createCollisionEvent(registry,aID,bID,mtv,normal);
+        const vec2 normal = utils::normalize(diff);
+        const vec2 mtv = utils::normalize(diff)*minDist;
+        factory::createCollisionEvent(registry,aID,bID,mtv,normal);
         return true;
     }
     return false;
@@ -121,7 +121,7 @@ void SPhysics::resolveCollisions(Registry& registry)
             CRigidbody& bodyA = registry.getComponent<CRigidbody>(collision.entityA);
             CRigidbody& bodyB = registry.getComponent<CRigidbody>(collision.entityB);
             vec2 veloAlongNormal = bodyB.velocity-bodyA.velocity;
-            vec2 projection = Utils::project(veloAlongNormal,collision.normal);
+            vec2 projection = utils::project(veloAlongNormal,collision.normal);
             float e = (bodyA.elasticity+bodyB.elasticity)/2;
             
             bodyA.velocity+=projection*e;
@@ -130,7 +130,7 @@ void SPhysics::resolveCollisions(Registry& registry)
         else if(registry.hasComponent<CRigidbody>(collision.entityA))
         {
             CRigidbody& body = registry.getComponent<CRigidbody>(collision.entityA);
-            vec2 projection = Utils::project(body.velocity,collision.normal);
+            vec2 projection = utils::project(body.velocity,collision.normal);
             tfA.pos = tfA.pos+collision.mtv;
             body.velocity-=projection*body.elasticity;
         }
@@ -138,7 +138,7 @@ void SPhysics::resolveCollisions(Registry& registry)
         else if (registry.hasComponent<CRigidbody>(collision.entityB))
         {
             CRigidbody& body = registry.getComponent<CRigidbody>(collision.entityB);
-            vec2 projection = Utils::project(body.velocity,collision.normal);
+            vec2 projection = utils::project(body.velocity,collision.normal);
             tfB.pos = tfB.pos-collision.mtv;
             body.velocity-=projection*body.elasticity;
         }
@@ -146,12 +146,12 @@ void SPhysics::resolveCollisions(Registry& registry)
         if(registry.hasComponent<CDamage>(collision.entityA)&&registry.hasComponent<CHealth>(collision.entityB))
         {
             const CDamage& damage = registry.getComponent<CDamage>(collision.entityA);
-            Factory::createDamageEvent(registry,collision.entityB,damage.damage);
+            factory::createDamageEvent(registry,collision.entityB,damage.damage);
         }
         if(registry.hasComponent<CDamage>(collision.entityB)&&registry.hasComponent<CHealth>(collision.entityA))
         {
             const CDamage& damage = registry.getComponent<CDamage>(collision.entityB);
-            Factory::createDamageEvent(registry,collision.entityA,damage.damage);
+            factory::createDamageEvent(registry,collision.entityA,damage.damage);
         }
     }
     

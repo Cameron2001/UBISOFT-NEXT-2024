@@ -1,4 +1,7 @@
-﻿#include "stdafx.h"
+﻿//------------------------------------------------------------------------
+// MenuScene.cpp
+//------------------------------------------------------------------------
+#include "stdafx.h"
 #include "MenuScene.h"
 
 #include "Factory.h"
@@ -67,7 +70,7 @@ void MenuScene::createComponentArrays()
 
 void MenuScene::createMenu()
 {
-    Factory::createButton(registry, {512,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
-    Factory::createButton(registry, {512,500},{100,30},CButton::ButtonTypes::START, "Start");
+    factory::createButton(registry, {512,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
+    factory::createButton(registry, {512,500},{100,30},CButton::ButtonTypes::START, "Start");
 }
 

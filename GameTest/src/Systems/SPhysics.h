@@ -1,4 +1,7 @@
-﻿#pragma once
+﻿//------------------------------------------------------------------------
+// SPhysics.h
+//------------------------------------------------------------------------
+#pragma once
 #include "ISystem.h"
 #include "../Core/Registry.h"
 class SPhysics : public ISystem
@@ -12,10 +15,10 @@ private:
     static bool boxCircle(Registry& registry, Entity boxID, Entity circleID);
     static bool circleCircle(Registry& registry, Entity aID, Entity bID);
     static void resolveCollisions(Registry& registry);
-    void checkCollisions(Registry& registry);
-    bool checkCollision(Registry& registry, Entity a, Entity b);
-    void applyKinematics(Registry& registry, float dt);
-    void deleteOffscreen(Registry& registry);
+    static void checkCollisions(Registry& registry);
+    static bool checkCollision(Registry& registry, Entity a, Entity b);
+    static void applyKinematics(Registry& registry, float dt);
+    static void deleteOffscreen(Registry& registry);
     
 };
 

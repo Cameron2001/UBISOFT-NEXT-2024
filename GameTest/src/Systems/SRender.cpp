@@ -1,4 +1,7 @@
-﻿#include "stdafx.h"
+﻿//------------------------------------------------------------------------
+// SRender.cpp
+//------------------------------------------------------------------------
+#include "stdafx.h"
 #include "SRender.h"
 
 #include "../../App/app.h"
@@ -50,7 +53,7 @@ void SRender::drawCircle(vec2 centre, float radius, int segments, vec3 color)
 {
     for (int i = 0; i < segments; i++)
     {
-        const float angle = Utils::deg2Rad*360/segments;
+        const float angle = utils::deg2Rad*360/segments;
         App::DrawLine(cosf(angle*i)*radius + centre.x, sinf(angle*i)*radius+centre.y,cosf(angle*(i+1))*radius + centre.x, sinf(angle*(i+1))*radius+centre.y,color.x,color.y,color.z);
     }
 }
@@ -63,7 +66,7 @@ void SRender::drawLabels(Registry& registry)
         const CLabel& label = registry.getComponent<CLabel>(ID);
         const CTransform& transform = registry.getComponent<CTransform>(ID);
         
-        App::Print(transform.pos.x+label.labelOffset.x,transform.pos.y+label.labelOffset.y,label.labelText.c_str(),render.color.x,render.color.y,render.color.z);
+        App::Print(transform.pos.x+label.offset.x,transform.pos.y+label.offset.y,label.text.c_str(),render.color.x,render.color.y,render.color.z);
     }
 }
 
@@ -76,7 +79,7 @@ void SRender::drawArms(Registry& registry)
         const CArm& arm = registry.getComponent<CArm>(ID);
         
         const vec2 armStart  = {cosf(arm.rotation),sinf(arm.rotation)};
-        const vec2 armEnd = armStart*arm.length;
+        const vec2 armEnd = armStart*arm.armLength;
         
         vec3 color = {1.0f,1.0f,1.0f};
         if (arm.state==CArm::ArmState::SHOOTING)

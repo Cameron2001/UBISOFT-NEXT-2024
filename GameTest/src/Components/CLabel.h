@@ -1,8 +1,11 @@
-﻿#pragma once
+﻿//------------------------------------------------------------------------
+// CLabel.h
+//------------------------------------------------------------------------
+#pragma once
 #include "../Util/Vectors.h"
 struct CLabel
 {
-    std::string labelText;
-    vec2 labelOffset;
-    CLabel(std::string myText = "Label",vec2 offset = {0,0}): labelText(myText),labelOffset(offset){}
+    std::string text;
+    vec2 offset;
+    CLabel(std::string text = "Label",vec2 offset = {0,0}): text(text),offset(offset){}
 };

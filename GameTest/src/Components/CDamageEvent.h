@@ -1,7 +1,10 @@
-﻿#pragma once
+﻿//------------------------------------------------------------------------
+// CDamageEvent.h
+//------------------------------------------------------------------------
+#pragma once
 struct CDamageEvent
 {
     float damage;
     Entity target;
-    CDamageEvent(Entity trgt, float dmg):target(trgt), damage(dmg){}
+    CDamageEvent(Entity target, float damage):target(target), damage(damage){}
 };

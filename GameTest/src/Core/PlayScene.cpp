@@ -1,4 +1,7 @@
-﻿#include "stdafx.h"
+﻿//------------------------------------------------------------------------
+// PlayScene.cpp
+//------------------------------------------------------------------------
+#include "stdafx.h"
 #include "PlayScene.h"
 
 
@@ -14,9 +17,9 @@ void PlayScene::init()
     createComponentArrays();
     createMap();
     
-    Factory::createPlayer(registry,{100,100},24,10,150.0f, 100.0f, 1000.0f,50000.0f,30.0f,30.0f,20,35,1.0f);
-    Factory::createWaveController(registry,7.5f);
-    Factory::createGameTimer(registry,{50.0f,728.0f});
+    factory::createPlayer(registry,{100,100},24,10,150.0f, 100.0f, 1000.0f,50000.0f,30.0f,30.0f,20,35,1.0f);
+    factory::createWaveController(registry,7.5f);
+    factory::createGameTimer(registry,{50.0f,728.0f});
     
    
 }
@@ -83,11 +86,11 @@ void PlayScene::createMap()
     float x= 129;
     for (int i = 0; i < 4; ++i)
     {
-        Factory::createWall(registry,{x*(float)i*2+x,31},{x,30},200);
+        factory::createWall(registry,{x*(float)i*2+x,31},{x,30},200);
     }
     for (int j = 0; j < 4; ++j)
     {
-        Factory::createWall(registry,{x*(float)j*2+x,737},{x,30},200);
+        factory::createWall(registry,{x*(float)j*2+x,737},{x,30},200);
     }
     
 }

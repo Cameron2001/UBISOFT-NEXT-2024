@@ -1,7 +1,10 @@
-﻿#pragma once
+﻿//------------------------------------------------------------------------
+// Utils.h
+//------------------------------------------------------------------------
+#pragma once
 #include "Vectors.h"
 
-class Utils
+class utils
 {
 public:
     static const float deg2Rad;
@@ -26,7 +29,7 @@ public:
     static float dot(vec2 a, vec2 b);
     static vec2 project(vec2 a, vec2 b);
 private:
-    Utils();
-    ~Utils();
+    utils();
+    ~utils();
     
 };

@@ -1,6 +1,8 @@
-﻿#pragma once
+﻿//------------------------------------------------------------------------
+// Registry.h
+//------------------------------------------------------------------------
+#pragma once
 #include "ComponentArray.h"
-#include "IComponentArray.h"
 #include "../Systems/ISystem.h"
 
 class Registry

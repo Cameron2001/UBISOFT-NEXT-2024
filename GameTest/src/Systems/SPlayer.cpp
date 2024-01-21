@@ -1,4 +1,7 @@
-﻿#include "stdafx.h"
+﻿//------------------------------------------------------------------------
+// SPlayer.cpp
+//------------------------------------------------------------------------
+#include "stdafx.h"
 #include "SPlayer.h"
 
 #include "../../App/app.h"
@@ -15,11 +18,11 @@ void SPlayer::update(Registry& registry, float dt)
         CRigidbody& rigidbody = registry.getComponent<CRigidbody>(ID);
         CArm& arm = registry.getComponent<CArm>(ID);
         CShield& shield = registry.getComponent<CShield>(ID);
-        
-        bool up = App::IsKeyPressed('W');
-        bool down = App::IsKeyPressed('S');
-        bool left = App::IsKeyPressed('A');
-        bool right = App::IsKeyPressed('D');
+
+        const bool up = App::IsKeyPressed('W');
+        const bool down = App::IsKeyPressed('S');
+        const bool left = App::IsKeyPressed('A');
+        const bool right = App::IsKeyPressed('D');
         arm.bShoot = App::IsKeyPressed(VK_LBUTTON);
         shield.bEnabled =  App::IsKeyPressed(VK_SPACE);
         

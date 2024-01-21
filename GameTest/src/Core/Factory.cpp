@@ -1,7 +1,10 @@
-﻿#include "stdafx.h"
+﻿//------------------------------------------------------------------------
+// Factory.cpp
+//------------------------------------------------------------------------
+#include "stdafx.h"
 #include "Factory.h"
 
-Entity Factory::createPlayer(Registry& registry, vec2 pos, float radius, int segments, float hp, float shieldHp, float speed, float projForce, float projHealth, float projDmg, float projRadius, float armLength, float coolDown,  Entity id)
+Entity factory::createPlayer(Registry& registry, vec2 pos, float radius, int segments, float hp, float shieldHp, float speed, float projForce, float projHealth, float projDmg, float projRadius, float armLength, float coolDown,  Entity id)
 {
     if (id == NULL) id = registry.createEntity();
     createCircle(registry,pos,radius, segments,id);
@@ -14,7 +17,7 @@ Entity Factory::createPlayer(Registry& registry, vec2 pos, float radius, int seg
     return id;
 }
 
-Entity Factory::createButton(Registry& registry, vec2 pos, vec2 bounds, CButton::ButtonTypes type, const char* string,
+Entity factory::createButton(Registry& registry, vec2 pos, vec2 bounds, CButton::ButtonTypes type, const char* string,
     Entity id)
 {
     if (id == NULL) id = registry.createEntity();
@@ -24,7 +27,7 @@ Entity Factory::createButton(Registry& registry, vec2 pos, vec2 bounds, CButton:
     return id;
 }
 
-Entity Factory::createEnemyTank(Registry& registry, vec2 pos, vec2 bounds, float radius, float hp, float damage,
+Entity factory::createEnemyTank(Registry& registry, vec2 pos, vec2 bounds, float radius, float hp, float damage,
     float moveSpeed, float projForce, float projHealth, float projDmg, float projRadius, float armLength, float coolDown, Entity id)
 {
     if(id == NULL) id = registry.createEntity();
@@ -39,7 +42,7 @@ Entity Factory::createEnemyTank(Registry& registry, vec2 pos, vec2 bounds, float
     return id;
 }
 
-Entity Factory::createEnemyHoming(Registry& registry, vec2 pos, float radius, int segments, float hp, float damage, float moveSpeed,
+Entity factory::createEnemyHoming(Registry& registry, vec2 pos, float radius, int segments, float hp, float damage, float moveSpeed,
     Entity id)
 {
     if(id == NULL) id = registry.createEntity();
@@ -51,7 +54,7 @@ Entity Factory::createEnemyHoming(Registry& registry, vec2 pos, float radius, in
     return id;
 }
 
-Entity Factory::createBox(Registry& registry, vec2 pos, vec2 bounds, Entity id)
+Entity factory::createBox(Registry& registry, vec2 pos, vec2 bounds, Entity id)
 {
     if (id == NULL) id = registry.createEntity();
     registry.addComponent(id, CTransform(pos));
@@ -60,7 +63,7 @@ Entity Factory::createBox(Registry& registry, vec2 pos, vec2 bounds, Entity id)
     return  id;
 }
 
-Entity Factory::createCircle(Registry& registry, vec2 pos, float radius, int segments, Entity id)
+Entity factory::createCircle(Registry& registry, vec2 pos, float radius, int segments, Entity id)
 {
     if (id == NULL) id = registry.createEntity();
     registry.addComponent(id, CTransform(pos));
@@ -69,7 +72,7 @@ Entity Factory::createCircle(Registry& registry, vec2 pos, float radius, int seg
     return id;
 }
 
-Entity Factory::createProjectile(Registry& registry, vec2 pos, float radius, int segments, float force, float angle, float health,
+Entity factory::createProjectile(Registry& registry, vec2 pos, float radius, int segments, float force, float angle, float health,
     float damage, Entity id)
 {
     if(id==NULL) id = registry.createEntity();
@@ -83,7 +86,7 @@ Entity Factory::createProjectile(Registry& registry, vec2 pos, float radius, int
     return id;
 }
 
-Entity Factory::createWall(Registry& registry, vec2 pos, vec2 bounds, float hp, Entity id)
+Entity factory::createWall(Registry& registry, vec2 pos, vec2 bounds, float hp, Entity id)
 {
     if(id==NULL) id = registry.createEntity();
     createBox(registry,pos,bounds,id);
@@ -91,14 +94,14 @@ Entity Factory::createWall(Registry& registry, vec2 pos, vec2 bounds, float hp, 
     return id;
 }
 
-Entity Factory::createDamageEvent(Registry& registry, Entity target, float damage, Entity id)
+Entity factory::createDamageEvent(Registry& registry, Entity target, float damage, Entity id)
 {
     if(id==NULL) id = registry.createEntity();
     registry.addComponent(id,CDamageEvent(target,damage));
     return id;
 }
 
-Entity Factory::createCollisionEvent(Registry& registry, Entity entityA, Entity entityB, vec2 mtv, vec2 normal,
+Entity factory::createCollisionEvent(Registry& registry, Entity entityA, Entity entityB, vec2 mtv, vec2 normal,
     Entity id)
 {
     if(id==NULL) id = registry.createEntity();
@@ -106,7 +109,7 @@ Entity Factory::createCollisionEvent(Registry& registry, Entity entityA, Entity 
     return id;
 }
 
-Entity Factory::createGameTimer(Registry& registry, vec2 pos, Entity id)
+Entity factory::createGameTimer(Registry& registry, vec2 pos, Entity id)
 {
     if(id==NULL) id = registry.createEntity();
     registry.addComponent(id,CTimer());
@@ -116,7 +119,7 @@ Entity Factory::createGameTimer(Registry& registry, vec2 pos, Entity id)
     return id;
 }
 
-Entity Factory::createWaveController(Registry& registry, float waveCooldown, Entity id)
+Entity factory::createWaveController(Registry& registry, float waveCooldown, Entity id)
 {
     if(id ==NULL) id = registry.createEntity();
     registry.addComponent(id,CTimer());
@@ -125,7 +128,7 @@ Entity Factory::createWaveController(Registry& registry, float waveCooldown, Ent
 }
 
 
-Entity Factory::createLabel(Registry& registry, std::string text, vec2 pos, vec2 offset, vec3 color, Entity id)
+Entity factory::createLabel(Registry& registry, std::string text, vec2 pos, vec2 offset, vec3 color, Entity id)
 {
     if(id == NULL) id = registry.createEntity();
     registry.addComponent(id, CTransform(pos));

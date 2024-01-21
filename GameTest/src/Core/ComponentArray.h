@@ -1,4 +1,7 @@
-﻿#pragma once
+﻿//------------------------------------------------------------------------
+// ComponentArray.h
+//------------------------------------------------------------------------
+#pragma once
 #include "IComponentArray.h"
 //template stuff
 //this is a sparseSet

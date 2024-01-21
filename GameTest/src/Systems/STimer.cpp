@@ -1,4 +1,7 @@
-﻿#include "stdafx.h"
+﻿//------------------------------------------------------------------------
+// STimer.cpp
+//------------------------------------------------------------------------
+#include "stdafx.h"
 #include "STimer.h"
 
 #include "../Components/CLabel.h"
@@ -20,6 +23,6 @@ void STimer::updateTimerLabels(Registry& registry)
     {
         CLabel& label = registry.getComponent<CLabel>(element);
         const CTimer& timer = registry.getComponent<CTimer>(element);
-        label.labelText = "Timer: " + std::to_string(timer.timer);;
+        label.text = "Timer: " + std::to_string(timer.timer);;
     }
 }

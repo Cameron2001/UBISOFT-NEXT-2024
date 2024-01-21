@@ -1,4 +1,7 @@
-﻿#include "stdafx.h"
+﻿//------------------------------------------------------------------------
+// DeathScene.cpp
+//------------------------------------------------------------------------
+#include "stdafx.h"
 #include "DeathScene.h"
 
 #include "Factory.h"
@@ -59,7 +62,7 @@ void DeathScene::createComponentArrays()
 
 void DeathScene::createMenu()
 {
-    Factory::createLabel(registry, "YOU DIED" , {500,600}, {0,0},{1.0f,0.0f,0.0f});
-    Factory::createButton(registry, {512,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
-    Factory::createButton(registry, {512,500},{100,30},CButton::ButtonTypes::START, "Restart");
+    factory::createLabel(registry, "YOU DIED" , {500,600}, {0,0},{1.0f,0.0f,0.0f});
+    factory::createButton(registry, {512,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
+    factory::createButton(registry, {512,500},{100,30},CButton::ButtonTypes::START, "Restart");
 }

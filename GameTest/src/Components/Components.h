@@ -1,4 +1,7 @@
-﻿#pragma once
+﻿//------------------------------------------------------------------------
+// Components.h
+//------------------------------------------------------------------------
+#pragma once
 #include "CBoxCollider.h"
 #include "CButton.h"
 #include "CCircleCollider.h"

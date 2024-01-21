@@ -1,8 +1,12 @@
-﻿#pragma once
+﻿//------------------------------------------------------------------------
+// Factory.h
+//------------------------------------------------------------------------
+#pragma once
 #include "../Components/Components.h"
 #include "../Core/Scene.h"
-struct Factory
+class factory
 {
+public:
     static Entity createPlayer(Registry& registry, vec2 pos, float radius, int segments = 10, float health = 100.0f, float shieldHealth = 50.0f,  float speed = 1000.0f, float projForce = 20000, float projHealth = 100.0f, float projDmg = 50.0f, float projRadius = 20.0f, float armLength = 40.0f, float coolDown = 4.0f, Entity id = NULL);
     static Entity createButton(Registry& registry, vec2 pos, vec2 bounds, CButton::ButtonTypes type, const char* string = "Button Label", Entity id = NULL);
     static Entity createEnemyTank(Registry& registry, vec2 pos, vec2 bounds, float radius, float hp, float damage, float moveSpeed = 50.0f, float projForce = 20000, float projHealth = 100.0f, float projDmg = 50.0f, float projRadius = 20.0f, float armLength = 40.0f, float coolDown = 4.0f, Entity id = NULL);
