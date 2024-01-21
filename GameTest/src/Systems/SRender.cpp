@@ -55,7 +55,7 @@ void SRender::drawCircle(vec2 centre, float radius, int segments, vec3 color)
 {
     for (int i = 0; i < segments; i++)
     {
-        const float angle = utils::deg2Rad*360/segments;
+        const float angle = utils::deg2Rad*360.0f/segments;
         App::DrawLine(cosf(angle*i)*radius + centre.x, sinf(angle*i)*radius+centre.y,cosf(angle*(i+1))*radius + centre.x, sinf(angle*(i+1))*radius+centre.y,color.x,color.y,color.z);
     }
 }

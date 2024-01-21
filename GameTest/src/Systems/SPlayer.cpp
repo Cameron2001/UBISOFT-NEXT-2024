@@ -28,10 +28,10 @@ void SPlayer::update(Registry& registry, float dt)
         arm.bShoot = App::IsKeyPressed(VK_LBUTTON);
         shield.bEnabled =  App::IsKeyPressed(VK_SPACE);
         
-        if (up) rigidbody.acceleration  = rigidbody.acceleration+ vec2{0,player.moveSpeed};
-        if (down)rigidbody.acceleration = rigidbody.acceleration - vec2{0,player.moveSpeed};
-        if (right)rigidbody.acceleration = rigidbody.acceleration + vec2{player.moveSpeed,0};
-        if (left) rigidbody.acceleration = rigidbody.acceleration - vec2{player.moveSpeed,0};
+        if (up) rigidbody.acceleration  = rigidbody.acceleration+ vec2{0.0f,player.moveSpeed};
+        if (down)rigidbody.acceleration = rigidbody.acceleration - vec2{0.0f,player.moveSpeed};
+        if (right)rigidbody.acceleration = rigidbody.acceleration + vec2{player.moveSpeed,0.0f};
+        if (left) rigidbody.acceleration = rigidbody.acceleration - vec2{player.moveSpeed,0.0f};
         
         vec2 mousePos;
         App::GetMousePos(mousePos.x,mousePos.y);

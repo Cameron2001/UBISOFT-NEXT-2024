@@ -38,8 +38,8 @@ void SEnemy::updateTanks(Registry& registry, float dt)
 
         const vec2 armStart = transform.pos+circle.offset;
         arm.rotation =atan2f(playerPos.y-armStart.y,playerPos.x-armStart.x);
-        if(arm.rotation*utils::rad2Deg < 0) arm.rotation+=utils::deg2Rad*360;
-        arm.rotation = utils::clamp(arm.rotation,75*utils::deg2Rad, 255*utils::deg2Rad);
+        if(arm.rotation*utils::rad2Deg < 0.0f) arm.rotation+=utils::deg2Rad*360.0f;
+        arm.rotation = utils::clamp(arm.rotation,75.0f*utils::deg2Rad, 255.0f*utils::deg2Rad);
         
         rb.acceleration.x-=tank.moveSpeed;
         
@@ -63,8 +63,8 @@ void SEnemy::updateHoming(Registry& registry, float dt)
 void SEnemy::spawnWave(Registry& registry, float difficultyMultiplier)
 {
     const float multiplier = FRAND_RANGE(1.0f, 1.5f)*difficultyMultiplier;
-    factory::createEnemyTank(registry, {800*difficultyMultiplier,300}, {20,8},10,50*multiplier, 10.0f*multiplier, 200,15000*multiplier, 25 *multiplier, 20*multiplier, 10.0f*multiplier,30.0f,5.0f*multiplier);
-    factory::createEnemyTank(registry, {900*difficultyMultiplier,500}, {30,10},15,75*multiplier, 10.0f*multiplier, 150,20000*multiplier, 30 *multiplier, 30*multiplier, 10.0f*multiplier,40.0f, 6.0*multiplier);
-    factory::createEnemyHoming(registry, {1000*difficultyMultiplier,400},20*multiplier, 6,20*multiplier, 10*multiplier,600*multiplier);
+    factory::createEnemyTank(registry, {800.0f*difficultyMultiplier,300.0f}, {20.0f,8.0f},10.0f,50.0f*multiplier, 10.0f*multiplier, 200.0f,15000.0f*multiplier, 25.0f *multiplier, 20.0f*multiplier, 10.0f*multiplier,30.0f,5.0f*multiplier);
+    factory::createEnemyTank(registry, {900.0f*difficultyMultiplier,500.0f}, {30.0f,10.0f},15.0f,75.0f*multiplier, 10.0f*multiplier, 150.0f,20000.0f*multiplier, 30.0f *multiplier, 30.0f*multiplier, 10.0f*multiplier,40.0f, 6.0f*multiplier);
+    factory::createEnemyHoming(registry, {1000.0f*difficultyMultiplier,400.0f},20.0f*multiplier, 6,20.0f*multiplier, 10.0f*multiplier,600.0f*multiplier);
 }
 

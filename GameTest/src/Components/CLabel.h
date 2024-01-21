@@ -9,5 +9,5 @@ struct CLabel
 {
     std::string text;
     vec2 offset;
-    CLabel(std::string text = "Label",vec2 offset = {0,0}): text(text),offset(offset){}
+    CLabel(std::string text = "Label",vec2 offset = {0.0f,0.0f}): text(text),offset(offset){}
 };

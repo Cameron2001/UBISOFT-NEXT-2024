@@ -38,7 +38,7 @@ void SDamage::updateHealth(Registry& registry, float dt)
     for (const Entity ID : registry.getEntities<CHealth>())
     {
         CHealth& health = registry.getComponent<CHealth>(ID);
-        if(health.health<=0)
+        if(health.health<=0.0f)
         {
             health.bDead = true;
             App::PlaySound(".\\Audio\\death.wav");
@@ -48,7 +48,7 @@ void SDamage::updateHealth(Registry& registry, float dt)
             //clean this up
             CRender& render = registry.getComponent<CRender>(ID);
             float healthPercentage = health.health/health.maxHealth;
-            healthPercentage = 1-healthPercentage;
+            healthPercentage = 1.0f-healthPercentage;
             render.color ={1.0f,1.0f-healthPercentage,1.0f-healthPercentage};
         }
         health.health = utils::clamp(health.health+health.regenRate*dt,0.0f,health.maxHealth);

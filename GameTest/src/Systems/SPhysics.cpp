@@ -31,25 +31,21 @@ bool SPhysics::boxBox(Registry& registry, Entity aID, Entity bID)
     
     auto x = (box1.extents.x+box2.extents.x) - abs(diff.x);
     auto y = (box1.extents.y+box2.extents.y) - abs(diff.y);
-    if(x<=0 || y<=0)    return false;
+    if(x<=0.0f || y<=0.0f)    return false;
     if (x<y)
     {
         auto sx = utils::sign(diff.x);
-        vec2 normal = {-sx,0};
-        vec2 mtv = {-x * sx,0};
+        vec2 normal = {-sx,0.0f};
+        vec2 mtv = {-x * sx,0.0f};
         factory::createCollisionEvent(registry,aID,bID,mtv,normal);
     }
     else if (x>y)
     {
         auto sy = utils::sign(diff.y);
-        vec2 normal = {0,-sy};
-        vec2 mtv = {0,y * -sy};
+        vec2 normal = {0.0f,-sy};
+        vec2 mtv = {0.0f,y * -sy};
         factory::createCollisionEvent(registry,aID,bID,mtv,normal);
     }
-    
-    
-    
-    
     return true;
 }
 
@@ -97,7 +93,6 @@ bool SPhysics::circleCircle(Registry& registry, Entity aID, Entity bID)
     {
         const float minDist = distance-radiiSum;
         const vec2 diff = pos2-pos1;
-        //diff = {abs(diff.x),abs(diff.y)};
         const vec2 normal = utils::normalize(diff);
         const vec2 mtv = utils::normalize(diff)*minDist;
         factory::createCollisionEvent(registry,aID,bID,mtv,normal);
@@ -117,14 +112,14 @@ void SPhysics::resolveCollisions(Registry& registry)
         
         if(registry.hasComponent<CRigidbody>(collision.entityA)&&registry.hasComponent<CRigidbody>(collision.entityB))
         {
-            tfA.pos = tfA.pos+(collision.mtv/2);
-            tfB.pos = tfB.pos-(collision.mtv/2);
+            tfA.pos = tfA.pos+(collision.mtv/2.0f);
+            tfB.pos = tfB.pos-(collision.mtv/2.0f);
             
             CRigidbody& bodyA = registry.getComponent<CRigidbody>(collision.entityA);
             CRigidbody& bodyB = registry.getComponent<CRigidbody>(collision.entityB);
             vec2 veloAlongNormal = bodyB.velocity-bodyA.velocity;
             vec2 projection = utils::project(veloAlongNormal,collision.normal);
-            float e = (bodyA.elasticity+bodyB.elasticity)/2;
+            float e = (bodyA.elasticity+bodyB.elasticity)/2.0f;
             
             bodyA.velocity+=projection*e;
             bodyB.velocity-=projection*e;

@@ -21,12 +21,12 @@ void SArm::update(Registry& registry)
         const bool isPlayer = registry.hasComponent<CPlayer>(ID);
         
         if(!isPlayer && arm.state==CArm::ArmState::IDLE) arm.bShoot = true;
-        if(!isPlayer && arm.state==CArm::ArmState::SHOOTING && timer.timer>arm.coolDown/4) arm.bShoot = false;
+        if(!isPlayer && arm.state==CArm::ArmState::SHOOTING && timer.timer>arm.coolDown/4.0f) arm.bShoot = false;
         
         if(arm.state == CArm::ArmState::IDLE && arm.bShoot)
         {
             arm.state = CArm::ArmState::SHOOTING;
-            timer.timer = 0;
+            timer.timer = 0.0f;
         }
         
         if(arm.state == CArm::ArmState::SHOOTING&&!arm.bShoot)

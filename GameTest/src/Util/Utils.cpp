@@ -114,7 +114,7 @@ vec2 utils::normalize(vec2 vector)
     const auto x = vector.x;
     const auto y = vector.y;
     auto length = (x * x) + (y * y);
-    if (length > 0) 
+    if (length > 0.0f) 
     {
         length = 1.0f / sqrt(length);
         dest.x = vector.x * length;
