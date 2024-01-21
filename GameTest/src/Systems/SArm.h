@@ -1,8 +1,9 @@
 ﻿#pragma once
 #include "ISystem.h"
-#include "../Core/Scene.h"
+#include "../Core/Registry.h"
+#include "../Util/Vectors.h"
 
-class SAudio : public ISystem
+class SArm : public ISystem
 {
 public:
     void Update(Registry& Registry);

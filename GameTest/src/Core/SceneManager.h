@@ -12,14 +12,13 @@ public:
     
     void Update(float dt) const;
     void Render() const;
-    void Shutdown();
+    void CleanUp();
     
     static SceneManager* GetInstance();
-    
     template<typename T>
     void LoadScene()
     {
-        Shutdown();
+        CleanUp();
 		
         currentScene = new T();
         currentScene->Init();

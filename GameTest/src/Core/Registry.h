@@ -80,7 +80,6 @@ inline Entity Registry::CreateEntity()
 
 inline void Registry::DeleteEntity(Entity entityID)
 {
-    //auto pos = std::find(m_entityArray.begin(),m_entityArray.end(), entityID);
     m_entityArray.erase(std::remove(m_entityArray.begin(), m_entityArray.end(), entityID), m_entityArray.end());
     for (auto element : m_componentMap)
     {
@@ -88,7 +87,6 @@ inline void Registry::DeleteEntity(Entity entityID)
             element.second->RemoveComponent(entityID);
     }
     freeList.push_back(entityID);
-    //AddComponent(entityID,CDeleteMe());
 }
 
 inline void Registry::ClearAllEntities()

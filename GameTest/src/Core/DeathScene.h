@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Scene.h"
 
-class MenuScene : public Scene
+class DeathScene : public Scene
 {
 public:
     void Init() override;

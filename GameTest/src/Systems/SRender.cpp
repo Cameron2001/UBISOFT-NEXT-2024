@@ -7,52 +7,8 @@
 void SRender::Update(Registry& Registry)
 {
     DrawShapes(Registry);
-    DrawPlayer(Registry);
-    DrawTank(Registry);
     DrawLabels(Registry);
-}
-
-void SRender::DrawPlayer(Registry& Registry)
-{
-    for (auto element : Registry.GetEntities<CPlayer>())
-    {
-        const CTransform* playerTransform = Registry.GetComponent<CTransform>(element);
-        const CPlayer* playerComponent = Registry.GetComponent<CPlayer>(element);
-        const CCircleCollider* playerCircle = Registry.GetComponent<CCircleCollider>(element);
-        CArm* arm = Registry.GetComponent<CArm>(element);
-        vec2 armStart = {cosf(arm->rotation),sinf(arm->rotation)};
-        const vec2 armEnd = armStart*arm->length;
-        armStart*=playerCircle->radius;
-        vec3 color = {1.0f,1.0f,1.0f};
-        const auto playerState = playerComponent->state;
-        if (playerState == CPlayer::States::SHOOTING)
-            color = {1.0f,0.0f,0.0f};
-        if (playerState==CPlayer::States::RELOADING)
-            color = {1.0f,1.0f,0.0f};
-        App::DrawLine(playerTransform->pos.x+armStart.x,playerTransform->pos.y+armStart.y, playerTransform->pos.x+armEnd.x,playerTransform->pos.y+armEnd.y,color.x,color.y,color.z);
-    }
-    
-}
-
-void SRender::DrawTank(Registry& Registry)
-{
-    for(auto element : Registry.GetEntities<CEnemyTank>())
-    {
-        const CEnemyTank* tank = Registry.GetComponent<CEnemyTank>(element);
-        const CTransform* transform = Registry.GetComponent<CTransform>(element);
-        const CCircleCollider* circle = Registry.GetComponent<CCircleCollider>(element);
-        CArm* arm = Registry.GetComponent<CArm>(element);
-        vec2 armStart  = {cosf(arm->rotation),sinf(arm->rotation)};
-        vec2 armEnd = armStart*arm->length;
-        //armStart*circle->radius;
-        vec3 color = {1.0f,1.0f,1.0f};
-        const auto tankState = tank->state;
-        if (tankState==CEnemyTank::TankState::SHOOTING)
-            color = {1.0f,0.0f,0.0f};
-        if (tankState==CEnemyTank::TankState::RELOADING)
-            color = {1.0f,1.0f,0.0f};
-        App::DrawLine(transform->pos.x+armStart.x+circle->offset.x,transform->pos.y+armStart.y, transform->pos.x+armEnd.x+circle->offset.x,transform->pos.y+armEnd.y,color.x,color.y,color.z);
-    }
+    DrawArms(Registry);
 }
 
 void SRender::DrawShapes(Registry& Registry)
@@ -65,12 +21,12 @@ void SRender::DrawShapes(Registry& Registry)
         if(Registry.HasComponent<CBoxCollider>(entityID))
         {
             const CBoxCollider* box = Registry.GetComponent<CBoxCollider>(entityID);
-            DrawSquare(transform->pos+box->offset,box->extents,render->OutlineColor);
+            DrawSquare(transform->pos+box->offset,box->extents,render->color);
         }
         if(Registry.HasComponent<CCircleCollider>(entityID))
         {
             const CCircleCollider* circle = Registry.GetComponent<CCircleCollider>(entityID);
-            DrawCircle(transform->pos+circle->offset,circle->radius,10, render->OutlineColor);
+            DrawCircle(transform->pos+circle->offset,circle->radius,circle->segments, render->color);
         }
     }
 }
@@ -102,9 +58,10 @@ void SRender::DrawLabels(Registry& Registry)
 {
     for (const auto current : Registry.GetEntities<CLabel>())
     {
+        const CRender* render = Registry.GetComponent<CRender>(current);
         const CLabel* label = Registry.GetComponent<CLabel>(current);
         const CTransform* transform = Registry.GetComponent<CTransform>(current);
-        App::Print(transform->pos.x+label->labelOffset.x,transform->pos.y+label->labelOffset.y,label->labelText.c_str(),25,25,25);
+        App::Print(transform->pos.x+label->labelOffset.x,transform->pos.y+label->labelOffset.y,label->labelText.c_str(),render->color.x,render->color.y,render->color.z);
     }
 }
 
@@ -113,6 +70,16 @@ void SRender::DrawArms(Registry& Registry)
     for (auto element : Registry.GetEntities<CArm>())
     {
         CArm* arm = Registry.GetComponent<CArm>(element);
+        CCircleCollider* circle = Registry.GetComponent<CCircleCollider>(element);
+        CTransform* transform = Registry.GetComponent<CTransform>(element);
+        vec2 armStart  = {cosf(arm->rotation),sinf(arm->rotation)};
+        vec2 armEnd = armStart*arm->length;
+        vec3 color = {1.0f,1.0f,1.0f};
+        if (arm->state==CArm::ArmState::SHOOTING)
+            color = {1.0f,0.0f,0.0f};
+        if (arm->state== CArm::ArmState::RELOADING)
+            color = {1.0f,1.0f,0.0f};
+        App::DrawLine(transform->pos.x+armStart.x+circle->offset.x,transform->pos.y+armStart.y, transform->pos.x+armEnd.x+circle->offset.x,transform->pos.y+armEnd.y,color.x,color.y,color.z);
     }
 }
 

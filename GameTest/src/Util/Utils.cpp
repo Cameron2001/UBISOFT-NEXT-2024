@@ -61,25 +61,7 @@ vec2 Utils::Lerp(vec2 a, vec2 b, float t)
     return {lerp_xs, lerp_ys};
 }
 
-float Utils::LerpUnclamped(float a, float b, float t)
-{
-    return a + (b - a) * t;
-}
 
-float Utils::LerpAngle(float a, float b, float t)
-{
-    auto num = Utils::Repeat(b - a, 360.0);
-    if (num > 180.0f) 
-    {
-        num -= 360.0f;
-    }
-    return a + num * Utils::Clamp(t);
-}
-
-float Utils::Repeat(float t, float length)
-{
-    return Clamp(t - floor(t / length) * length, 0.0f, length);
-}
 
 float Utils::Distance(vec2 a, vec2 b)
 {
@@ -109,17 +91,6 @@ float Utils::SquaredMagnitude(vec2 vector)
     return (x * x) + (y * y);
 }
 
-vec2 Utils::LimitMagnitude(vec2 vector, float magnitude)
-{
-    const auto length = Magnitude(vector);
-    if (length > magnitude) {
-        const auto limiter = magnitude / length;
-        vector.x *= limiter;
-        vector.y *= limiter;
-        return vector;
-    }
-    return vector;
-}
 
 float Utils::Length(vec2 vec)
 {
@@ -131,35 +102,6 @@ float Utils::LengthSquared(vec2 vec)
     return vec.x * vec.x + vec.y * vec.y;
 }
 
-vec2 Utils::Min(vec2 vec_a, vec2 vec_b)
-{
-    return { min(vec_a.x, vec_b.x) , min(vec_a.y, vec_b.y) };
-}
-
-float Utils::Min(float a, float b)
-{
-    return a < b ? a : b;
-}
-
-vec2 Utils::Max(vec2 vec_a, vec2 vec_b)
-{
-    return { max(vec_a.x, vec_b.x), max(vec_a.y, vec_b.y)};
-}
-
-float Utils::Max(float a, float b)
-{
-    return a > b ? a : b;
-}
-
-vec2 Utils::Negate(vec2 vec)
-{
-    return { -vec.x, -vec.y };
-}
-
-vec2 Utils::Inverse(vec2 vec)
-{
-    return {1.0f / vec.x, 1.0f / vec.y};
-}
 
 vec2 Utils::Normalize(vec2 vec)
 {
@@ -176,36 +118,18 @@ vec2 Utils::Normalize(vec2 vec)
     return dest;
 }
 
-float Utils::Angle(vec2 from, vec2 to)
-{
-    return acos(Clamp(Dot(Normalize(from), Normalize(to)), -1.0f, 1.0f)) * 57.29578f;
-}
 
 float Utils::Dot(vec2 lhs, vec2 rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y;
 }
 
-float Utils::SignedAngle(vec2 from, vec2 to)
-{
-    const auto unsigned_angle = Utils::Angle(from, to);
-    const auto sign = Utils::Sign(from.x * to.y - from.y * to.x);
-    return unsigned_angle * sign;
-}
 
 vec2 Utils::Project(vec2 a, vec2 b)
 {
     return b * (Dot(a, b) / LengthSquared(b));
 }
 
-vec2 Utils::Rotate(vec2 vec, float rot, vec2 point)
-{
-    rot*=Deg2Rad;
-    vec2 v;
-    v.x = (vec.x-point.x) * cosf(rot) - (vec.y-point.y) * sinf(rot) + point.x;
-    v.y = (vec.y-point.y) * cosf(rot) + (vec.x-point.x) * sinf(rot) + point.y; 
-    return v;
-}
 
 
 Utils::Utils()

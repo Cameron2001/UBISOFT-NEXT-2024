@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "SEnemy.h"
 
+#include "../../app/AppSettings.h"
 #include "../Components/Components.h"
 #include "../Core/Factory.h"
 #include "../Util/Utils.h"
@@ -21,45 +22,20 @@ void SEnemy::Update(Registry& Registry, float dt)
 
 void SEnemy::UpdateTanks(Registry& Registry, float dt)
 {
+    auto playerPos = Registry.GetComponent<CTransform>(Registry.GetEntities<CPlayer>()[0])->pos;
     for (const auto element : Registry.GetEntities<CEnemyTank>())
     {
-        CEnemyTank* tank = Registry.GetComponent<CEnemyTank>(element);
         CRigidbody* rb = Registry.GetComponent<CRigidbody>(element);
-        CTimer* timer = Registry.GetComponent<CTimer>(element);
+        CEnemyTank* tank = Registry.GetComponent<CEnemyTank>(element);
+        CTransform* transform = Registry.GetComponent<CTransform>(element);
+        CCircleCollider* circle = Registry.GetComponent<CCircleCollider>(element);
         CArm* arm = Registry.GetComponent<CArm>(element);
-        const CTransform* transform = Registry.GetComponent<CTransform>(element);
-        const CCircleCollider* circle = Registry.GetComponent<CCircleCollider>(element);
-        const CTransform* playerTransform = Registry.GetComponent<CTransform>(Registry.GetEntities<CPlayer>()[0]);
+
         const vec2 armStart = transform->pos+circle->offset;
-        
-        arm->rotation =atan2f(playerTransform->pos.y-armStart.y,playerTransform->pos.x-armStart.x);
+        arm->rotation =atan2f(playerPos.y-armStart.y,playerPos.x-armStart.x);
         if(arm->rotation*Utils::Rad2Deg < 0) arm->rotation+=Utils::Deg2Rad*360;
         arm->rotation = Utils::Clamp(arm->rotation,75*Utils::Deg2Rad, 255*Utils::Deg2Rad);
         
-        if(tank->state == CEnemyTank::TankState::IDLE)
-        {
-            tank->state = CEnemyTank::TankState::SHOOTING;
-            timer->timer = 0;
-        }
-        if(tank->state == CEnemyTank::TankState::SHOOTING)
-        {
-            if(timer->timer > 1.0f)
-            {
-                
-                Factory::CreateProjectile(Registry,armStart,16*timer->timer, tank->projectileForce*timer->timer,arm->rotation,tank->projectileHealth*timer->timer,tank->projectileDmg*timer->timer);
-                timer->timer = 0.0f;
-                tank->state = CEnemyTank::TankState::RELOADING;
-            }
-        }
-        if(tank->state == CEnemyTank::TankState::RELOADING)
-        {
-            
-            if(timer->timer>3.0f)
-            {
-                timer->timer = 0.0f;
-                tank->state = CEnemyTank::TankState::IDLE;
-            }
-        }
         rb->acceleration.x-=tank->moveSpeed;
         
     }
@@ -81,8 +57,9 @@ void SEnemy::UpdateHoming(Registry& Registry, float dt)
 
 void SEnemy::SpawnWave(Registry& Registry, float difficultyMultiplier)
 {
-    Factory::CreateEnemyTank(Registry, {800*difficultyMultiplier,300}, {20,8},10,100*difficultyMultiplier, 15.0f*difficultyMultiplier, 200,25000*difficultyMultiplier, 25 *difficultyMultiplier, 20*difficultyMultiplier);
-    Factory::CreateEnemyTank(Registry, {900*difficultyMultiplier,500}, {30,10},15,150*difficultyMultiplier, 25.0f*difficultyMultiplier, 150,30000*difficultyMultiplier, 50 *difficultyMultiplier, 35*difficultyMultiplier);
-    Factory::CreateEnemyHoming(Registry, {1000*difficultyMultiplier,400},20*difficultyMultiplier,100*difficultyMultiplier, 20*difficultyMultiplier,600*difficultyMultiplier);
+    float multiplier = FRAND_RANGE(1.0f, 1.5f)*difficultyMultiplier;
+    Factory::CreateEnemyTank(Registry, {800*difficultyMultiplier,300}, {20,8},10,50*multiplier, 10.0f*multiplier, 200,15000*multiplier, 25 *multiplier, 20*multiplier, 10.0f*multiplier,30.0f,5.0f*multiplier);
+    Factory::CreateEnemyTank(Registry, {900*difficultyMultiplier,500}, {30,10},15,75*multiplier, 10.0f*multiplier, 150,20000*multiplier, 30 *multiplier, 30*multiplier, 10.0f*multiplier,40.0f, 6.0*multiplier);
+    Factory::CreateEnemyHoming(Registry, {1000*difficultyMultiplier,400},20*multiplier, 6,20*multiplier, 10*multiplier,600*multiplier);
 }
 

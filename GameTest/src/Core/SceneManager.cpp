@@ -12,7 +12,7 @@ SceneManager::SceneManager()
 
 SceneManager::~SceneManager()
 {
-    Shutdown();
+    CleanUp();
 }
 
 void SceneManager::Update(float dt) const
@@ -24,7 +24,8 @@ void SceneManager::Render() const
 {
     currentScene->Render();
 }
-void SceneManager::Shutdown()
+
+void SceneManager::CleanUp()
 {
     if (currentScene)
     {
@@ -33,6 +34,8 @@ void SceneManager::Shutdown()
         currentScene = nullptr;
     }
 }
+
+
 
 
 

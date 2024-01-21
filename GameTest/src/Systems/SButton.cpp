@@ -33,20 +33,13 @@ void SButton::ResolveClicks(Registry& Registry)
         const CButton* button = Registry.GetComponent<CButton>(entityID);
         if(button->isClicked)
         {
-            
             switch (button->type)
             {
             case CButton::ButtonTypes::START:
-                StartClick(Registry);
+                StartClick();
                 break;
             case CButton::ButtonTypes::EXIT:
-                ExitClick(Registry);
-                break;
-            case CButton::ButtonTypes::RETRY:
-                RetryClick(Registry);
-                break;
-            case CButton::ButtonTypes::TUTORIAL:
-                TutorialClick(Registry);
+                ExitClick();
                 break;
             }
         }
@@ -54,24 +47,17 @@ void SButton::ResolveClicks(Registry& Registry)
     }
 }
 
-void SButton::StartClick(Registry& Registry)
+void SButton::StartClick()
 {
     SceneManager::GetInstance()->LoadScene<PlayScene>();
 }
 
-void SButton::TutorialClick(Registry& Registry)
-{
-    
-}
 
-void SButton::ExitClick(Registry& Registry)
+void SButton::ExitClick()
 {
     exit(0);
 }
 
-void SButton::RetryClick(Registry& Registry)
-{
-}
 
 bool SButton::Clicked(vec2 mousePos, vec2 buttonPos, vec2 bounds)
 {

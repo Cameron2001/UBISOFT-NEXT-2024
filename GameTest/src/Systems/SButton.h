@@ -10,10 +10,8 @@ public:
 private:
     void CheckClicks(Registry& Registry);
     void ResolveClicks(Registry& Registry);
-    void StartClick(Registry& Registry);
-    void TutorialClick(Registry& Registry);
-    void ExitClick(Registry& Registry);
-    void RetryClick(Registry& Registry);
+    void StartClick();
+    void ExitClick();
     bool Clicked(vec2 mousePos,vec2 buttonPos,vec2 bounds);
     
 };

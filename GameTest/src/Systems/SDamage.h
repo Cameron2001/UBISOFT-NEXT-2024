@@ -8,6 +8,7 @@ public:
 private:
     void ResolveDamageEvents(Registry& Registry);
     void UpdateHealth(Registry& Registry, float dt);
+    void DeleteDead(Registry& Registry);
     
     
 };

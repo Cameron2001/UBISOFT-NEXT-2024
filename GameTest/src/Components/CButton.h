@@ -4,9 +4,7 @@ struct CButton
     enum class ButtonTypes
     {
         START,
-        EXIT,
-        RETRY,
-        TUTORIAL
+        EXIT
     };
     ButtonTypes type;
     vec2 bounds;

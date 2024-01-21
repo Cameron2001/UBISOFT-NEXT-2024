@@ -3,7 +3,9 @@
 
 #include "../Util/Utils.h"
 #include "../Components/Components.h"
+#include "../Core/DeathScene.h"
 #include "../Core/Factory.h"
+#include "../Core/SceneManager.h"
 
 void SPhysics::Update(Registry& Registry, float dt)
 {
@@ -231,6 +233,7 @@ void SPhysics::ApplyKinematics(Registry& Registry, float dt)
 void SPhysics::DeleteOffscreen(Registry& Registry)
 {
     float buffer = 100.0f;
+    bool death = false;
     for (auto element : Registry.GetEntities<CTransform>())
     {
         CTransform* transform = Registry.GetComponent<CTransform>(element);
@@ -239,7 +242,15 @@ void SPhysics::DeleteOffscreen(Registry& Registry)
             transform->pos.y<0-buffer||
             transform->pos.y>768+buffer)
         {
-            Registry.DeleteEntity(element);
+            if(Registry.HasComponent<CHealth>(element))
+            {
+                Registry.GetComponent<CHealth>(element)->isDead = true;
+            }
+            else
+            {
+                Registry.DeleteEntity(element); 
+            }
+            
         }
     }
 }

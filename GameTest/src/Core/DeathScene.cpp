@@ -1,49 +1,41 @@
 ﻿#include "stdafx.h"
-#include "MenuScene.h"
+#include "DeathScene.h"
 
 #include "Factory.h"
 #include "../Components/Components.h"
 #include "../Systems/Systems.h"
 
-
-void MenuScene::Init()
+void DeathScene::Init()
 {
+    //play death sound?
     Entity invalid = Registry.CreateEntity();
     CreateSystems();
     CreateComponentArrays();
     CreateMenu();
-
-    
-    
-    
-    
-    
-    
-    
 }
 
-void MenuScene::Update(float dt)
+void DeathScene::Update(float dt)
 {
-    dt/=1000.0f;
     Registry.GetSystem<SButton>()->Update(Registry);
 }
 
-void MenuScene::Render()
+void DeathScene::Render()
 {
     Registry.GetSystem<SRender>()->Update(Registry);
 }
 
-void MenuScene::Shutdown()
+void DeathScene::Shutdown()
 {
+    Registry.ClearAllEntities();
 }
 
-void MenuScene::CreateSystems()
+void DeathScene::CreateSystems()
 {
     Registry.CreateSystem<SRender>();
     Registry.CreateSystem<SButton>();
 }
 
-void MenuScene::CreateComponentArrays()
+void DeathScene::CreateComponentArrays()
 {
     Registry.CreateComponentArray<CTransform>();
     Registry.CreateComponentArray<CRigidbody>();
@@ -66,9 +58,9 @@ void MenuScene::CreateComponentArrays()
     Registry.CreateComponentArray<CArm>();
 }
 
-void MenuScene::CreateMenu()
+void DeathScene::CreateMenu()
 {
+    Factory::CreateLabel(Registry, "YOU DIED" , {500,600}, {0,0},{1.0f,0.0f,0.0f});
     Factory::CreateButton(Registry, {512,100},{100,30},CButton::ButtonTypes::EXIT,"Exit");
-    Factory::CreateButton(Registry, {512,500},{100,30},CButton::ButtonTypes::START, "Start");
+    Factory::CreateButton(Registry, {512,500},{100,30},CButton::ButtonTypes::START, "Restart");
 }
-

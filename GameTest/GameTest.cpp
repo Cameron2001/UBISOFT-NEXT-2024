@@ -27,5 +27,5 @@ void Render()
 }
 void Shutdown()
 {
-	SceneManager::GetInstance()->Shutdown();
+	SceneManager::GetInstance()->CleanUp();
 }
