@@ -2,13 +2,15 @@
 // SDamage.cpp
 //------------------------------------------------------------------------
 #include "stdafx.h"
+//------------------------------------------------------------------------
 #include "SDamage.h"
-
+//------------------------------------------------------------------------
 #include "../../app/app.h"
 #include "../Components/Components.h"
 #include "../Core/DeathScene.h"
 #include "../Core/SceneManager.h"
 #include "../Util/Utils.h"
+//------------------------------------------------------------------------
 
 void SDamage::update(Registry& registry, float dt)
 {

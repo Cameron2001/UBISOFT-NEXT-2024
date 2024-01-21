@@ -2,13 +2,14 @@
 // SButton.cpp
 //------------------------------------------------------------------------
 #include "stdafx.h"
+//------------------------------------------------------------------------
 #include "SButton.h"
-
+//------------------------------------------------------------------------
 #include "../../App/app.h"
 #include "../Components/Components.h"
 #include "../Core/PlayScene.h"
 #include "../Core/SceneManager.h"
-
+//------------------------------------------------------------------------
 
 void SButton::update(Registry& registry)
 {

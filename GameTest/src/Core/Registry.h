@@ -2,9 +2,10 @@
 // Registry.h
 //------------------------------------------------------------------------
 #pragma once
+//------------------------------------------------------------------------
 #include "ComponentArray.h"
 #include "../Systems/ISystem.h"
-
+//------------------------------------------------------------------------
 class Registry
 {
 public:
@@ -54,11 +55,11 @@ public:
     void clearEntities();
 
     void clearAllEntities();
-    
+private:
     std::vector<Entity> m_entityArray; //just a vector of uint32_t. Hold all entity ids
     std::unordered_map<const char*, std::shared_ptr<IComponentArray>> m_componentMap;
     std::unordered_map<const char*, std::shared_ptr<ISystem>> m_systemMap;
-    std::deque<Entity> freeList;
+    std::deque<Entity> m_freeList;
     
     
 };
@@ -66,37 +67,37 @@ public:
 
 inline Registry::Registry()
 {
-    for (Entity i = 0; i<MAX_IDS; i++)
+    //Populating the list of free entity IDS
+    for (Entity i = 1; i<MAX_IDS; i++)
     {
-        freeList.push_back(i);
+        m_freeList.push_back(i);
     }
 }
 
 inline Entity Registry::createEntity()
 {
-    Entity id = freeList.front();
-    freeList.pop_front();
-    m_entityArray.push_back(id);
-    return id;
+    Entity ID = m_freeList.front(); //Get free ID from m_freeList
+    m_freeList.pop_front(); //remove grabbed ID from list of available
+    m_entityArray.push_back(ID); //Add id to list of entity IDs
+    return ID;
 }
 
 inline void Registry::deleteEntity(Entity entityID)
 {
+    //remove ID from list of entity IDs
     m_entityArray.erase(std::remove(m_entityArray.begin(), m_entityArray.end(), entityID), m_entityArray.end());
-    for (auto element : m_componentMap)
+    //delete all components that belong to ID
+    for (auto componentArray : m_componentMap)
     {
-        if (element.second->hasComponent(entityID))
-            element.second->removeComponent(entityID);
+        if (componentArray.second->hasComponent(entityID))
+            componentArray.second->removeComponent(entityID);
     }
-    freeList.push_back(entityID);
+    m_freeList.push_back(entityID); //Add freed ID to list of available
 }
 
 inline void Registry::clearAllEntities()
 {
-    for (const auto entity : m_entityArray)
-    {
-        deleteEntity(entity);
-    }
+    for (const auto entity : m_entityArray) deleteEntity(entity); //Delete all entities
 }
 
 template <typename T>
@@ -131,6 +132,8 @@ template <typename T>
 void Registry::createComponentArray()
 {
     //assert("Create array, Array found" && !HasComponentArray<T>());
+
+    //Key created based on type
     m_componentMap.insert({typeid(T).name(),std::make_shared<ComponentArray<T>>()});
 }
 
@@ -151,6 +154,7 @@ bool Registry::hasComponentArray() const
 template <typename T>
 void Registry::createSystem()
 {
+    //Key created based on type
     m_systemMap.insert({typeid(T).name(),std::make_shared<T>()});
 }
 
@@ -169,23 +173,25 @@ bool Registry::hasSystem() const
 template <typename... Ts>
 std::vector<Entity> Registry::getEntities()
 {
-    std::vector<Entity> entities;
-    
+    std::vector<Entity> matches;
+
+    //if empty return all ids
     if (sizeof...(Ts) == 0)
         return m_entityArray;
     
     for (auto entityID : m_entityArray)
     {
         bool match = true;
+        //unpack parameter pack
         int arr[] = {hasComponent<Ts>(entityID)... };
-        for (auto auto_ : arr)
+        for (auto type : arr)
         {
-            if(auto_!=true) match = false;
+            if(type!=true) match = false;
         }
-        if (match) entities.push_back(entityID);
+        //if has all components it is a match
+        if (match) matches.push_back(entityID);
     } 
-    
-    return entities;
+    return matches;
 }
 
 

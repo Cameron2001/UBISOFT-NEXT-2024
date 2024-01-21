@@ -2,16 +2,16 @@
 // DeathScene.cpp
 //------------------------------------------------------------------------
 #include "stdafx.h"
+//------------------------------------------------------------------------
 #include "DeathScene.h"
-
+//------------------------------------------------------------------------
 #include "Factory.h"
 #include "../Components/Components.h"
 #include "../Systems/Systems.h"
-
+//------------------------------------------------------------------------
 void DeathScene::init()
 {
     //play death sound?
-    Entity invalid = registry.createEntity();
     createSystems();
     createComponentArrays();
     createMenu();

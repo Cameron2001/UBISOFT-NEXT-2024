@@ -2,16 +2,16 @@
 // MenuScene.cpp
 //------------------------------------------------------------------------
 #include "stdafx.h"
+//------------------------------------------------------------------------
 #include "MenuScene.h"
-
+//------------------------------------------------------------------------
 #include "Factory.h"
 #include "../Components/Components.h"
 #include "../Systems/Systems.h"
-
+//------------------------------------------------------------------------
 
 void MenuScene::init()
 {
-    Entity invalid = registry.createEntity();
     createSystems();
     createComponentArrays();
     createMenu();

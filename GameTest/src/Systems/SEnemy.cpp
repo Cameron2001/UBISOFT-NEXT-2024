@@ -2,17 +2,19 @@
 // SEnemy.cpp
 //------------------------------------------------------------------------
 #include "stdafx.h"
+//------------------------------------------------------------------------
 #include "SEnemy.h"
-
+//------------------------------------------------------------------------
 #include "../../app/AppSettings.h"
 #include "../Core/Factory.h"
 #include "../Util/Utils.h"
+//------------------------------------------------------------------------
 
 void SEnemy::update(Registry& registry, float dt)
 {
     const Entity waveController = registry.getEntities<CWave>()[0];
-    CTimer& timer = registry.getComponent<CTimer>(waveController);
     const CWave& wave = registry.getComponent<CWave>(waveController);
+    CTimer& timer = registry.getComponent<CTimer>(waveController);
     if(timer.timer>wave.waveCooldown)
     {
         timer.timer = 0.0f;
@@ -27,7 +29,6 @@ void SEnemy::updateTanks(Registry& registry, float dt)
     const auto playerPos = registry.getComponent<CTransform>(registry.getEntities<CPlayer>()[0]).pos;
     for (const Entity ID : registry.getEntities<CEnemyTank>())
     {
-        //clean this up
         const CEnemyTank& tank = registry.getComponent<CEnemyTank>(ID);
         const CTransform& transform = registry.getComponent<CTransform>(ID);
         const CCircleCollider& circle = registry.getComponent<CCircleCollider>(ID);

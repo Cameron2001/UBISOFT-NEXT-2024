@@ -2,17 +2,17 @@
 // PlayScene.cpp
 //------------------------------------------------------------------------
 #include "stdafx.h"
+//------------------------------------------------------------------------
 #include "PlayScene.h"
-
-
+//------------------------------------------------------------------------
 #include "Factory.h"
 #include "../Components/Components.h"
 #include "../Systems/Systems.h"
+//------------------------------------------------------------------------
 
 
 void PlayScene::init()
 {
-    Entity invalid = registry.createEntity();
     createSystems();
     createComponentArrays();
     createMap();

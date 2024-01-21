@@ -2,7 +2,9 @@
 // CArm.h
 //------------------------------------------------------------------------
 #pragma once
+//------------------------------------------------------------------------
 #include "../Util/Utils.h"
+//------------------------------------------------------------------------
 struct CArm
 {
     enum class ArmState
@@ -15,6 +17,8 @@ struct CArm
     float rotation;
     float armLength;
     float coolDown;
+
+    //Properties of projectile being created
     float projectileForce;
     float projectileRadius;
     float projectileHealth;
