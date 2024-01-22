@@ -59,7 +59,7 @@ private:
     std::vector<Entity> m_entityArray; //just a vector of uint32_t. Hold all entity ids
     std::unordered_map<const char*, std::shared_ptr<IComponentArray>> m_componentMap; //map of sparse sets of components
     std::unordered_map<const char*, std::shared_ptr<ISystem>> m_systemMap; //map of systems
-    std::deque<Entity> m_freeList;
+    std::deque<Entity> m_freeList; //free to use entity IDS
     
     
 };

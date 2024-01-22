@@ -22,28 +22,28 @@ bool SPhysics::boxBox(Registry& registry, Entity aID, Entity bID)
     //clean this up. all determine which side of the box was collided with
     if(aID == bID) return false;
     if(!registry.hasComponent<CRigidbody>(aID) && !registry.hasComponent<CRigidbody>(bID)) return false;
-    
-    CBoxCollider& box1 = registry.getComponent<CBoxCollider>(aID);
-    CBoxCollider& box2 = registry.getComponent<CBoxCollider>(bID);
-    vec2 pos1 = registry.getComponent<CTransform>(aID).pos+box1.offset;
-    vec2 pos2 = registry.getComponent<CTransform>(bID).pos+box2.offset;
-    vec2 diff = {pos2-pos1};
+
+    const CBoxCollider& box1 = registry.getComponent<CBoxCollider>(aID);
+    const CBoxCollider& box2 = registry.getComponent<CBoxCollider>(bID);
+    const vec2 pos1 = registry.getComponent<CTransform>(aID).pos+box1.offset;
+    const vec2 pos2 = registry.getComponent<CTransform>(bID).pos+box2.offset;
+    const vec2 diff = {pos2-pos1};
     
     auto x = (box1.extents.x+box2.extents.x) - abs(diff.x);
     auto y = (box1.extents.y+box2.extents.y) - abs(diff.y);
     if(x<=0.0f || y<=0.0f)    return false;
     if (x<y)
     {
-        auto sx = utils::sign(diff.x);
-        vec2 normal = {-sx,0.0f};
-        vec2 mtv = {-x * sx,0.0f};
+        const float sx = utils::sign(diff.x);
+        const vec2 normal = {-sx,0.0f};
+        const vec2 mtv = {-x * sx,0.0f};
         factory::createCollisionEvent(registry,aID,bID,mtv,normal);
     }
     else if (x>y)
     {
-        auto sy = utils::sign(diff.y);
-        vec2 normal = {0.0f,-sy};
-        vec2 mtv = {0.0f,y * -sy};
+        const float sy = utils::sign(diff.y);
+        const vec2 normal = {0.0f,-sy};
+        const vec2 mtv = {0.0f,y * -sy};
         factory::createCollisionEvent(registry,aID,bID,mtv,normal);
     }
     return true;
@@ -109,7 +109,7 @@ void SPhysics::resolveCollisions(Registry& registry)
         const CCollisionEvent& collision = registry.getComponent<CCollisionEvent>(ID);
         CTransform& tfA = registry.getComponent<CTransform>(collision.entityA);
         CTransform& tfB = registry.getComponent<CTransform>(collision.entityB);
-        
+        //If both have rigidbodies they both reflect off of eachother
         if(registry.hasComponent<CRigidbody>(collision.entityA)&&registry.hasComponent<CRigidbody>(collision.entityB))
         {
             tfA.pos = tfA.pos+(collision.mtv/2.0f);
@@ -124,6 +124,7 @@ void SPhysics::resolveCollisions(Registry& registry)
             bodyA.velocity+=projection*e;
             bodyB.velocity-=projection*e;
         }
+        //Only 1 rigidbody, only one reflection
         else if(registry.hasComponent<CRigidbody>(collision.entityA))
         {
             CRigidbody& body = registry.getComponent<CRigidbody>(collision.entityA);
@@ -182,13 +183,13 @@ bool SPhysics::checkCollision(Registry& registry, Entity a, Entity b)
 {
     if(registry.hasComponent<CBoxCollider>(a))
     {
-        if(registry.hasComponent<CBoxCollider>(b)) return boxBox(registry,a,b);
-        if(registry.hasComponent<CCircleCollider>(b)) return boxCircle(registry,a,b);
+        if(registry.hasComponent<CBoxCollider>(b)) return boxBox(registry,a,b); //boxBox
+        if(registry.hasComponent<CCircleCollider>(b)) return boxCircle(registry,a,b); //boxCircle
     }
     if(registry.hasComponent<CCircleCollider>(a))
     {
-        if(registry.hasComponent<CBoxCollider>(b)) return boxCircle(registry,b,a);
-        if(registry.hasComponent<CCircleCollider>(b)) return circleCircle(registry,a,b);
+        if(registry.hasComponent<CBoxCollider>(b)) return boxCircle(registry,b,a); //boxCircle
+        if(registry.hasComponent<CCircleCollider>(b)) return circleCircle(registry,a,b); //circleCircle
     }
     return false;
 }
@@ -208,10 +209,10 @@ void SPhysics::applyKinematics(Registry& registry, float dt)
         rigidbody.acceleration = {0,0};
     }
 }
-
+//Deleting entities that go out of bounds
 void SPhysics::deleteOffscreen(Registry& registry)
 {
-    const float buffer = 100.0f;
+    const float buffer = 200.0f;
     for (const Entity ID : registry.getEntities<CTransform>())
     {
         const CTransform& transform = registry.getComponent<CTransform>(ID);

@@ -78,8 +78,7 @@ Entity factory::createProjectile(Registry& registry, vec2 pos, float radius,floa
 {
     if(ID==NULL) ID = registry.createEntity();
     const vec2 dir = {cos(angle),sin(angle)};
-    //the 50 is player radius
-    createCircle(registry,pos+(dir*(radius+50.0f)),radius,segments,ID);
+    createCircle(registry,pos+dir*(radius+offset+1),radius,segments,ID);
     registry.addComponent(ID, CDamage(damage));
     registry.addComponent(ID, CHealth(health));
     registry.addComponent(ID,CRigidbody(0,1.7));

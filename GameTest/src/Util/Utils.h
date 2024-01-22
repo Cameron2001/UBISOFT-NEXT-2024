@@ -8,6 +8,7 @@
 class utils
 {
 public:
+    //utility functions
     static const float deg2Rad;
     static const float rad2Deg;
 

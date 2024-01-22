@@ -20,6 +20,7 @@ void SEnemy::update(Registry& registry, float dt)
     const Entity waveController = registry.getEntities<CWave>()[0];
     const CWave& wave = registry.getComponent<CWave>(waveController);
     CTimer& timer = registry.getComponent<CTimer>(waveController);
+    //spawn wave if timer is higher than cooldown
     if(timer.timer>wave.waveCooldown)
     {
         timer.timer = 0.0f;
@@ -67,9 +68,10 @@ void SEnemy::updateHoming(Registry& registry, float dt)
 
 void SEnemy::spawnWave(Registry& registry, float difficultyMultiplier)
 {
+    //add some randomness
     const float multiplier = FRAND_RANGE(1.0f, 1.5f)*difficultyMultiplier;
-    factory::createEnemyTank(registry, {1100.0f*difficultyMultiplier,250.0f}, {20.0f,8.0f},10.0f,50.0f*multiplier, 10.0f*multiplier, 200.0f,15000.0f*multiplier, 25.0f *multiplier, 20.0f*multiplier, 10.0f*multiplier,30.0f,5.0f*multiplier);
+    factory::createEnemyTank(registry, {1020.0f*difficultyMultiplier,250.0f}, {20.0f,8.0f},10.0f,50.0f*multiplier, 10.0f*multiplier, 200.0f,15000.0f*multiplier, 25.0f *multiplier, 20.0f*multiplier, 10.0f*multiplier,30.0f,5.0f*multiplier);
     factory::createEnemyTank(registry, {1100.0f*difficultyMultiplier,500.0f}, {30.0f,10.0f},15.0f,75.0f*multiplier, 10.0f*multiplier, 150.0f,20000.0f*multiplier, 30.0f *multiplier, 30.0f*multiplier, 10.0f*multiplier,40.0f, 6.0f*multiplier);
-    factory::createEnemyHoming(registry, {1100.0f*difficultyMultiplier,350.0f},20.0f*multiplier, 6,20.0f*multiplier, 10.0f*multiplier,600.0f*multiplier);
+    factory::createEnemyHoming(registry, {1150.0f*difficultyMultiplier,350.0f},20.0f*multiplier, 6,20.0f*multiplier, 10.0f*multiplier,600.0f*multiplier);
 }
 
