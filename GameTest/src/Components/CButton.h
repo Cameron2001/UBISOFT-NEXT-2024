@@ -12,6 +12,13 @@ struct CButton
     };
     ButtonTypes type;
     vec2 bounds;
-    bool bClicked = false;
-    CButton(ButtonTypes type , vec2 bounds):bounds(bounds),type(type){} 
+    bool bClicked;
+    CButton(
+        ButtonTypes type,
+        vec2 bounds
+        ):
+        type(type),
+        bounds(bounds),
+        bClicked(false)
+    {} 
 };

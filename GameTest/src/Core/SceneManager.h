@@ -24,8 +24,14 @@ public:
     void loadScene()
     {
         cleanUp();
-		
         currentScene = new T();
+        currentScene->init();
+    }
+    template<typename T>
+    void loadScene(float timer)
+    {
+        cleanUp();
+        currentScene = new T(timer);
         currentScene->init();
     }
 

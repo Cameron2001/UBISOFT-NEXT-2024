@@ -6,7 +6,7 @@
 #include "Factory.h"
 //------------------------------------------------------------------------
 
-Entity factory::createPlayer(Registry& registry, vec2 pos, float radius, int segments, float hp, float shieldHp, float speed, float projForce, float projHealth, float projDmg, float projRadius, float armLength, float coolDown,  Entity ID)
+Entity factory::createPlayer(Registry& registry, vec2 pos, float radius, int segments, float hp, float speed, float projForce, float projHealth, float projDmg, float projRadius, float armLength, float coolDown,  Entity ID)
 {
     if (ID == NULL) ID = registry.createEntity();
     createCircle(registry,pos,radius, segments,ID);
@@ -15,7 +15,6 @@ Entity factory::createPlayer(Registry& registry, vec2 pos, float radius, int seg
     registry.addComponent(ID,CHealth(hp));
     registry.addComponent(ID,CTimer());
     registry.addComponent(ID, CArm(armLength,projForce, projHealth,projDmg, projRadius, coolDown));
-    registry.addComponent(ID, CShield(shieldHp));
     return ID;
 }
 
@@ -74,7 +73,7 @@ Entity factory::createCircle(Registry& registry, vec2 pos, float radius, int seg
     return ID;
 }
 
-Entity factory::createProjectile(Registry& registry, vec2 pos, float radius, int segments, float force, float angle, float health,
+Entity factory::createProjectile(Registry& registry, vec2 pos, float radius,float offset, int segments, float force, float angle, float health,
     float damage, Entity ID)
 {
     if(ID==NULL) ID = registry.createEntity();
@@ -138,3 +137,4 @@ Entity factory::createLabel(Registry& registry, std::string text, vec2 pos, vec2
     registry.addComponent(ID, CLabel(text,offset));
     return ID;
 }
+

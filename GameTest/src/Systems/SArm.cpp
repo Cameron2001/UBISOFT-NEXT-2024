@@ -32,7 +32,7 @@ void SArm::update(Registry& registry)
         if(arm.state == CArm::ArmState::SHOOTING&&!arm.bShoot)
         {
             const float multipler = utils::clamp(timer.timer,0.5f,2.0f);
-            factory::createProjectile(registry,armStart,arm.projectileRadius*multipler, 10, arm.projectileForce*multipler,arm.rotation,arm.projectileHealth*multipler,arm.projectileDamage*multipler);
+            factory::createProjectile(registry,armStart,arm.projectileRadius*multipler, circle.radius,10, arm.projectileForce*multipler,arm.rotation,arm.projectileHealth*multipler,arm.projectileDamage*multipler);
             
             arm.state = CArm::ArmState::RELOADING;
             timer.timer = 0.0f;

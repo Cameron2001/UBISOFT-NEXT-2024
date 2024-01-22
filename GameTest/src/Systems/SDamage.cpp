@@ -67,7 +67,9 @@ void SDamage::deleteDead(Registry& registry)
             registry.deleteEntity(ID);
         }
     }
-    if(playerDead) SceneManager::getInstance()->loadScene<DeathScene>();
+    float timeSurvived = registry.getComponent<CTimer>(registry.getEntities<CLabel,CTimer>()[0]).timer;
+    
+    if(playerDead) SceneManager::getInstance()->loadScene<DeathScene>(timeSurvived);
 }
 
 

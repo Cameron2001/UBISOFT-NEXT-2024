@@ -9,6 +9,7 @@
 class DeathScene : public Scene
 {
 public:
+    DeathScene(float timer = 0.0f):timeSurvived(timer){}
     void init() override;
     void update(float dt) override;
     void render() override;
@@ -17,4 +18,5 @@ private:
     void createSystems();
     void createComponentArrays();
     void createMenu();
+    float timeSurvived;
 };

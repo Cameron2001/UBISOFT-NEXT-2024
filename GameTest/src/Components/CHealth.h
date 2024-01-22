@@ -9,5 +9,12 @@ struct CHealth
     float maxHealth;
     float regenRate;
     bool bDead = false;
-    CHealth(const float health = 100.0f, float regenRate = 1.0f): health(health),maxHealth(health),regenRate(regenRate){}
+    CHealth(
+        float health = 100.0f,
+        float regenRate = 1.0f
+        ):
+        health(health),
+        maxHealth(health),
+        regenRate(regenRate)
+    {}
 };

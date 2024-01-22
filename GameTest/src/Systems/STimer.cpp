@@ -25,6 +25,6 @@ void STimer::updateTimerLabels(Registry& registry)
     {
         CLabel& label = registry.getComponent<CLabel>(element);
         const CTimer& timer = registry.getComponent<CTimer>(element);
-        label.text = "Timer: " + std::to_string(timer.timer);;
+        label.text = "Timer: " + std::to_string(timer.timer);
     }
 }

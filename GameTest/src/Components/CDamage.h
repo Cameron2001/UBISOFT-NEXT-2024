@@ -6,5 +6,9 @@
 struct CDamage
 {
     float damage;
-    CDamage(float damage):damage(damage){}
+    CDamage(
+        float damage
+        ):
+        damage(damage)
+    {}
 };

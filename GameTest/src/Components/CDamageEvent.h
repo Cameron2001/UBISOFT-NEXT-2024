@@ -7,5 +7,11 @@ struct CDamageEvent
 {
     float damage;
     Entity target;
-    CDamageEvent(Entity target, float damage):target(target), damage(damage){}
+    CDamageEvent(
+        Entity target,
+        float damage
+        ):
+        damage(damage),
+        target(target)
+    {}
 };

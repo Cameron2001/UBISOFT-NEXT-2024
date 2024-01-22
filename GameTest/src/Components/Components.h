@@ -17,7 +17,6 @@
 #include "CEnemyHoming.h"
 #include "CTimer.h"
 #include "CWave.h"
-#include "CShield.h"
 #include "CArm.h"
 
 #include "CCollisionEvent.h"

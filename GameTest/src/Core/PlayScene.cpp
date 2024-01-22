@@ -17,9 +17,11 @@ void PlayScene::init()
     createComponentArrays();
     createMap();
     
-    factory::createPlayer(registry,{100.0f,100.0f},24.0f,10,150.0f, 100.0f, 1000.0f,50000.0f,30.0f,30.0f,20.0f,35.0f,1.0f);
+    factory::createPlayer(registry,{100.0f,100.0f},24.0f,10,150.0f, 1000.0f,50000.0f,30.0f,30.0f,20.0f,35.0f,0.8f);
     factory::createWaveController(registry,7.5f);
     factory::createGameTimer(registry,{50.0f,728.0f});
+
+    registry.getSystem<SEnemy>()->start(registry); //spawn first wave
     
    
 }
@@ -76,7 +78,6 @@ void PlayScene::createComponentArrays()
     registry.createComponentArray<CEnemyHoming>();
     registry.createComponentArray<CTimer>();
     registry.createComponentArray<CLabel>();
-    registry.createComponentArray<CShield>();
     registry.createComponentArray<CWave>();
     registry.createComponentArray<CArm>();
 }
@@ -86,11 +87,11 @@ void PlayScene::createMap()
     float x= 129.0f;
     for (int i = 0; i < 4; ++i)
     {
-        factory::createWall(registry,{x*(float)i*2+x,31.0f},{x,30.0f},200.0f);
+        factory::createWall(registry,{x*(float)i*2+x,31.0f},{x,30.0f},175.0f);
     }
     for (int j = 0; j < 4; ++j)
     {
-        factory::createWall(registry,{x*(float)j*2+x,737.0f},{x,30.0f},200.0f);
+        factory::createWall(registry,{x*(float)j*2+x,737.0f},{x,30.0f},175.0f);
     }
     
 }

@@ -9,6 +9,7 @@
 class SEnemy : public ISystem
 {
 public:
+    void start(Registry& registry);
     void update(Registry& registry, float dt);
 private:
     static void updateTanks(Registry& registry, float dt);

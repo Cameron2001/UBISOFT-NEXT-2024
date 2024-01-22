@@ -1,9 +1,9 @@
 ﻿//------------------------------------------------------------------------
 // IComponentArray.h
+// Interface for component arrays. Useful for storage 
 //------------------------------------------------------------------------
 #pragma once
 //------------------------------------------------------------------------
-//ComponentArray interface
 class IComponentArray
 {
 public:
