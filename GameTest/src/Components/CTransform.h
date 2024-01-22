@@ -8,5 +8,9 @@
 struct CTransform
 {
     vec2 pos;
-    CTransform(vec2 position = {0.0f,0.0f}): pos(position){}
+    CTransform(
+        vec2 position = {0.0f,0.0f}
+        ):
+        pos(position)
+    {}
 };

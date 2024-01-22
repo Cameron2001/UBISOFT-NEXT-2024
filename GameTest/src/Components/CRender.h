@@ -8,5 +8,9 @@
 struct CRender
 {
     vec3 color;
-    CRender(vec3 color = {1.0f,1.0f,1.0f}):color(color){}
+    CRender(
+        vec3 color = {1.0f,1.0f,1.0f}
+        ):
+        color(color)
+    {}
 };

@@ -6,5 +6,9 @@
 struct CPlayer
 {
     float moveSpeed;
-    CPlayer(float moveSpeed=300.0f):moveSpeed(moveSpeed){}
+    CPlayer(
+        float moveSpeed=300.0f
+        ):
+        moveSpeed(moveSpeed)
+    {}
 };
