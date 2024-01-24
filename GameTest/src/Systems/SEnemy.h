@@ -5,14 +5,16 @@
 //------------------------------------------------------------------------
 #include "ISystem.h"
 #include "../Core/Registry.h"
+
 //------------------------------------------------------------------------
 class SEnemy : public ISystem
 {
 public:
-    void start(Registry& registry);
-    void update(Registry& registry, float dt);
+    static void start(Registry& registry);
+    static void update(Registry& registry);
+
 private:
-    static void updateTanks(Registry& registry, float dt);
-    static void updateHoming(Registry& registry, float dt);
+    static void updateTanks(Registry& registry);
+    static void updateHoming(Registry& registry);
     static void spawnWave(Registry& registry, float difficultyMultiplier);
 };

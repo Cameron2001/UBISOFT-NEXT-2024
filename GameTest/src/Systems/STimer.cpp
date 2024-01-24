@@ -9,19 +9,19 @@
 #include "../Components/CTimer.h"
 //------------------------------------------------------------------------
 
-void STimer::update(Registry& registry, float dt)
+void STimer::update(Registry& registry, const float dt)
 {
     for (const auto element : registry.getEntities<CTimer>())
     {
         CTimer& timer = registry.getComponent<CTimer>(element);
-        timer.timer+=dt;
+        timer.timer += dt;
     }
     updateTimerLabels(registry);
 }
 
 void STimer::updateTimerLabels(Registry& registry)
 {
-    for (const auto element : registry.getEntities<CTimer,CLabel>())
+    for (const auto element : registry.getEntities<CTimer, CLabel>())
     {
         CLabel& label = registry.getComponent<CLabel>(element);
         const CTimer& timer = registry.getComponent<CTimer>(element);

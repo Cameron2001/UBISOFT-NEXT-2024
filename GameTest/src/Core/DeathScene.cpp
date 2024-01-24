@@ -61,8 +61,8 @@ void DeathScene::createComponentArrays()
 
 void DeathScene::createMenu()
 {
-    factory::createLabel(registry, "YOU DIED", {465.0f,600.0f},{0.0f,0.0f},{1.0f,0.0f,0.0f});
-    factory::createLabel(registry, "You survived for: "+std::to_string(timeSurvived), {400.0f,500.0f});
-    factory::createButton(registry, {512.0f,200.0f},{100.0f,50.0f},CButton::ButtonTypes::EXIT,"Exit");
-    factory::createButton(registry, {512.0f,400.0f},{100.0f,50.0f},CButton::ButtonTypes::START, "Restart");
+    factory::createLabel(registry, "YOU DIED", {465.0f, 600.0f}, {0.0f, 0.0f}, {1.0f, 0.0f, 0.0f});
+    factory::createLabel(registry, "You survived for: " + std::to_string(timeSurvived), {400.0f, 500.0f});
+    factory::createButton(registry, {512.0f, 200.0f}, {100.0f, 50.0f}, CButton::ButtonTypes::EXIT, "Exit");
+    factory::createButton(registry, {512.0f, 400.0f}, {100.0f, 50.0f}, CButton::ButtonTypes::START, "Restart");
 }

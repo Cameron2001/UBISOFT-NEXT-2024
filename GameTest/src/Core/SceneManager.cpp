@@ -9,7 +9,6 @@
 SceneManager* SceneManager::instance = nullptr;
 
 
-
 SceneManager::SceneManager()
 {
     currentScene = nullptr;
@@ -20,7 +19,7 @@ SceneManager::~SceneManager()
     cleanUp();
 }
 
-void SceneManager::update(float dt) const
+void SceneManager::update(const float dt) const
 {
     currentScene->update(dt);
 }
@@ -41,17 +40,10 @@ void SceneManager::cleanUp()
 }
 
 
-
-
-
-
-
-
-
 SceneManager* SceneManager::getInstance()
 {
     if (instance == nullptr)
-        instance= new SceneManager();
+        instance = new SceneManager();
 
     return instance;
 }

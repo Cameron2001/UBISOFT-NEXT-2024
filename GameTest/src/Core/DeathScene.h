@@ -6,14 +6,18 @@
 #include "Scene.h"
 //------------------------------------------------------------------------
 
-class DeathScene : public Scene
+class DeathScene final : public Scene
 {
 public:
-    DeathScene(float timer = 0.0f):timeSurvived(timer){}
+    DeathScene(const float timer = 0.0f): timeSurvived(timer)
+    {
+    }
+
     void init() override;
     void update(float dt) override;
     void render() override;
     void shutdown() override;
+
 private:
     void createSystems();
     void createComponentArrays();

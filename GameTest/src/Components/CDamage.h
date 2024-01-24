@@ -6,9 +6,11 @@
 struct CDamage
 {
     float damage;
+
     CDamage(
-        float damage
-        ):
+        const float damage
+    ):
         damage(damage)
-    {}
+    {
+    }
 };

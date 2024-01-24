@@ -12,13 +12,11 @@
 #include "../Util/Utils.h"
 //------------------------------------------------------------------------
 
-void SDamage::update(Registry& registry, float dt)
+void SDamage::update(Registry& registry, const float dt)
 {
     resolveDamageEvents(registry);
-    updateHealth(registry,dt);
+    updateHealth(registry, dt);
     deleteDead(registry);
-    
-    
 }
 
 void SDamage::resolveDamageEvents(Registry& registry)
@@ -27,49 +25,47 @@ void SDamage::resolveDamageEvents(Registry& registry)
     {
         const CDamageEvent& event = registry.getComponent<CDamageEvent>(ID);
         CHealth& health = registry.getComponent<CHealth>(event.target);
-        health.health-= event.damage;
+        health.health -= event.damage;
         App::PlaySound(".\\Audio\\hitHurt.wav");
     }
     registry.clearEntities<CDamageEvent>();
 }
 
-void SDamage::updateHealth(Registry& registry, float dt)
+void SDamage::updateHealth(Registry& registry, const float dt)
 {
     for (const Entity ID : registry.getEntities<CHealth>())
     {
         CHealth& health = registry.getComponent<CHealth>(ID);
-        if(health.health<=0.0f)
+        if (health.health <= 0.0f)
         {
             health.bDead = true;
             App::PlaySound(".\\Audio\\death.wav");
         }
-        if(registry.hasComponent<CRender>(ID))
+        if (registry.hasComponent<CRender>(ID))
         {
             //clean this up
             CRender& render = registry.getComponent<CRender>(ID);
-            float healthPercentage = health.health/health.maxHealth;
-            healthPercentage = 1.0f-healthPercentage;
-            render.color ={1.0f,1.0f-healthPercentage,1.0f-healthPercentage};
+            float healthPercentage = health.health / health.maxHealth;
+            healthPercentage = 1.0f - healthPercentage;
+            render.color = {1.0f, 1.0f - healthPercentage, 1.0f - healthPercentage};
         }
-        health.health = utils::clamp(health.health+health.regenRate*dt,0.0f,health.maxHealth);
+        health.health = utils::clamp(health.health + health.regenRate * dt, 0.0f, health.maxHealth);
     }
 }
 
 void SDamage::deleteDead(Registry& registry)
 {
     bool playerDead = false;
-    for (const Entity ID: registry.getEntities<CHealth>())
+    for (const Entity ID : registry.getEntities<CHealth>())
     {
         const CHealth& health = registry.getComponent<CHealth>(ID);
-        if(health.bDead)
+        if (health.bDead)
         {
-            if(registry.hasComponent<CPlayer>(ID)) playerDead = true;
+            if (registry.hasComponent<CPlayer>(ID)) playerDead = true;
             registry.deleteEntity(ID);
         }
     }
-    float timeSurvived = registry.getComponent<CTimer>(registry.getEntities<CLabel,CTimer>()[0]).timer;
-    
-    if(playerDead) SceneManager::getInstance()->loadScene<DeathScene>(timeSurvived);
+    const float timeSurvived = registry.getComponent<CTimer>(registry.getEntities<CLabel, CTimer>()[0]).timer;
+
+    if (playerDead) SceneManager::getInstance()->loadScene<DeathScene>(timeSurvived);
 }
-
-

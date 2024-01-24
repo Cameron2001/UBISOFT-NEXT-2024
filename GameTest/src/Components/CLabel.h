@@ -4,16 +4,19 @@
 #pragma once
 //------------------------------------------------------------------------
 #include "../Util/Vectors.h"
+
 //------------------------------------------------------------------------
 struct CLabel
 {
     std::string text;
     vec2 offset;
+
     CLabel(
-        std::string text = "Label",
-        vec2 offset = {0.0f,0.0f}
-        ):
+        const std::string& text = "Label",
+        const vec2 offset = {0.0f, 0.0f}
+    ):
         text(text),
         offset(offset)
-    {}
+    {
+    }
 };

@@ -10,15 +10,18 @@ struct CButton
         START,
         EXIT
     };
+
     ButtonTypes type;
     vec2 bounds;
     bool bClicked;
+
     CButton(
-        ButtonTypes type,
-        vec2 bounds
-        ):
+        const ButtonTypes type,
+        const vec2 bounds
+    ):
         type(type),
         bounds(bounds),
         bClicked(false)
-    {} 
+    {
+    }
 };

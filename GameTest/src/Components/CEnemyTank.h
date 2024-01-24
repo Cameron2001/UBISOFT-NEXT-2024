@@ -6,9 +6,11 @@
 struct CEnemyTank
 {
     float moveSpeed;
+
     CEnemyTank(
-        float moveSpeed = 50.0f
-        ):
+        const float moveSpeed = 50.0f
+    ):
         moveSpeed(moveSpeed)
-    {}
+    {
+    }
 };

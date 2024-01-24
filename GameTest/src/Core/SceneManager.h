@@ -13,21 +13,23 @@ protected:
 
 public:
     ~SceneManager();
-    
-    
+
+
     void update(float dt) const;
     void render() const;
     void cleanUp();
-    
+
     static SceneManager* getInstance();
-    template<typename T>
+
+    template <typename T>
     void loadScene()
     {
         cleanUp();
         currentScene = new T();
         currentScene->init();
     }
-    template<typename T>
+
+    template <typename T>
     void loadScene(float timer)
     {
         cleanUp();

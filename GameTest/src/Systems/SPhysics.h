@@ -5,11 +5,12 @@
 //------------------------------------------------------------------------
 #include "ISystem.h"
 #include "../Core/Registry.h"
+
 //------------------------------------------------------------------------
 class SPhysics : public ISystem
 {
 public:
-    void update(Registry& registry, float dt);
+    static void update(Registry& registry, float dt);
 
 private:
     //create an array of current collisions
@@ -21,6 +22,4 @@ private:
     static bool checkCollision(Registry& registry, Entity a, Entity b);
     static void applyKinematics(Registry& registry, float dt);
     static void deleteOffscreen(Registry& registry);
-    
 };
-

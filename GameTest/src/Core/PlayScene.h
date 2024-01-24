@@ -13,6 +13,7 @@ public:
     void update(float dt) override;
     void render() override;
     void shutdown() override;
+
 private:
     void createSystems();
     void createComponentArrays();

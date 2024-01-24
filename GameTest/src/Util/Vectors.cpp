@@ -12,22 +12,21 @@ vec2::vec2()
     this->y = 0.0f;
 }
 
-vec2::vec2(float x, float y)
+vec2::vec2(const float x, const float y)
 {
     this->x = x;
     this->y = y;
 }
 
-vec2 vec2::operator+(vec2 const& obj) const
+vec2 vec2::operator+(const vec2& obj) const
 {
     vec2 vector;
     vector.x = x + obj.x;
     vector.y = y + obj.y;
     return vector;
-    
 }
 
-vec2 vec2::operator-(vec2 const& obj) const
+vec2 vec2::operator-(const vec2& obj) const
 {
     vec2 vector;
     vector.x = x - obj.x;
@@ -36,7 +35,7 @@ vec2 vec2::operator-(vec2 const& obj) const
 }
 
 
-vec2 vec2::operator*(vec2 const& obj) const
+vec2 vec2::operator*(const vec2& obj) const
 {
     vec2 vector;
     vector.x = x * obj.x;
@@ -44,7 +43,7 @@ vec2 vec2::operator*(vec2 const& obj) const
     return vector;
 }
 
-vec2 vec2::operator*(float const& obj) const
+vec2 vec2::operator*(const float& obj) const
 {
     vec2 vector;
     vector.x = x * obj;
@@ -52,7 +51,7 @@ vec2 vec2::operator*(float const& obj) const
     return vector;
 }
 
-vec2 vec2::operator/(vec2 const& obj) const
+vec2 vec2::operator/(const vec2& obj) const
 {
     vec2 vector;
     vector.x = x / obj.x;
@@ -60,7 +59,7 @@ vec2 vec2::operator/(vec2 const& obj) const
     return vector;
 }
 
-vec2 vec2::operator/(float const& obj) const
+vec2 vec2::operator/(const float& obj) const
 {
     vec2 vector;
     vector.x = x / obj;
@@ -68,46 +67,46 @@ vec2 vec2::operator/(float const& obj) const
     return vector;
 }
 
-vec2& vec2::operator+=(vec2 const& obj)
+vec2& vec2::operator+=(const vec2& obj)
 {
-    x+=obj.x;
-    y+=obj.y;
+    x += obj.x;
+    y += obj.y;
     return *this;
 }
 
 
-vec2& vec2::operator-=(vec2 const& obj)
+vec2& vec2::operator-=(const vec2& obj)
 {
-    x-=obj.x;
-    y-=obj.y;
+    x -= obj.x;
+    y -= obj.y;
     return *this;
 }
 
-vec2& vec2::operator*=(vec2 const& obj)
+vec2& vec2::operator*=(const vec2& obj)
 {
-    x*=obj.x;
-    y*=obj.y;
+    x *= obj.x;
+    y *= obj.y;
     return *this;
 }
 
-vec2& vec2::operator*=(float const& obj)
+vec2& vec2::operator*=(const float& obj)
 {
-    x*=obj;
-    y*=obj;
+    x *= obj;
+    y *= obj;
     return *this;
 }
 
-vec2& vec2::operator/=(vec2 const& obj)
+vec2& vec2::operator/=(const vec2& obj)
 {
-    x/=obj.x;
-    y/=obj.y;
+    x /= obj.x;
+    y /= obj.y;
     return *this;
 }
 
-vec2& vec2::operator/=(float const& obj)
+vec2& vec2::operator/=(const float& obj)
 {
-    x/=obj;
-    y/=obj;
+    x /= obj;
+    y /= obj;
     return *this;
 }
 
@@ -119,14 +118,14 @@ vec3::vec3()
     this->z = 0.0f;
 }
 
-vec3::vec3(float x, float y, float z)
+vec3::vec3(const float x, const float y, const float z)
 {
     this->x = x;
     this->y = y;
     this->z = z;
 }
 
-vec3 vec3::operator+(vec3 const& obj) const
+vec3 vec3::operator+(const vec3& obj) const
 {
     vec3 vector;
     vector.x = x + obj.x;
@@ -135,7 +134,7 @@ vec3 vec3::operator+(vec3 const& obj) const
     return vector;
 }
 
-vec3 vec3::operator-(vec3 const& obj) const
+vec3 vec3::operator-(const vec3& obj) const
 {
     vec3 vector;
     vector.x = x - obj.x;
@@ -144,7 +143,7 @@ vec3 vec3::operator-(vec3 const& obj) const
     return vector;
 }
 
-vec3 vec3::operator*(vec3 const& obj) const
+vec3 vec3::operator*(const vec3& obj) const
 {
     vec3 vector;
     vector.x = x * obj.x;
@@ -153,7 +152,7 @@ vec3 vec3::operator*(vec3 const& obj) const
     return vector;
 }
 
-vec3 vec3::operator*(float const& obj) const
+vec3 vec3::operator*(const float& obj) const
 {
     vec3 vector;
     vector.x = x * obj;
@@ -162,7 +161,7 @@ vec3 vec3::operator*(float const& obj) const
     return vector;
 }
 
-vec3 vec3::operator/(vec3 const& obj) const
+vec3 vec3::operator/(const vec3& obj) const
 {
     vec3 vector;
     vector.x = x / obj.x;
@@ -171,7 +170,7 @@ vec3 vec3::operator/(vec3 const& obj) const
     return vector;
 }
 
-vec3 vec3::operator/(float const& obj) const
+vec3 vec3::operator/(const float& obj) const
 {
     vec3 vector;
     vector.x = x / obj;
@@ -180,51 +179,51 @@ vec3 vec3::operator/(float const& obj) const
     return vector;
 }
 
-vec3& vec3::operator+=(vec3 const& obj)
+vec3& vec3::operator+=(const vec3& obj)
 {
-    x+=obj.x;
-    y+=obj.y;
-    z+=obj.z;
+    x += obj.x;
+    y += obj.y;
+    z += obj.z;
     return *this;
 }
 
-vec3& vec3::operator-=(vec3 const& obj)
+vec3& vec3::operator-=(const vec3& obj)
 {
-    x-=obj.x;
-    y-=obj.y;
-    z-=obj.z;
+    x -= obj.x;
+    y -= obj.y;
+    z -= obj.z;
     return *this;
 }
 
-vec3& vec3::operator*=(vec3 const& obj)
+vec3& vec3::operator*=(const vec3& obj)
 {
-    x*=obj.x;
-    y*=obj.y;
-    z*=obj.z;
+    x *= obj.x;
+    y *= obj.y;
+    z *= obj.z;
     return *this;
 }
 
-vec3& vec3::operator*=(float const& obj)
+vec3& vec3::operator*=(const float& obj)
 {
-    x*=obj;
-    y*=obj;
-    z*=obj;
+    x *= obj;
+    y *= obj;
+    z *= obj;
     return *this;
 }
 
-vec3& vec3::operator/=(vec3 const& obj)
+vec3& vec3::operator/=(const vec3& obj)
 {
-    x/=obj.x;
-    y/=obj.y;
-    z/=obj.z;
+    x /= obj.x;
+    y /= obj.y;
+    z /= obj.z;
     return *this;
 }
 
-vec3& vec3::operator/=(float const& obj)
+vec3& vec3::operator/=(const float& obj)
 {
-    x/=obj;
-    y/=obj;
-    z/=obj;
+    x /= obj;
+    y /= obj;
+    z /= obj;
     return *this;
 }
 
@@ -237,7 +236,7 @@ vec4::vec4()
     this->h = 0.0f;
 }
 
-vec4::vec4(float x, float y, float w, float h)
+vec4::vec4(const float x, const float y, const float w, const float h)
 {
     this->x = x;
     this->y = y;
@@ -245,7 +244,7 @@ vec4::vec4(float x, float y, float w, float h)
     this->h = h;
 }
 
-vec4 vec4::operator+(vec4 const& obj) const
+vec4 vec4::operator+(const vec4& obj) const
 {
     vec4 vector;
     vector.x = x + obj.x;
@@ -255,7 +254,7 @@ vec4 vec4::operator+(vec4 const& obj) const
     return vector;
 }
 
-vec4 vec4::operator-(vec4 const& obj) const
+vec4 vec4::operator-(const vec4& obj) const
 {
     vec4 vector;
     vector.x = x - obj.x;
@@ -265,7 +264,7 @@ vec4 vec4::operator-(vec4 const& obj) const
     return vector;
 }
 
-vec4 vec4::operator*(vec4 const& obj) const
+vec4 vec4::operator*(const vec4& obj) const
 {
     vec4 vector;
     vector.x = x * obj.x;
@@ -275,7 +274,7 @@ vec4 vec4::operator*(vec4 const& obj) const
     return vector;
 }
 
-vec4 vec4::operator*(float const& obj) const
+vec4 vec4::operator*(const float& obj) const
 {
     vec4 vector;
     vector.x = x * obj;
@@ -285,7 +284,7 @@ vec4 vec4::operator*(float const& obj) const
     return vector;
 }
 
-vec4 vec4::operator/(vec4 const& obj) const
+vec4 vec4::operator/(const vec4& obj) const
 {
     vec4 vector;
     vector.x = x / obj.x;
@@ -295,7 +294,7 @@ vec4 vec4::operator/(vec4 const& obj) const
     return vector;
 }
 
-vec4 vec4::operator/(float const& obj) const
+vec4 vec4::operator/(const float& obj) const
 {
     vec4 vector;
     vector.x = x / obj;
@@ -305,57 +304,56 @@ vec4 vec4::operator/(float const& obj) const
     return vector;
 }
 
-vec4& vec4::operator+=(vec4 const& obj)
+vec4& vec4::operator+=(const vec4& obj)
 {
-    x+=obj.x;
-    y+=obj.y;
-    w+=obj.w;
-    h+=obj.h;
+    x += obj.x;
+    y += obj.y;
+    w += obj.w;
+    h += obj.h;
     return *this;
 }
 
-vec4& vec4::operator-=(vec4 const& obj)
+vec4& vec4::operator-=(const vec4& obj)
 {
-    x-=obj.x;
-    y-=obj.y;
-    w-=obj.w;
-    h-=obj.h;
+    x -= obj.x;
+    y -= obj.y;
+    w -= obj.w;
+    h -= obj.h;
     return *this;
 }
 
-vec4& vec4::operator*=(vec4 const& obj)
+vec4& vec4::operator*=(const vec4& obj)
 {
-    x*=obj.x;
-    y*=obj.y;
-    w*=obj.w;
-    h*=obj.h;
+    x *= obj.x;
+    y *= obj.y;
+    w *= obj.w;
+    h *= obj.h;
     return *this;
 }
 
-vec4& vec4::operator*=(float const& obj)
+vec4& vec4::operator*=(const float& obj)
 {
-    x*=obj;
-    y*=obj;
-    w*=obj;
-    h*=obj;
+    x *= obj;
+    y *= obj;
+    w *= obj;
+    h *= obj;
     return *this;
 }
 
-vec4& vec4::operator/=(vec4 const& obj)
+vec4& vec4::operator/=(const vec4& obj)
 {
-    x/=obj.x;
-    y/=obj.y;
-    w/=obj.w;
-    h/=obj.h;
+    x /= obj.x;
+    y /= obj.y;
+    w /= obj.w;
+    h /= obj.h;
     return *this;
 }
 
-vec4& vec4::operator/=(float const& obj)
+vec4& vec4::operator/=(const float& obj)
 {
-    x/=obj;
-    y/=obj;
-    w/=obj;
-    h/=obj;
+    x /= obj;
+    y /= obj;
+    w /= obj;
+    h /= obj;
     return *this;
 }
-

@@ -13,8 +13,8 @@
 
 void SButton::update(Registry& registry)
 {
-   checkClicks(registry);
-   resolveClicks(registry); 
+    checkClicks(registry);
+    resolveClicks(registry);
 }
 
 void SButton::checkClicks(Registry& registry)
@@ -24,8 +24,8 @@ void SButton::checkClicks(Registry& registry)
         const CTransform& transform = registry.getComponent<CTransform>(ID);
         CButton& button = registry.getComponent<CButton>(ID);
         vec2 mousePos;
-        App::GetMousePos(mousePos.x,mousePos.y);
-        button.bClicked=clicked(mousePos, transform.pos,button.bounds);
+        App::GetMousePos(mousePos.x, mousePos.y);
+        button.bClicked = clicked(mousePos, transform.pos, button.bounds);
     }
 }
 
@@ -34,8 +34,8 @@ void SButton::resolveClicks(Registry& registry)
     for (const Entity ID : registry.getEntities<CButton>())
     {
         const CButton& button = registry.getComponent<CButton>(ID);
-        if(!button.bClicked) continue;
-        
+        if (!button.bClicked) continue;
+
         switch (button.type)
         {
         case CButton::ButtonTypes::START:
@@ -47,11 +47,11 @@ void SButton::resolveClicks(Registry& registry)
     }
 }
 
-bool SButton::clicked(vec2 mousePos, vec2 buttonPos, vec2 bounds)
+bool SButton::clicked(const vec2 mousePos, const vec2 buttonPos, const vec2 bounds)
 {
-    return mousePos.x>buttonPos.x-bounds.x
-        && mousePos.x<buttonPos.x+bounds.x
-        && mousePos.y>buttonPos.y-bounds.y
-        && mousePos.y<buttonPos.y+bounds.y
-        &&App::IsKeyPressed(VK_LBUTTON);
+    return mousePos.x > buttonPos.x - bounds.x
+        && mousePos.x < buttonPos.x + bounds.x
+        && mousePos.y > buttonPos.y - bounds.y
+        && mousePos.y < buttonPos.y + bounds.y
+        && App::IsKeyPressed(VK_LBUTTON);
 }

@@ -6,9 +6,11 @@
 struct CEnemyHoming
 {
     float moveSpeed;
+
     CEnemyHoming(
-        float moveSpeed = 1000.0f
-        ):
+        const float moveSpeed = 1000.0f
+    ):
         moveSpeed(moveSpeed)
-    {}
+    {
+    }
 };

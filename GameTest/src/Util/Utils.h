@@ -4,6 +4,7 @@
 #pragma once
 //------------------------------------------------------------------------
 #include "Vectors.h"
+
 //------------------------------------------------------------------------
 class utils
 {
@@ -14,7 +15,7 @@ public:
 
     static float sign(float value);
     static float clamp(float value, float min, float max);
-    static vec2 clamp(vec2 vector,float max_length);
+    static vec2 clamp(vec2 vector, float max_length);
     static float clamp(float value);
 
     static float lerp(float a, float b, float t);
@@ -30,8 +31,8 @@ public:
     static vec2 normalize(vec2 vector);
     static float dot(vec2 a, vec2 b);
     static vec2 project(vec2 a, vec2 b);
+
 private:
     utils();
     ~utils();
-    
 };

@@ -5,20 +5,22 @@
 #pragma once
 //------------------------------------------------------------------------
 #include "IComponentArray.h"
+
 //------------------------------------------------------------------------
 template <class T>
-class ComponentArray : public IComponentArray
+class ComponentArray final : public IComponentArray
 {
 public:
-    ComponentArray():m_sparse(std::vector<uint32_t>(MAX_IDS, 0)){}
-    
+    ComponentArray(): m_sparse(std::vector<uint32_t>(MAX_IDS, 0))
+    {
+    }
+
     void addComponent(Entity entityID, T component);
     void removeComponent(Entity entityID) override;
-    bool hasComponent(Entity entityID) override; 
-    T* getComponent(Entity entityID); 
+    bool hasComponent(Entity entityID) override;
+    T* getComponent(Entity entityID);
 
 private:
-    
     std::vector<uint32_t> m_sparse; //indices
     std::vector<uint32_t> m_dense; //list
     std::vector<T> m_componentList;
@@ -28,7 +30,7 @@ private:
 
 
 template <typename T>
-void ComponentArray<T>::addComponent(Entity entityID, T component)
+void ComponentArray<T>::addComponent(const Entity entityID, T component)
 {
     //assert("Add component" && !HasComponent(entityID));
     const auto pos = m_dense.size();
@@ -38,7 +40,7 @@ void ComponentArray<T>::addComponent(Entity entityID, T component)
 }
 
 template <typename T>
-void ComponentArray<T>::removeComponent(Entity entityID)
+void ComponentArray<T>::removeComponent(const Entity entityID)
 {
     //assert("remove component" && HasComponent(entityID));
     const auto last = m_dense.back();
@@ -50,16 +52,14 @@ void ComponentArray<T>::removeComponent(Entity entityID)
 }
 
 template <class T>
-T* ComponentArray<T>::getComponent(Entity entityID)
+T* ComponentArray<T>::getComponent(const Entity entityID)
 {
     return &m_componentList[m_sparse[entityID]];
 }
 
 
 template <class T>
-bool ComponentArray<T>::hasComponent(Entity entityID)
+bool ComponentArray<T>::hasComponent(const Entity entityID)
 {
     return entityID < m_sparse.size() && m_sparse[entityID] < m_dense.size() && m_dense[m_sparse[entityID]] == entityID;
 }
-
-
